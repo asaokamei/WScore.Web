@@ -25,14 +25,19 @@ class Router
         $_routes = array();
         foreach( $routes as $url => $match ) {
             $tokens = explode( '/', ltrim( $url, '/' ) );
+            $body   = array();
+            $args   = array();
             foreach( $tokens as $i => $token ) {
                 if( strpos( $token, ':' ) === 0 ) {
                     $name  = substr( $token, 1 );
                     $token = "(?P<{$name}>[^/]+)";
+                    $args[] = $token;
+                } else {
+                    $body[] = $token;
                 }
-                $tokens[$i] = $token;
             }
-            $pattern = '/' . implode( '/', $tokens );
+            $pattern = '(/' . implode( '/', $body ) . ')';
+            if( !empty( $args ) ) $pattern .= '/' . implode( '/', $args );
             $_routes[ $pattern ] = $match;
         }
         return $_routes;

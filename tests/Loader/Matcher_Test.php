@@ -40,6 +40,7 @@ class Matcher_Test extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 'found', $loaded );
         $this->assertEquals( 'id-test', $loaded['found'] );
         $this->assertEquals( '/test/5', $loaded[0] );
+        $this->assertEquals( '/test', $loaded[1] );
         $this->assertArrayHasKey( 'id', $loaded );
         $this->assertEquals( '5', $loaded['id'] );
     }
