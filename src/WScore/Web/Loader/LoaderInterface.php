@@ -4,6 +4,14 @@ namespace WScore\Web\Loader;
 interface LoaderInterface
 {
     /**
+     * sets routes to match.
+     * 
+     * @param array $route
+     * @return mixed
+     */
+    public function setRoute( $route );
+    
+    /**
      * Loads response if pathinfo matches with routes. 
      *
      * @param string $pathInfo
@@ -14,7 +22,7 @@ interface LoaderInterface
     /**
      * returns name of the loader. 
      * 
-     * @return mixed
+     * @return string
      */
     public function name();
 }
