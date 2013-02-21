@@ -1,11 +1,11 @@
 <?php
-namespace wsModule\Dci\Web;
+namespace WScore\Web\Context;
 
 use \WScore\DataMapper\Entity_Interface;
 
 class Context_FormWizards extends Persist
 {
-    /** @var \wsModule\Alt\Web\Request */
+    /** @var \WScore\Web\Request */
     protected $request;
 
     /** @var \WScore\DataMapper\Role */
@@ -17,8 +17,8 @@ class Context_FormWizards extends Persist
     //  object management
     // +----------------------------------------------------------------------+
     /**
-     * @param \wsModule\Dci\Web\PersistInterface   $context
-     * @DimInjection Get   \wsModule\Dci\Web\ContextFormAndLoad
+     * @param \WScore\Web\PersistInterface   $context
+     * @DimInjection Get   \WScore\Web\ContextFormAndLoad
      */
     public function __construct( $context )
     {
@@ -47,7 +47,7 @@ class Context_FormWizards extends Persist
     {
         $prevForm = null;
         foreach( $this->actName as $form ) {
-            /** @var $context \wsModule\Dci\Web\Context_FormAndLoad */
+            /** @var $context \WScore\Web\Context_FormAndLoad */
             $context = $this->context( 'form' );
             $context->setActName( $form );
             if( $name = $context->run( $entity, $action ) ) {

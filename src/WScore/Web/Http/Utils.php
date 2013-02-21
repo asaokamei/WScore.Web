@@ -1,5 +1,5 @@
 <?php
-namespace wsModule\Alt\Web;
+namespace WScore\Web\Http;
 
 class Utils
 {

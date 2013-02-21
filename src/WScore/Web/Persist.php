@@ -1,5 +1,5 @@
 <?php
-namespace wsModule\Dci\Web;
+namespace WScore\Web;
 
 class Persist implements PersistInterface
 {
@@ -16,7 +16,7 @@ class Persist implements PersistInterface
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Web\Session   $session
-     * @return \wsModule\Dci\Web\Persist
+     * @return \WScore\Web\Persist
      * @DimInjection Get Session
      */
     public function __construct( $session )
@@ -26,7 +26,7 @@ class Persist implements PersistInterface
 
     /**
      * @param string $name
-     * @param \wsModule\Dci\Web\PersistInterface $context
+     * @param \WScore\Web\PersistInterface $context
      */
     public function setContext( $name, $context ) {
         $this->contexts[ $name ] = $context;
@@ -34,7 +34,7 @@ class Persist implements PersistInterface
 
     /**
      * @param string $name
-     * @return \wsModule\Dci\Web\PersistInterface
+     * @return \WScore\Web\PersistInterface
      * @throws \RuntimeException
      */
     public function context( $name ) {

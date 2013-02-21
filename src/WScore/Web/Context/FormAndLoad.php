@@ -1,5 +1,5 @@
 <?php
-namespace wsModule\Dci\Web;
+namespace WScore\Web\Context;
 
 use \WScore\DataMapper\Entity_Interface;
 

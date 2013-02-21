@@ -1,5 +1,5 @@
 <?php
-namespace wsModule\Alt\Web;
+namespace WScore\Web;
 
 class FrontMcNotFoundException extends \Exception {}
 
@@ -14,13 +14,13 @@ class FrontMC
     /** @var \WScore\DiContainer\Dimplet */
     protected $container;
 
-    /** @var \wsModule\Alt\Web\Response */
+    /** @var \WScore\Web\Response */
     public $response;
     
-    /** @var \wsModule\Alt\Web\Request */
+    /** @var \WScore\Web\Request */
     public $request;
 
-    /** @var \wsModule\Alt\Web\Router */
+    /** @var \WScore\Web\Router */
     public $router;
 
     /** @var array */
@@ -30,9 +30,9 @@ class FrontMC
     
     /**
      * @param \WScore\DiContainer\Dimplet $container
-     * @param \wsModule\Alt\Web\Response  $response
+     * @param \WScore\Web\Response  $response
      * @DimInjection get Container
-     * @DimInjection Fresh \wsModule\Alt\Web\Response
+     * @DimInjection Fresh \WScore\Web\Response
      */
     public function __construct( $container, $response )
     {

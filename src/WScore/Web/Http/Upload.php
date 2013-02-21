@@ -1,6 +1,7 @@
 <?php
+namespace WScore\Web\Http;
 
-class UploadException extends Exception {}
+class UploadException extends \Exception {}
 
 class Upload
 {
