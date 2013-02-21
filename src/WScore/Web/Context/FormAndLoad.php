@@ -1,10 +1,10 @@
 <?php
 namespace WScore\Web\Context;
 
-use \WScore\Web\Persist;
+use \WScore\Web\Context;
 use \WScore\DataMapper\Entity_Interface;
 
-class Context_FormAndLoad extends Persist
+class Context_FormAndLoad extends Context
 {
     /** @var \WScore\DataMapper\Role */
     protected $role;

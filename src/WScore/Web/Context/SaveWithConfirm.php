@@ -1,10 +1,10 @@
 <?php
 namespace WScore\Web\Context;
 
-use \WScore\Web\Persist;
+use \WScore\Web\Context;
 use \WScore\DataMapper\Entity_Interface;
 
-class Interaction_SaveWithConfirm extends Persist
+class Interaction_SaveWithConfirm extends Context
 {
     /** @var array|string */
     protected $forms = 'form';

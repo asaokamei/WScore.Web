@@ -1,7 +1,7 @@
 <?php
-namespace WScore\Web;
+namespace WScore\Web\Context;
 
-interface PersistInterface
+interface ContextInterface
 {
     public function setContext( $name, $context );
     

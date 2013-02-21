@@ -1,10 +1,10 @@
 <?php
 namespace WScore\Web\Context;
 
-use \WScore\Web\Persist;
+use \WScore\Web\Context;
 use \WScore\DataMapper\Entity_Interface;
 
-class Context_FormWizards extends Persist
+class Context_FormWizards extends Context
 {
     /** @var \WScore\Web\Request */
     protected $request;
@@ -18,7 +18,7 @@ class Context_FormWizards extends Persist
     //  object management
     // +----------------------------------------------------------------------+
     /**
-     * @param \WScore\Web\PersistInterface   $context
+     * @param \WScore\Web\ContextInterface   $context
      * @DimInjection Get   \WScore\Web\ContextFormAndLoad
      */
     public function __construct( $context )

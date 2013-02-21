@@ -1,7 +1,7 @@
 <?php
-namespace WScore\Web;
+namespace WScore\Web\Context;
 
-class Persist implements PersistInterface
+class Context implements ContextInterface
 {
     /** @var array                          data to register as session data */
     protected $registeredData = array();
@@ -16,7 +16,7 @@ class Persist implements PersistInterface
     // +----------------------------------------------------------------------+
     /**
      * @param \WScore\Web\Session   $session
-     * @return \WScore\Web\Persist
+     * @return \WScore\Web\Context
      * @DimInjection Get Session
      */
     public function __construct( $session )
@@ -26,7 +26,7 @@ class Persist implements PersistInterface
 
     /**
      * @param string $name
-     * @param \WScore\Web\PersistInterface $context
+     * @param \WScore\Web\ContextInterface $context
      */
     public function setContext( $name, $context ) {
         $this->contexts[ $name ] = $context;
@@ -34,7 +34,7 @@ class Persist implements PersistInterface
 
     /**
      * @param string $name
-     * @return \WScore\Web\PersistInterface
+     * @return \WScore\Web\ContextInterface
      * @throws \RuntimeException
      */
     public function context( $name ) {
@@ -134,8 +134,8 @@ class Persist implements PersistInterface
         $this->registeredData = array();
         if( empty( $this->contexts ) ) return;
         foreach( $this->contexts as $context ) {
-            if( $context instanceof Persist ) {
-                /** @var $context Persist */
+            if( $context instanceof Context ) {
+                /** @var $context ContextInterface */
                 $context->clearData();
             }
         }
