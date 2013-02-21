@@ -1,6 +1,7 @@
 <?php
 namespace WScore\Web\Context;
 
+use \WScore\Web\Persist;
 use \WScore\DataMapper\Entity_Interface;
 
 class Interaction_SaveWithConfirm extends Persist

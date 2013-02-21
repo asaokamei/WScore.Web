@@ -1,6 +1,7 @@
 <?php
 namespace WScore\Web\Context;
 
+uuse \WScore\Web\Persist;
 use \WScore\DataMapper\Entity_Interface;
 
 class Context_SaveOnce extends Persist
