@@ -1,0 +1,14 @@
+{
+    "name": "wscore/web",
+    "description": "Web application front-end dispatcher.",
+    "authors": [
+        {
+            "name": "Asao Kamei",
+            "email": "kamei@workspot.jp"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+
+    }
+}
