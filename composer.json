@@ -9,7 +9,8 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "wscore/dicontainer": "dev-master"
+        "wscore/dicontainer": "dev-master",
+        "wscore/template": "dev-master"
 
     }
 }
