@@ -3,7 +3,7 @@ namespace WScore\Web\Loader;
 
 use \WScore\Template\Template;
 
-class Renderer extends Matcher
+class Renderer extends LoaderAbstract
 {
     /**
      * @Inject

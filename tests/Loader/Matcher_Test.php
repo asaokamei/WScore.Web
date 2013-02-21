@@ -4,6 +4,7 @@ namespace WScore\tests\Web\Loader;
 use \WScore\Web\Loader\Matcher;
 include( __DIR__ . '/../../vendor/autoload.php' );
 require_once __DIR__ . '/../../src/WScore/Web/Loader/LoaderInterface.php';
+require_once __DIR__ . '/../../src/WScore/Web/Loader/LoaderAbstract.php';
 require_once __DIR__ . '/../../src/WScore/Web/Loader/Matcher.php';
 require_once __DIR__ . '/../../src/WScore/Web/Router.php';
 
