@@ -4,6 +4,11 @@ namespace WScore\Web\Loader;
 interface LoaderInterface
 {
     /**
+     * call this method before load. 
+     */
+    public function pre_set();
+    
+    /**
      * sets routes to match.
      * 
      * @param array $route

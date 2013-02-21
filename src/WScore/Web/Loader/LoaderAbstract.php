@@ -12,6 +12,18 @@ class LoaderAbstract implements LoaderInterface
     /** @var string */
     protected $name;
 
+    /** @var \WScore\Web\FrontMC */
+    protected $front;
+    
+    /**
+     * this method should be called from front-end dispatcher. 
+     */
+    public function pre_set()
+    {
+        $args = func_get_args();
+        $this->front = $args[0];
+    }
+    
     /**
      * Loads response if pathinfo matches with routes.
      *
