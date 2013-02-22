@@ -47,7 +47,7 @@ class Router
      * matches $path against route patterns.
      * from Perfect PHP book.
      * @param string $path    path to match.
-     * @return array|bool     returns matched result, or FALSE if not found.
+     * @return array|null     returns matched result, or null if not found.
      */
     public function match( $path ) {
         if( substr( $path, 0, 1 ) !== '/' ) {
@@ -59,6 +59,6 @@ class Router
                 return $match;
             }
         }
-        return FALSE;
+        return null;
     }
 }

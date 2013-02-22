@@ -2,11 +2,7 @@
 namespace WScore\tests\Web\Loader;
 
 use \WScore\Web\Loader\Matcher;
-include( __DIR__ . '/../../vendor/autoload.php' );
-require_once __DIR__ . '/../../src/WScore/Web/Loader/LoaderInterface.php';
-require_once __DIR__ . '/../../src/WScore/Web/Loader/LoaderAbstract.php';
-require_once __DIR__ . '/../../src/WScore/Web/Loader/Matcher.php';
-require_once __DIR__ . '/../../src/WScore/Web/Router.php';
+require_once( __DIR__ . '/../../../autoload.php' );
 
 class Matcher_Test extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +10,7 @@ class Matcher_Test extends \PHPUnit_Framework_TestCase
     var $matcher;
     function setUp()
     {
-        $container = include( __DIR__ . '/../../vendor/wscore/dicontainer/scripts/instance.php' );
+        $container = include( __DIR__ . '/../../../../vendor/wscore/dicontainer/scripts/instance.php' );
         $this->matcher = $container->get( '\WScore\Web\Loader\Matcher' );
     }
     
@@ -31,7 +27,7 @@ class Matcher_Test extends \PHPUnit_Framework_TestCase
     {
         $this->matcher->setRoute( array( '/test/' => array( 'found' => 'test' ) ) );
         $loaded = $this->matcher->load( '/not-found/' );
-        $this->assertFalse( $loaded );
+        $this->assertNull( $loaded );
     }
     
     function test_matches_with_parameter()
