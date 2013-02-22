@@ -1,6 +1,8 @@
 <?php
 namespace WScore\Web;
 
+use \WScore\DiContainer\ContainerInterface;
+
 class FrontMcNotFoundException extends \Exception {}
 
 /**
@@ -11,112 +13,40 @@ class FrontMcNotFoundException extends \Exception {}
  */
 class FrontMC
 {
-    /** @var \WScore\DiContainer\Dimplet */
-    protected $container;
+    /**
+     * @Inject
+     * @var ContainerInterface
+     */
+    public $container;
 
-    /** @var \WScore\Web\Response */
-    public $response;
-    
-    /** @var \WScore\Web\Request */
+    /**
+     * @Inject
+     * @var \WScore\Web\Http\Request
+     */
     public $request;
 
-    /** @var \WScore\Web\Router */
-    public $router;
+    /** @var Loader\LoaderInterface[] */
+    public $loaders = array();
 
-    /** @var array */
-    public $parameter = array(
-        'method' => 'get',
-    );
-    
     /**
-     * @param \WScore\DiContainer\Dimplet $container
-     * @param \WScore\Web\Response  $response
-     * @DimInjection get Container
-     * @DimInjection Fresh \WScore\Web\Response
      */
-    public function __construct( $container, $response )
+    public function __construct()
     {
-        $this->container = $container;
-        $this->response  = $response;
     }
 
     /**
-     * @param array $parameter
-     */
-    public function setDefaultParameter( $parameter ) {
-        $this->parameter = array_merge( $this->parameter, $parameter );
-    }
-
-    /**
-     * @param array $parameter
+     * @param string $pathInfo
      * @throws FrontMcNotFoundException
+     * @return \WScore\Web\Http\Response
      */
-    public function run( $parameter=null )
+    public function run( $pathInfo=null )
     {
-        try {
-            
-            // set up parameter from default. 
-            $this->parameter = array_merge( $this->parameter, $parameter );
-            if( !isset( $this->parameter[ 'controller' ] ) ) {
-                throw new FrontMcNotFoundException( 'No controller is set' );
-            }
-            $this->parameter[ 'method' ] = $this->request->getMethod();
-
-            // create controller object. 
-            $controller_name = $this->parameter[ 'controller' ] . 'Controller';
-            if( isset( $this->parameter[ 'namespace' ] ) && $this->parameter[ 'namespace' ] ) {
-                $controller_name = $this->parameter[ 'namespace' ] . '\\' . ucfirst( $controller_name );
-            }
-            if ( !class_exists( $controller_name ) ) {
-                throw new FrontMcNotFoundException( 'no such class: ' . $controller_name );
-            }
-            $controller = $this->container->get( $controller_name );
-
-            // set up pre_action method if exists.
-            if( method_exists( $controller, 'pre_action' ) ) {
-                $controller->pre_action( $this );
-            }
-            // do the action.
-            $action = $this->parameter[ 'method' ] . ucwords( $this->parameter[ 'action' ] );
-            if( !method_exists( $controller, $action ) ) {
-                throw new FrontMcNotFoundException( 'no such method: ' . $action );
-            }
-            // -------- run --------
-            $content = $controller->$action( $this->parameter );
-            // -------- end --------
-            $this->response->setContent( $content );
-
-        } catch( FrontMcNotFoundException $e ) {
-            $this->render404Page( $e );
+        if( !$pathInfo ) $pathInfo = $this->request->getPathInfo();
+        foreach( $this->loaders as $loader ) {
+            $loader->pre_set( $this );
+            $response = $loader->load( $pathInfo );
+            if( $response ) return $response;
         }
-
-        $this->response->send();
-    }
-
-    /**
-     * @param \RuntimeException $e
-     */
-    protected function render404Page( $e )
-    {
-        $this->response->setStatusCode( 404, 'Not Found' );
-        $message = '<h1>Page Not Found</h1>';
-        $message .= '<p>' . $e->getMessage() . '</p>';
-        ob_start();
-        var_dump( $this->parameter );
-        $message .= ob_get_clean();
-
-        $this->response->setContent( <<< END_OF_HTML
-        <!DOCTYPE html>
-        <html>
-          <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-            <title>404</title>
-          </head>
-          <body>
-            {$message}
-          </body>
-        </html>
-END_OF_HTML
-        );
+        throw new FrontMcNotFoundException( '' );
     }
 }
