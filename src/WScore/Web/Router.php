@@ -32,6 +32,9 @@ class Router
                     $name  = substr( $token, 1 );
                     $token = "(?P<{$name}>[^/]+)";
                     $args[] = $token;
+                }
+                elseif( $token == '*' ) {
+                    $args[] = '.*';
                 } else {
                     $body[] = $token;
                 }
