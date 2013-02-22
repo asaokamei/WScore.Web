@@ -50,7 +50,7 @@ class FrontMC
 
     /**
      * @throws FrontMcNotFoundException
-     * @return \WScore\Web\Http\Response
+     * @return \WScore\Web\Http\Response|null
      */
     public function run()
     {
@@ -63,6 +63,6 @@ class FrontMC
             $loader->post_load( $this );
             if( $response ) return $response;
         }
-        throw new FrontMcNotFoundException( 'file not found.' );
+        return null;
     }
 }
