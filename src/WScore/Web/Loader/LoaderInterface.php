@@ -6,8 +6,13 @@ interface LoaderInterface
     /**
      * call this method before load. 
      */
-    public function pre_set();
-    
+    public function pre_load();
+
+    /**
+     * call this method after load.
+     */
+    public function post_load();
+
     /**
      * sets routes to match.
      * 

@@ -43,8 +43,9 @@ class FrontMC
     {
         if( !$pathInfo ) $pathInfo = $this->request->getPathInfo();
         foreach( $this->loaders as $loader ) {
-            $loader->pre_set( $this );
+            $loader->pre_load( $this );
             $response = $loader->load( $pathInfo );
+            $loader->post_load( $this );
             if( $response ) return $response;
         }
         throw new FrontMcNotFoundException( '' );

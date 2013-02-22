@@ -18,7 +18,7 @@ class LoaderAbstract implements LoaderInterface
     /**
      * this method should be called from front-end dispatcher. 
      */
-    public function pre_set()
+    public function pre_load()
     {
         $args = func_get_args();
         $this->front = $args[0];
@@ -55,5 +55,12 @@ class LoaderAbstract implements LoaderInterface
     public function setRoute( $route )
     {
         $this->router->set( $route );
+    }
+
+    /**
+     * call this method after load.
+     */
+    public function post_load()
+    {
     }
 }
