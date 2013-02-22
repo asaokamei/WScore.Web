@@ -6,10 +6,7 @@ use \WScore\DiContainer\ContainerInterface;
 class FrontMcNotFoundException extends \Exception {}
 
 /**
- * todo: set multiple routes and loop through them.
- *
  * simple front-end mini-controller.
- * mostly from PerfectPHP book.
  */
 class FrontMC
 {
@@ -28,6 +25,8 @@ class FrontMC
     /** @var Loader\LoaderInterface[] */
     public $loaders = array();
 
+    /** @var string  */
+    public $pathInfo;
     /**
      */
     public function __construct()
@@ -35,19 +34,35 @@ class FrontMC
     }
 
     /**
-     * @param string $pathInfo
+     * @param array|string $config
+     * @return \WScore\Web\FrontMC
+     */
+    public function pathInfo( $config )
+    {
+        if( is_array( $config ) ) {
+            $this->pathInfo = $this->request->getPathInfo( $config );
+        }
+        elseif( is_string( $config ) ) {
+            $this->pathInfo = $config;
+        }
+        return $this;
+    }
+
+    /**
      * @throws FrontMcNotFoundException
      * @return \WScore\Web\Http\Response
      */
-    public function run( $pathInfo=null )
+    public function run()
     {
-        if( !$pathInfo ) $pathInfo = $this->request->getPathInfo();
+        if( empty( $this->loaders ) ) {
+            throw new FrontMcNotFoundException( 'no loaders.' );
+        }
         foreach( $this->loaders as $loader ) {
             $loader->pre_load( $this );
-            $response = $loader->load( $pathInfo );
+            $response = $loader->load( $this->pathInfo );
             $loader->post_load( $this );
             if( $response ) return $response;
         }
-        throw new FrontMcNotFoundException( '' );
+        throw new FrontMcNotFoundException( 'file not found.' );
     }
 }
