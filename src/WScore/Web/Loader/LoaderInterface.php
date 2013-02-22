@@ -20,7 +20,7 @@ interface LoaderInterface
      * Loads response if pathinfo matches with routes. 
      *
      * @param string $pathInfo
-     * @return null|string
+     * @return null|\WScore\Web\Http\Response
      */
     public function load( $pathInfo );
 
