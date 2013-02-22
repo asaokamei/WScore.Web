@@ -8,7 +8,7 @@ class Response
     protected $status_code = 200;
     protected $http_headers = array();
     /** @var string ResponseHelper */
-    protected $helper = '\WScore\Web\ResponseHelper';
+    protected $helper = '\WScore\Web\Http\ResponseHelper';
 
     public function send()
     {
