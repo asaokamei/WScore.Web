@@ -26,10 +26,11 @@ class Renderer extends LoaderAbstract
     public function load( $pathInfo )
     {
         if( !$match = $this->router->match( $pathInfo ) ) {
-            $match = array(
-                $pathInfo, $pathInfo
-            );
+            return null;
         }
+        $match = array(
+            $pathInfo, $pathInfo
+        );
         $this->template->setTemplate( $match[1] );
         $content = (string) $this->template;
         $this->response->setContent( $content );
