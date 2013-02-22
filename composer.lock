@@ -1,0 +1,74 @@
+{
+    "hash": "9094b1e7b007532372483aa3929e9be9",
+    "packages": [
+        {
+            "name": "wscore/dicontainer",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asaokamei/WScore.DiContainer.git",
+                "reference": "94aef0a311b788438453901d6efb571bde7a29af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asaokamei/WScore.DiContainer/zipball/94aef0a311b788438453901d6efb571bde7a29af",
+                "reference": "94aef0a311b788438453901d6efb571bde7a29af",
+                "shasum": ""
+            },
+            "time": "2013-02-22 01:05:57",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WScore\\DiContainer": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Asao Kamei",
+                    "email": "kamei@workspot.jp"
+                }
+            ],
+            "description": "Simple DI container with auto-wiring."
+        },
+        {
+            "name": "wscore/template",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asaokamei/WScore.Template.git",
+                "reference": "c644c3596fe702fa4ad66bc4168b0340ebc52be7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asaokamei/WScore.Template/zipball/c644c3596fe702fa4ad66bc4168b0340ebc52be7",
+                "reference": "c644c3596fe702fa4ad66bc4168b0340ebc52be7",
+                "shasum": ""
+            },
+            "time": "2013-02-21 16:18:13",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WScore\\Template": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Asao Kamei",
+                    "email": "kamei@workspot.jp"
+                }
+            ],
+            "description": "A simple template engine using only PHP."
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "wscore/dicontainer": 20,
+        "wscore/template": 20
+    }
+}
