@@ -12,5 +12,10 @@
         "wscore/dicontainer": "dev-master",
         "wscore/template": "dev-master"
 
+    },
+    "autoload": {
+        "psr-0": {
+            "WScore\\Web": "src/"
+        }
     }
 }
