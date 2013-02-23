@@ -31,10 +31,18 @@ class Renderer extends LoaderAbstract
         $match = array(
             $pathInfo, $pathInfo
         );
+        return $this->render( $match );
+    }
+
+    /**
+     * @param array $match
+     * @return \WScore\Web\Http\Response
+     */
+    protected function render( $match )
+    {
         $this->template->setTemplate( $match[1] );
         $content = (string) $this->template;
         $this->response->setContent( $content );
         return $this->response;
     }
-
 }
