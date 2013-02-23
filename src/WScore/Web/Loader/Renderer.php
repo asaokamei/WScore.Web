@@ -41,7 +41,7 @@ class Renderer extends LoaderAbstract
     protected function render( $match )
     {
         $this->template->setTemplate( $match[1] );
-        $content = (string) $this->template;
+        $content = $this->template->toString();
         $this->response->setContent( $content );
         return $this->response;
     }
