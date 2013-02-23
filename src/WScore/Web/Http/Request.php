@@ -6,6 +6,8 @@ namespace WScore\Web\Http;
  * TODO: create Http folder.
  * TOD: move Request, Response, and Router class to Http folder.
  * from Perfect PHP.
+ *
+ * @singleton
  */
 class Request
 {
