@@ -48,6 +48,12 @@ class Pager extends Renderer
         $this->pager( $match );
         return $this->render( $match );
     }
+
+    /**
+     * loads Page object and calls onMethod.
+     *
+     * @param $match
+     */
     public function pager( $match )
     {
         $data = array();
@@ -62,6 +68,12 @@ class Pager extends Renderer
         $this->template->assign( $data );
     }
 
+    /**
+     * find class name for Page objects to load.
+     *
+     * @param $appUrl
+     * @return string
+     */
     private function getClass( $appUrl )
     {
         $appUrl = substr( $appUrl, 0, strpos( $appUrl, '.' ) );
@@ -73,6 +85,10 @@ class Pager extends Renderer
         return $class;
     }
 
+    /**
+     * gets root class name for Page objects.
+     * @return string
+     */
     private function getPageRoot() {
         $class = get_called_class();
         $class = substr( $class, 0, strrpos( $class, '\\' ) );
