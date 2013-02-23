@@ -265,6 +265,9 @@ class Request
         elseif( $type == 'code' ) {
             $ok = $this->_verify( $val, 'verifyCode' );
         }
+        elseif( $type == 'number' ) {
+            $ok = $this->_verify( $val, 'verifyNumber' );
+        }
         elseif( isset( $type ) ) {
             // this code is not working yet.
             //$verify = $this->getVerifyMatch( $type );

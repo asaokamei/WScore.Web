@@ -3,6 +3,12 @@ namespace WScore\Web\Http;
 
 class Utils
 {
+    public static function verifyNumber() {
+        return function( $result, $val ) {
+            $ok = is_numeric( $val );
+            return $result && $ok;
+        };
+    }
     /**
      * @return callable
      */
