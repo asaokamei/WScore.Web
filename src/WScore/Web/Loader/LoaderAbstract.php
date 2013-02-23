@@ -16,12 +16,13 @@ class LoaderAbstract implements LoaderInterface
     protected $front;
     
     /**
-     * this method should be called from front-end dispatcher. 
+     * this method should be called from front-end dispatcher.
+     *
+     * @param \WScore\Web\FrontMC
      */
-    public function pre_load()
+    public function pre_load( $front )
     {
-        $args = func_get_args();
-        $this->front = $args[0];
+        $this->front = $front;
     }
     
     /**
