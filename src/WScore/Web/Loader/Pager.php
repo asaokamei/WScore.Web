@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\Loader;
 
-use \WScore\Template\Template;
+use \WScore\Template\TemplateInterface;
 use \WScore\DiContainer\ContainerInterface;
 use \WScore\Web\Loader\Renderer;
 
@@ -27,7 +27,7 @@ class Pager extends Renderer
 
     /**
      * @Inject
-     * @var Template
+     * @var TemplateInterface
      */
     public $template;
     

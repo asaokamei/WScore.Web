@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\Loader;
 
-use \WScore\Template\Template;
+use \WScore\Template\TemplateInterface;
 
 class Renderer extends LoaderAbstract
 {
@@ -13,7 +13,7 @@ class Renderer extends LoaderAbstract
 
     /**
      * @Inject
-     * @var Template
+     * @var TemplateInterface
      */
     public $template;
     
@@ -40,10 +40,10 @@ class Renderer extends LoaderAbstract
     protected function render( $match )
     {
         if( isset( $match[ 'parent' ] ) ) {
-            $this->template->parent( $match[ 'parent' ] );
+            $this->template->setParent( $match[ 'parent' ] );
         }
         $this->template->setTemplate( $match[1] );
-        $content = $this->template->toString();
+        $content = $this->template->render();
         $this->response->setContent( $content );
         return $this->response;
     }
