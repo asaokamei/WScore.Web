@@ -42,6 +42,9 @@ class Renderer extends LoaderAbstract
         if( isset( $match[ 'parent' ] ) ) {
             $this->template->setParent( $match[ 'parent' ] );
         }
+        if( isset( $match[ 'addParent' ] ) ) {
+            $this->template->addParent( $match[ 'addParent' ] );
+        }
         $this->template->setTemplate( $match[1] );
         $content = $this->template->render();
         $this->response->setContent( $content );
