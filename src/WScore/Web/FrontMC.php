@@ -58,6 +58,7 @@ class FrontMC
             throw new FrontMcNotFoundException( 'no loaders.' );
         }
         foreach( $this->loaders as $appUrl => $loader ) {
+            if( is_numeric( $appUrl ) ) $appUrl = null;
             $loader->pre_load( $this, $appUrl );
             $response = $loader->load( $this->pathInfo );
             $loader->post_load( $this );
