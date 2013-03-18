@@ -6,7 +6,7 @@ interface LoaderInterface
     /**
      * call this method before load. 
      */
-    public function pre_load( $front );
+    public function pre_load( $front, $appUrl );
 
     /**
      * call this method after load.

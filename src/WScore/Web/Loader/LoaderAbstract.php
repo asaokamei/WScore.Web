@@ -14,15 +14,20 @@ class LoaderAbstract implements LoaderInterface
 
     /** @var \WScore\Web\FrontMC */
     protected $front;
-    
+
+    /** @var string */
+    protected $appUrl;
+
     /**
      * this method should be called from front-end dispatcher.
      *
-     * @param \WScore\Web\FrontMC
+     * @param \WScore\Web\FrontMC $front
+     * @param string $appUrl
      */
-    public function pre_load( $front )
+    public function pre_load( $front, $appUrl )
     {
         $this->front = $front;
+        $this->appUrl = $appUrl;
     }
     
     /**

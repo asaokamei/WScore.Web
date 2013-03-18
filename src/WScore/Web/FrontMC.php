@@ -57,8 +57,8 @@ class FrontMC
         if( empty( $this->loaders ) ) {
             throw new FrontMcNotFoundException( 'no loaders.' );
         }
-        foreach( $this->loaders as $loader ) {
-            $loader->pre_load( $this );
+        foreach( $this->loaders as $appUrl => $loader ) {
+            $loader->pre_load( $this, $appUrl );
             $response = $loader->load( $this->pathInfo );
             $loader->post_load( $this );
             if( $response ) return $response;
