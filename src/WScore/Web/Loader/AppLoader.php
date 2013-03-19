@@ -5,7 +5,7 @@ use \WScore\Template\TemplateInterface;
 use \WScore\DiContainer\ContainerInterface;
 use \WScore\Web\Loader\Renderer;
 
-class Pager extends Renderer
+class AppLoader extends Renderer
 {
     /**
      * @Inject
@@ -30,7 +30,10 @@ class Pager extends Renderer
      * @var TemplateInterface
      */
     public $template;
-    
+
+    /** @var string */
+    public $templateRoot;
+
     /**
      * Loads response if pathinfo matches with routes.
      *
@@ -39,45 +42,47 @@ class Pager extends Renderer
      */
     public function load( $pathInfo )
     {
+        $pathInfo = substr( $pathInfo, strlen( $this->appUrl ) );
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
-        $match = array(
-            $pathInfo, $pathInfo
-        );
-        $this->pager( $match );
+        $render = isset( $match[ 'load' ] ) ? $match[ 'load' ] : $pathInfo;
+        $render = $this->pager( $render );
+        $match[ 'load' ] = $render;
         return $this->render( $match );
     }
 
     /**
      * loads Page object and calls onMethod.
      *
-     * @param $match
+     * @param string $render
+     * @return string
      */
-    public function pager( $match )
+    public function pager( $render )
     {
-        $data = array();
-        $appUrl = $match[1];
-        $class = $this->getClass( $appUrl );
+        $class = $this->getClass( $render );
         $method = $this->request->getMethod();
         $method = 'on' . ucwords( $method );
 
         $page = $this->container->get( $class );
-        $data = (array) $page->$method( $match );
+        $data = (array) $page->$method( $render );
 
         $this->template->assign( $data );
+        return $render;
     }
 
     /**
      * find class name for Page objects to load.
      *
-     * @param $appUrl
+     * @param $render
      * @return string
      */
-    private function getClass( $appUrl )
+    private function getClass( $render )
     {
-        $appUrl = substr( $appUrl, 0, strpos( $appUrl, '.' ) );
-        $list = explode( '/', $appUrl );
+        if( strpos( $render, '.' )!==false ) {
+            $render = substr( $render, 0, strpos( $render, '.' ) );
+        }
+        $list = explode( '/', $render );
         $class = $this->getPageRoot();
         foreach( $list as $name ) {
             $class .= '\\' . ucwords( $name );
@@ -92,7 +97,25 @@ class Pager extends Renderer
     private function getPageRoot() {
         $class = get_called_class();
         $class = substr( $class, 0, strrpos( $class, '\\' ) );
-        $class = substr( $class, 0, strrpos( $class, '\\' ) );
         return $class . '\\Page';
+    }
+
+    /**
+     * @param array $match
+     * @return \WScore\Web\Http\Response
+     */
+    protected function render( $match )
+    {
+        if( isset( $match[ 'parent' ] ) ) {
+            $this->template->setParent( $match[ 'parent' ] );
+        }
+        if( isset( $match[ 'addParent' ] ) ) {
+            $this->template->addParent( $match[ 'addParent' ] );
+        }
+        $template = $this->templateRoot . $match[ 'load' ] . '.php';
+        $this->template->setTemplate( $template );
+        $content = $this->template->render();
+        $this->response->setContent( $content );
+        return $this->response;
     }
 }
