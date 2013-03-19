@@ -28,11 +28,4 @@ interface LoaderInterface
      * @return null|\WScore\Web\Http\Response
      */
     public function load( $pathInfo );
-
-    /**
-     * returns name of the loader. 
-     * 
-     * @return string
-     */
-    public function name();
 }

@@ -1,16 +1,13 @@
 <?php
 namespace WScore\Web\Loader;
 
-class LoaderAbstract implements LoaderInterface
+abstract class LoaderAbstract implements LoaderInterface
 {
     /**
      * @Inject
      * @var \WScore\Web\Router
      */
     protected $router;
-
-    /** @var string */
-    protected $name;
 
     /** @var \WScore\Web\FrontMC */
     protected $front;
@@ -38,18 +35,6 @@ class LoaderAbstract implements LoaderInterface
      */
     public function load( $pathInfo )
     {
-    }
-
-    /**
-     * returns name of the loader.
-     *
-     * @return string
-     */
-    public function name()
-    {
-        if( isset( $this->name ) ) return $this->name;
-        $class = get_called_class();
-        return substr( $class, strrpos( $class, '\\' ) + 1 );
     }
 
     /**
