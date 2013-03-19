@@ -39,7 +39,11 @@ class Router
                     $body[] = $token;
                 }
             }
-            $pattern = '(/' . implode( '/', $body ) . ')';
+            if( !empty( $body ) ) {
+                $pattern = '(/' . implode( '/', $body ) . ')';
+            } else {
+                $pattern = '';
+            }
             if( !empty( $args ) ) $pattern .= '/' . implode( '/', $args );
             $_routes[ $pattern ] = $match;
         }
