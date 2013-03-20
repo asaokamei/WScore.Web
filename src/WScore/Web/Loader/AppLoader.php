@@ -33,6 +33,20 @@ class AppLoader extends Renderer
 
     /** @var string */
     public $templateRoot;
+    
+    /**
+     * this method should be called from front-end dispatcher.
+     *
+     * @param \WScore\Web\FrontMC $front
+     * @param string $appUrl
+     */
+    public function pre_load( $front, $appUrl )
+    {
+        $this->front = $front;
+        $this->appUrl = $appUrl;
+        $this->template->set( 'appUrl',  $appUrl );
+        $this->template->set( 'appRoot', $front->baseUrl . $appUrl );
+    }
 
     /**
      * Loads response if pathinfo matches with routes.
