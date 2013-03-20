@@ -1,5 +1,5 @@
 {
-    "hash": "9094b1e7b007532372483aa3929e9be9",
+    "hash": "249c3b471ed0f5aedff1f3cdf0ebe077",
     "packages": [
         {
             "name": "wscore/dicontainer",
@@ -7,15 +7,14 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaokamei/WScore.DiContainer.git",
-                "reference": "94aef0a311b788438453901d6efb571bde7a29af"
+                "reference": "00c13b7190bf0521a30a1e3b7c071c2c770a36eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asaokamei/WScore.DiContainer/zipball/94aef0a311b788438453901d6efb571bde7a29af",
-                "reference": "94aef0a311b788438453901d6efb571bde7a29af",
+                "url": "https://api.github.com/repos/asaokamei/WScore.DiContainer/zipball/00c13b7190bf0521a30a1e3b7c071c2c770a36eb",
+                "reference": "00c13b7190bf0521a30a1e3b7c071c2c770a36eb",
                 "shasum": ""
             },
-            "time": "2013-02-22 01:05:57",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -29,7 +28,8 @@
                     "email": "kamei@workspot.jp"
                 }
             ],
-            "description": "Simple DI container with auto-wiring."
+            "description": "Simple DI container with auto-wiring.",
+            "time": "2013-02-23 00:28:51"
         },
         {
             "name": "wscore/template",
@@ -37,15 +37,14 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaokamei/WScore.Template.git",
-                "reference": "c644c3596fe702fa4ad66bc4168b0340ebc52be7"
+                "reference": "d9eca0ff132c96e3b2a98c99d2528854b9cc4fc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asaokamei/WScore.Template/zipball/c644c3596fe702fa4ad66bc4168b0340ebc52be7",
-                "reference": "c644c3596fe702fa4ad66bc4168b0340ebc52be7",
+                "url": "https://api.github.com/repos/asaokamei/WScore.Template/zipball/d9eca0ff132c96e3b2a98c99d2528854b9cc4fc5",
+                "reference": "d9eca0ff132c96e3b2a98c99d2528854b9cc4fc5",
                 "shasum": ""
             },
-            "time": "2013-02-21 16:18:13",
             "type": "library",
             "autoload": {
                 "psr-0": {
@@ -59,10 +58,13 @@
                     "email": "kamei@workspot.jp"
                 }
             ],
-            "description": "A simple template engine using only PHP."
+            "description": "A simple template engine using only PHP.",
+            "time": "2013-03-19 06:46:18"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
@@ -70,5 +72,11 @@
     "stability-flags": {
         "wscore/dicontainer": 20,
         "wscore/template": 20
-    }
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
 }
