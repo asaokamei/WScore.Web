@@ -27,6 +27,10 @@ class FrontMC
 
     /** @var string  */
     public $pathInfo;
+    
+    /** @var string */
+    public $baseUrl;
+    
     /**
      */
     public function __construct()
@@ -41,9 +45,11 @@ class FrontMC
     {
         if( is_array( $config ) ) {
             $this->pathInfo = $this->request->getPathInfo( $config );
+            $this->baseUrl  = $this->request->getBaseUrl();
         }
         elseif( is_string( $config ) ) {
             $this->pathInfo = $config;
+            $this->baseUrl  = '/';
         }
         return $this;
     }
