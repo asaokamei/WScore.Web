@@ -46,11 +46,21 @@ class Request
         return ( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) ? true: false;
     }
 
+    function getRealMethod() {
+        if( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) {
+            return 'post';
+        }
+        return 'get';
+    }
     /**
      * @return string
      */
-    function getMethod() {
+    function getMethod() 
+    {
         if( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) {
+            if( $method = $this->getPost( '_method', 'code' ) ) {
+                return $method;
+            }
             return 'post';
         }
         return 'get';
