@@ -15,12 +15,6 @@ class AppLoader extends Renderer
 
     /**
      * @Inject
-     * @var \WScore\Web\Http\Request
-     */
-    protected $request;
-
-    /**
-     * @Inject
      * @var \WScore\Web\Http\Response
      */
     protected $response;
@@ -75,7 +69,7 @@ class AppLoader extends Renderer
     public function pager( $render )
     {
         $class = $this->getClass( $render );
-        $method = $this->request->getMethod();
+        $method = $this->front->request->getMethod();
         $method = 'on' . ucwords( $method );
 
         $page = $this->container->get( $class );
