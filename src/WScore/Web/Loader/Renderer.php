@@ -28,8 +28,9 @@ class Renderer extends LoaderAbstract
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
-        $match[0] = $pathInfo;
-        $match[1] = $pathInfo;
+        if( !isset( $match[ 'render' ] ) ) {
+            $match[ 'render' ] = $pathInfo;
+        }
         return $this->render( $match );
     }
 
@@ -45,7 +46,7 @@ class Renderer extends LoaderAbstract
         if( isset( $match[ 'addParent' ] ) ) {
             $this->template->addParent( $match[ 'addParent' ] );
         }
-        $this->template->setTemplate( $match[1] );
+        $this->template->setTemplate( $match['render'] );
         $content = $this->template->render();
         $this->response->setContent( $content );
         return $this->response;

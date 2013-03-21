@@ -42,9 +42,9 @@ class Pager extends Renderer
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
-        $match = array(
-            $pathInfo, $pathInfo
-        );
+        if( !isset( $match[ 'render' ] ) ) {
+            $match[ 'render' ] = $pathInfo;
+        }
         $this->pager( $match );
         return $this->render( $match );
     }
@@ -56,8 +56,7 @@ class Pager extends Renderer
      */
     public function pager( $match )
     {
-        $data = array();
-        $appUrl = $match[1];
+        $appUrl = $match['render'];
         $class = $this->getClass( $appUrl );
         $method = $this->request->getMethod();
         $method = 'on' . ucwords( $method );
