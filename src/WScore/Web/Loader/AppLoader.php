@@ -64,6 +64,7 @@ class AppLoader extends Renderer
      * loads Page object and calls onMethod.
      *
      * @param array $match
+     * @throws \Exception
      * @return string
      */
     public function pager( $match )
@@ -77,6 +78,9 @@ class AppLoader extends Renderer
         $method = 'on' . ucwords( $method );
 
         $page = $this->container->get( $class );
+        if( !method_exists( $page, $method ) ) {
+            throw new \Exception( 'method not found: '. $method, 400 );
+        }
         $data = (array) $page->$method( $match );
         $data[ 'onMethod' ] = $method;
 
