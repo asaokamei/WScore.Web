@@ -77,7 +77,7 @@ class AppLoader extends Renderer
         $method = 'on' . ucwords( $method );
 
         $page = $this->container->get( $class );
-        $data = (array) $page->$method( $render );
+        $data = (array) $page->$method( $match );
         $data[ 'onMethod' ] = $method;
 
         $this->template->assign( $data );
