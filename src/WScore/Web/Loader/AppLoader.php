@@ -104,6 +104,7 @@ class AppLoader extends Renderer
         $list = explode( '/', $render );
         $class = $this->getPageRoot();
         foreach( $list as $name ) {
+            if( !$name ) continue;
             $class .= '\\' . ucwords( $name );
         }
         return $class;
