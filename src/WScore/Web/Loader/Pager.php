@@ -15,12 +15,6 @@ class Pager extends Renderer
 
     /**
      * @Inject
-     * @var \WScore\Web\Http\Request
-     */
-    protected $request;
-
-    /**
-     * @Inject
      * @var \WScore\Web\Http\Response
      */
     protected $response;
@@ -58,7 +52,7 @@ class Pager extends Renderer
     {
         $appUrl = $match['render'];
         $class = $this->getClass( $appUrl );
-        $method = $this->request->getMethod();
+        $method = $this->front->request->getMethod();
         $method = 'on' . ucwords( $method );
 
         $page = $this->container->get( $class );
