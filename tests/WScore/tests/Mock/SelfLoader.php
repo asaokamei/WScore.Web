@@ -7,7 +7,7 @@ class SelfLoader extends \WScore\Web\Loader\LoaderAbstract
     var $post_load = false;
     var $loaded = false;
     var $path = null;
-    public function pre_load() {
+    public function pre_load( $front, $appUrl ) {
         $this->pre_load = true;
     }
     public function load( $pathInfo ) {

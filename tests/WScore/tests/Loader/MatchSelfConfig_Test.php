@@ -9,7 +9,7 @@ class MatchSelfConfig_Test extends \PHPUnit_Framework_TestCase
     var $matcher;
     function setUp()
     {
-        $container = include( __DIR__ . '/../../../../vendor/wscore/dicontainer/scripts/instance.php' );
+        $container = include( VENDOR_DIRECTORY . 'wscore/dicontainer/scripts/instance.php' );
         $this->matcher = $container->get( '\WScore\tests\Loader\Mock\MatchSelfConfig' );
     }
 

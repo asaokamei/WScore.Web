@@ -10,7 +10,7 @@ class Matcher_Test extends \PHPUnit_Framework_TestCase
     var $matcher;
     function setUp()
     {
-        $container = include( __DIR__ . '/../../../../vendor/wscore/dicontainer/scripts/instance.php' );
+        $container = include( VENDOR_DIRECTORY . 'wscore/dicontainer/scripts/instance.php' );
         $this->matcher = $container->get( '\WScore\Web\Loader\Matcher' );
     }
     
@@ -40,19 +40,5 @@ class Matcher_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( '/test', $loaded[1] );
         $this->assertArrayHasKey( 'id', $loaded );
         $this->assertEquals( '5', $loaded['id'] );
-    }
-    
-    function test_matcher_name()
-    {
-        $name = $this->matcher->name();
-        $this->assertEquals( 'Matcher', $name );
-        
-        $refC = new \ReflectionClass( '\WScore\Web\Loader\Matcher' );
-        $refP = $refC->getProperty( 'name' );
-        $refP->setAccessible( true );
-        $refP->setValue( $this->matcher, 'Test-Name' );
-        
-        $name = $this->matcher->name();
-        $this->assertEquals( 'Test-Name', $name );
     }
 }

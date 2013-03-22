@@ -9,7 +9,7 @@ class FrontMC_Test extends \PHPUnit_Framework_TestCase
     var $front;
     function setUp()
     {
-        $container = include( __DIR__ . '/../../../vendor/wscore/dicontainer/scripts/instance.php' );
+        $container = include( VENDOR_DIRECTORY . 'wscore/dicontainer/scripts/instance.php' );
         $this->front = $container->get( '\WScore\tests\Mock\FrontSelfLoad' );
     }
 
@@ -18,7 +18,6 @@ class FrontMC_Test extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey( 0, $this->front->loaders );
         $this->assertEquals( 'WScore\tests\Mock\SelfLoader1', get_class( $this->front->loaders[0] ) );
         $this->assertEquals( 'WScore\tests\Mock\SelfLoader2', get_class( $this->front->loaders[1] ) );
-        $this->assertEquals( 'SelfLoader1', $this->front->loaders[2]->name() );
     }
 
     function test_loops_all_loaders()
