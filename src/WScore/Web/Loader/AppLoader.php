@@ -55,6 +55,8 @@ class AppLoader extends Renderer
             return null;
         }
         if( !isset( $match[ 'render' ] ) ) $match[ 'render' ] = $match[1];
+        $match[ 'appUrl'  ] = $this->appUrl;
+        $match[ 'appRoot' ] = $this->front->baseUrl . $this->appUrl;
         $render = $this->pager( $match );
         $match[ 'render' ] = $render;
         return $this->render( $match );
