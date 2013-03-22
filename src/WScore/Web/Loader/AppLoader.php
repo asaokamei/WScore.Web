@@ -54,8 +54,8 @@ class AppLoader extends Renderer
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
-        $render = isset( $match[ 'render' ] ) ? $match[ 'render' ] : $pathInfo;
-        $render = $this->pager( $render );
+        if( !isset( $match[ 'render' ] ) ) $match[ 'render' ] = $match[1];
+        $render = $this->pager( $match );
         $match[ 'render' ] = $render;
         return $this->render( $match );
     }
@@ -63,12 +63,16 @@ class AppLoader extends Renderer
     /**
      * loads Page object and calls onMethod.
      *
-     * @param string $render
+     * @param array $match
      * @return string
      */
-    public function pager( $render )
+    public function pager( $match )
     {
+        $render = $match[ 'render' ];
         $class = $this->getClass( $render );
+        if( !class_exists( $class ) ) {
+            return $render;
+        }
         $method = $this->front->request->getMethod();
         $method = 'on' . ucwords( $method );
 
