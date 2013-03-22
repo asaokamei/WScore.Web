@@ -54,9 +54,9 @@ class AppLoader extends Renderer
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
-        $render = isset( $match[ 'load' ] ) ? $match[ 'load' ] : $pathInfo;
+        $render = isset( $match[ 'render' ] ) ? $match[ 'render' ] : $pathInfo;
         $render = $this->pager( $render );
-        $match[ 'load' ] = $render;
+        $match[ 'render' ] = $render;
         return $this->render( $match );
     }
 
@@ -121,7 +121,7 @@ class AppLoader extends Renderer
         if( isset( $match[ 'addParent' ] ) ) {
             $this->template->addParent( $match[ 'addParent' ] );
         }
-        $template = $this->templateRoot . $match[ 'load' ] . '.php';
+        $template = $this->templateRoot . $match[ 'render' ] . '.php';
         $this->template->setTemplate( $template );
         $content = $this->template->render();
         $this->response->setContent( $content );
