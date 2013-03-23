@@ -3,7 +3,7 @@ namespace WScore\Web\Http;
 
 class Response
 {
-    protected $content;
+    public $content;
     protected $content_type = 'text/html';
     protected $status_code = 200;
     protected $http_headers = array();
