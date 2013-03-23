@@ -55,6 +55,15 @@ class FrontMC
     }
 
     /**
+     * @param array $post
+     * @return $this
+     */
+    public function using( $post ) {
+        $this->request->setPost( $post );
+        return $this;
+    }
+
+    /**
      * @throws FrontMcNotFoundException
      * @return \WScore\Web\Http\Response|null
      */

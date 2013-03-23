@@ -39,6 +39,12 @@ class Request
     }
 
     /**
+     * @param array $post
+     */
+    function setPost( $post ) {
+        $this->_post = $post;
+    }
+    /**
      * check if request method is POST.
      * @return bool
      */
