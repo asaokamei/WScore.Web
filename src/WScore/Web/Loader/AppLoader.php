@@ -57,9 +57,8 @@ class AppLoader extends Renderer
         if( !isset( $match[ 'render' ] ) ) $match[ 'render' ] = $match[1];
         $match[ 'appUrl'  ] = $this->appUrl;
         $match[ 'appRoot' ] = $this->front->baseUrl . $this->appUrl;
-        $render = $this->pager( $match );
-        $match[ 'render' ] = $render;
-        return $this->render( $match );
+        $data = $this->pager( $match );
+        return $this->render( $match, $data );
     }
 
     /**
@@ -67,27 +66,29 @@ class AppLoader extends Renderer
      *
      * @param array $match
      * @throws \Exception
-     * @return string
+     * @return array
      */
     public function pager( $match )
     {
-        $render = $match[ 'render' ];
-        $class = $this->getClass( $render );
-        if( !class_exists( $class ) ) {
-            return $render;
-        }
+        // set up data.
         $method = $this->front->request->getMethod();
         $method = 'on' . ucwords( $method );
-
+        $data   = array(
+            'onMethod' => $method,
+        );
+        // find class to construct a page data.
+        $render = $match[ 'render' ];
+        $class  = $this->getClass( $render );
+        if( !class_exists( $class ) ) {
+            return $data;
+        }
         $page = $this->container->get( $class );
         if( !method_exists( $page, $method ) ) {
             throw new \Exception( 'method not found: '. $method, 400 );
         }
-        $data = (array) $page->$method( $match );
-        $data[ 'onMethod' ] = $method;
-
-        $this->template->assign( $data );
-        return $render;
+        // construct page data.
+        $data = array_merge( $data, (array) $page->$method( $match ) );
+        return $data;
     }
 
     /**
@@ -122,10 +123,11 @@ class AppLoader extends Renderer
 
     /**
      * @param array $match
+     * @param array $data
      * @throws \RuntimeException
      * @return \WScore\Web\Http\Response
      */
-    protected function render( $match )
+    protected function render( $match, $data )
     {
         if( isset( $match[ 'parent' ] ) ) {
             $this->template->setParent( $match[ 'parent' ] );
@@ -137,6 +139,7 @@ class AppLoader extends Renderer
         if( !file_exists( $template ) ) {
             throw new \RuntimeException( 'file not found', 404 );
         }
+        $this->template->assign( $data );
         $this->template->setTemplate( $template );
         $content = $this->template->render();
         $this->response->setContent( $content );
