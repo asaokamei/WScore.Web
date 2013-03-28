@@ -127,7 +127,7 @@ class AppLoader extends Renderer
      * @throws \RuntimeException
      * @return \WScore\Web\Http\Response
      */
-    protected function render( $match, $data )
+    protected function render( $match, $data=array() )
     {
         if( isset( $match[ 'parent' ] ) ) {
             $this->template->setParent( $match[ 'parent' ] );

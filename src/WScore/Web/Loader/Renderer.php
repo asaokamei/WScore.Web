@@ -36,9 +36,10 @@ class Renderer extends LoaderAbstract
 
     /**
      * @param array $match
+     * @param array $data
      * @return \WScore\Web\Http\Response
      */
-    protected function render( $match )
+    protected function render( $match, $data=array() )
     {
         if( isset( $match[ 'parent' ] ) ) {
             $this->template->setParent( $match[ 'parent' ] );
