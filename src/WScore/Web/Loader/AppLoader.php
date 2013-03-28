@@ -122,6 +122,7 @@ class AppLoader extends Renderer
 
     /**
      * @param array $match
+     * @throws \RuntimeException
      * @return \WScore\Web\Http\Response
      */
     protected function render( $match )
@@ -133,6 +134,9 @@ class AppLoader extends Renderer
             $this->template->addParent( $match[ 'addParent' ] );
         }
         $template = $this->templateRoot . $match[ 'render' ] . '.php';
+        if( !file_exists( $template ) ) {
+            throw new \RuntimeException( 'file not found', 404 );
+        }
         $this->template->setTemplate( $template );
         $content = $this->template->render();
         $this->response->setContent( $content );
