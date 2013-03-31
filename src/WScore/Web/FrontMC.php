@@ -31,6 +31,8 @@ class FrontMC
     /** @var string */
     public $baseUrl;
     
+    public $response = null;
+    
     /**
      */
     public function __construct()
@@ -79,8 +81,8 @@ class FrontMC
             $loader->pre_load( $this, $appUrl );
             $response = $loader->load( $this->pathInfo );
             $loader->post_load( $this );
-            if( $response ) return $response;
+            if( $response ) $this->response = $response;
         }
-        return null;
+        return $this->response;
     }
 }
