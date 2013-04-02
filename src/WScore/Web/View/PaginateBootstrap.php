@@ -1,6 +1,12 @@
 <?php
 namespace WScore\Web\View;
 
+/**
+ * Class PaginateBootstrap
+ * @package WScore\Web\View
+ *
+ * @cacheable
+ */
 class PaginateBootstrap
 {
     /** @var array */
