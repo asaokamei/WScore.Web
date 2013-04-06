@@ -3,8 +3,6 @@ namespace WScore\Web\Http;
 
 /**
  * Request class
- * TODO: create Http folder.
- * TOD: move Request, Response, and Router class to Http folder.
  * from Perfect PHP.
  *
  * @singleton
@@ -118,7 +116,7 @@ class Request
             $url = '/' . $url;
         }
         $base = "{$this->base_url}{$url}";
-        $base = $this->truePath( $base );
+        //$base = $this->truePath( $base );
         return $base;
     }
     /**
