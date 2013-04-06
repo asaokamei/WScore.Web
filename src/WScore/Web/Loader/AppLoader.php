@@ -57,7 +57,21 @@ class AppLoader extends Renderer
         if( !isset( $match[ 'render' ] ) ) $match[ 'render' ] = $match[1];
         $match[ 'appUrl'  ] = $this->appUrl;
         $match[ 'appRoot' ] = $this->front->baseUrl . $this->appUrl;
+        
+        // load page object.
         $data = $this->pager( $match );
+        
+        // process returned $data. 
+        if( $data === true ) {
+            // reload it self.
+            $this->response->setHttpHeader( 'Location', $this->front->request->getRequestUri() );
+            return $this->response;
+        } 
+        elseif( is_string( $data ) || $data === '' ) {
+            // redirect with Location header. $data must be a url w.r.t. appUrl. 
+            $this->response->setHttpHeader( 'Location', $this->front->baseUrl . $this->appUrl . $data );
+            return $this->response;
+        }
         return $this->render( $match, $data );
     }
 
@@ -73,21 +87,26 @@ class AppLoader extends Renderer
         // set up data.
         $method = $this->front->request->getMethod();
         $method = 'on' . ucwords( $method );
-        $data   = array(
-            'onMethod' => $method,
-        );
         // find class to construct a page data.
         $render = $match[ 'render' ];
         $class  = $this->getClass( $render );
         if( !class_exists( $class ) ) {
-            return $data;
+            return array(
+                'onMethod' => $method,
+            );
         }
         $page = $this->container->get( $class );
         if( !method_exists( $page, $method ) ) {
             throw new \Exception( 'method not found: '. $method, 400 );
         }
         // construct page data.
-        $data = array_merge( $data, (array) $page->$method( $match ) );
+        $data = $page->$method( $match );
+        if( is_array( $data ) ) {
+            $data[ 'onMethod' ] = $method;
+        } 
+        elseif( is_null( $data ) ) {
+            $data = array( 'onMethod' => $method );
+        }
         return $data;
     }
 
