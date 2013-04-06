@@ -4,6 +4,7 @@ namespace WScore\Web\Loader;
 use \WScore\Template\TemplateInterface;
 use \WScore\DiContainer\ContainerInterface;
 use \WScore\Web\Loader\Renderer;
+use \WScore\Web\Page\PageInterface;
 
 class AppLoader extends Renderer
 {
@@ -62,12 +63,20 @@ class AppLoader extends Renderer
         $data = $this->pager( $match );
         
         // process returned $data. 
-        if( $data === true ) {
+        if( $data === PageInterface::RENDER_NOTHING ) {
+            return false;
+        }
+        if( $data === PageInterface::RELOAD_SELF ) {
             // reload it self.
             $this->response->setHttpHeader( 'Location', $this->front->request->getRequestUri() );
             return $this->response;
-        } 
-        elseif( is_string( $data ) || $data === '' ) {
+        }
+        if( $data === PageInterface::JUMP_TO_APP_ROOT ) {
+            // reload it self.
+            $this->response->setHttpHeader( 'Location', $this->front->baseUrl . $this->appUrl );
+            return $this->response;
+        }
+        elseif( is_string( $data ) ) {
             // redirect with Location header. $data must be a url w.r.t. appUrl. 
             $this->response->setHttpHeader( 'Location', $this->front->baseUrl . $this->appUrl . $data );
             return $this->response;
