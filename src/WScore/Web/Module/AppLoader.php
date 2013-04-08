@@ -61,7 +61,7 @@ class AppLoader extends ModuleAbstract
     public function load( $pathInfo )
     {
         $this->pathInfo = $pathInfo;
-        $pathInfo = substr( $pathInfo, strlen( $this->appRoot ) );
+        $pathInfo = substr( $pathInfo, strlen( $this->appUrl ) );
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
@@ -192,6 +192,7 @@ class AppLoader extends ModuleAbstract
     private function getViewFile( $render )
     {
         $extensions = array( '', '.php' );
+        if( substr( $render, 0, 1 ) !== '/' ) $render = '/'.$render;
         foreach( $extensions as $ext ) {
             $template = $this->viewRoot . $render . $ext;
             if( file_exists( $template ) ) return $template;
