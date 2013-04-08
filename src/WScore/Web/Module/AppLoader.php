@@ -41,7 +41,14 @@ class AppLoader extends ModuleAbstract
      */
     public function __construct()
     {
-        $this->pageRoot = __NAMESPACE__ . '\Page'; // root for class name
+        $class = get_called_class();
+        $pos   = strpos( $class, '\\' ); 
+        if( $pos !== false ) {
+            $namespace = substr( $class, 0, $pos );
+        } else {
+            $namespace = '';
+        }
+        $this->pageRoot = $namespace . '\Page'; // root for class name
         $this->viewRoot = __DIR__       . '/View'; // root for template file
     }
 
@@ -58,6 +65,7 @@ class AppLoader extends ModuleAbstract
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
+        if( !isset( $match[1] ) ) $match[1] = $match[0];
         if( !isset( $match[ 'render' ] ) ) $match[ 'render' ] = $match[1];
         $match[ 'appUrl'  ] = $this->appUrl;
         $match[ 'appRoot' ] = $this->appRoot;
@@ -81,7 +89,7 @@ class AppLoader extends ModuleAbstract
         $method = 'on' . ucwords( $method );
         $class  = $this->getPageClass( $match[ 'render' ] );
         if( !class_exists( $class ) || !method_exists( $class, $method ) ) {
-            return PageInterface::RENDER_NOTHING;
+            return PageInterface::RENDER_PAGE;
         }
         // construct page data.
         $page = $this->container->get( $class );
@@ -116,7 +124,7 @@ class AppLoader extends ModuleAbstract
             $this->response->setHttpHeader( 'Location', $this->appRoot );
             return $this->response;
         }
-        elseif( is_string( $data ) ) {
+        if( is_string( $data ) ) {
             // redirect with Location header. $data must be a url w.r.t. appUrl. 
             $this->response->setHttpHeader( 'Location', $this->appRoot . $data );
             return $this->response;
@@ -144,10 +152,10 @@ class AppLoader extends ModuleAbstract
             $this->template->addParent( $match[ 'addParent' ] );
         }
         $template = $this->getViewFile( $match[ 'render' ] );
-        if( !file_exists( $template ) ) {
-            throw new \RuntimeException( 'file not found', 404 );
+        if( !$template ) {
+            return $template;
         }
-        $this->template->assign( $data );
+        if( $data && is_array( $data ) ) $this->template->assign( $data );
         $this->template->setTemplate( $template );
         // render template. 
         $content = $this->template->render();
@@ -183,9 +191,10 @@ class AppLoader extends ModuleAbstract
      */
     private function getViewFile( $render )
     {
-        $template = $this->viewRoot . $render . '.php';
+        if( substr( $render, -4 ) != '.php' ) $render .= '.php';
+        $template = $this->viewRoot . $render;
         if( !file_exists( $template ) ) {
-            throw new \RuntimeException( 'file not found', 404 );
+            return false;
         }
         return $template;
     }
