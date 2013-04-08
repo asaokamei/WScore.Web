@@ -39,17 +39,17 @@ class AppLoader extends ModuleAbstract
     /**
      *
      */
-    public function __construct()
+    public function __construct( $dir=null )
     {
         $class = get_called_class();
-        $pos   = strpos( $class, '\\' ); 
+        $pos   = strrpos( $class, '\\' ); 
         if( $pos !== false ) {
             $namespace = substr( $class, 0, $pos );
         } else {
             $namespace = '';
         }
         $this->pageRoot = $namespace . '\Page'; // root for class name
-        $this->viewRoot = __DIR__       . '/View'; // root for template file
+        $this->viewRoot = $dir       . '/View'; // root for template file
     }
 
     /**
@@ -191,6 +191,12 @@ class AppLoader extends ModuleAbstract
      */
     private function getViewFile( $render )
     {
+        $extensions = array( '', '.php' );
+        foreach( $extensions as $ext ) {
+            $template = $this->viewRoot . $render . $ext;
+            if( file_exists( $template ) ) return $template;
+        }
+        return false;
         if( substr( $render, -4 ) != '.php' ) $render .= '.php';
         $template = $this->viewRoot . $render;
         if( !file_exists( $template ) ) {
