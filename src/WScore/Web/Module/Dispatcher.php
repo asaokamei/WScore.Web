@@ -53,7 +53,7 @@ class Dispatcher extends ModuleAbstract
             $appUrl = $info[ 'appUrl' ];
             $always = $info[ 'always' ];
             if( $this->response && !$always ) { continue; }
-            if( !is_numeric( $appUrl ) && strncmp( $this->pathInfo, $appUrl, strlen( $appUrl ) ) ) {
+            if( is_string( $appUrl ) && strncmp( $this->pathInfo, $appUrl, strlen( $appUrl ) ) ) {
                 continue;
             }
             $module->pre_load( $this, $appUrl );
