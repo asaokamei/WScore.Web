@@ -197,12 +197,6 @@ class AppLoader extends ModuleAbstract
             if( file_exists( $template ) ) return $template;
         }
         return false;
-        if( substr( $render, -4 ) != '.php' ) $render .= '.php';
-        $template = $this->viewRoot . $render;
-        if( !file_exists( $template ) ) {
-            return false;
-        }
-        return $template;
     }
     // +----------------------------------------------------------------------+
 }
