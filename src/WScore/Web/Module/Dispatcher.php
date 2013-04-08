@@ -43,7 +43,7 @@ class Dispatcher extends ModuleAbstract
     {
         $this->pathInfo = $pathInfo;
         
-        if( empty( $this->loaders ) ) {
+        if( empty( $this->modules ) ) {
             throw new FrontMcNotFoundException( 'no loaders.' );
         }
         foreach( $this->modules as $info ) 
