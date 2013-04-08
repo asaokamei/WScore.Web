@@ -29,6 +29,8 @@ class WebApp extends Module\Dispatcher
             $this->pathInfo = $config;
             $this->baseUrl  = '/';
         }
+        $this->appUrl  = '';
+        $this->appRoot = $this->baseUrl;
         return $this;
     }
 
