@@ -22,11 +22,13 @@ class Dispatcher extends ModuleAbstract
      */
     public function setModule( $module, $appUrl=null )
     {
-        if( $appUrl ) {
-            $this->modules[ $appUrl ] = $module;
-        } else {
-            $this->modules[] = $module;
-        }
+        $info = array(
+            'module' => $module,
+            'appUrl' => $appUrl,
+            'always' => false,
+        );
+        if( $appUrl === true ) $info[ 'always' ] = true;
+        $this->modules[] = $info;
         return $this;
     }
     
@@ -44,8 +46,13 @@ class Dispatcher extends ModuleAbstract
         if( empty( $this->loaders ) ) {
             throw new FrontMcNotFoundException( 'no loaders.' );
         }
-        foreach( $this->modules as $appUrl => $module ) 
+        foreach( $this->modules as $info ) 
         {
+            /** @var $module ModuleInterface */
+            $module = $info[ 'module' ];
+            $appUrl = $info[ 'appUrl' ];
+            $always = $info[ 'always' ];
+            if( $this->response && !$always ) { continue; }
             if( !is_numeric( $appUrl ) && strncmp( $this->pathInfo, $appUrl, strlen( $appUrl ) ) ) {
                 continue;
             }
