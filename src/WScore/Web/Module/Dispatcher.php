@@ -48,19 +48,62 @@ class Dispatcher extends ModuleAbstract
         }
         foreach( $this->modules as $info ) 
         {
-            /** @var $module ModuleInterface */
-            $module = $info[ 'module' ];
-            $appUrl = $info[ 'appUrl' ];
-            $always = $info[ 'always' ];
-            if( $this->response && !$always ) { continue; }
-            if( is_string( $appUrl ) && strncmp( $this->pathInfo, $appUrl, strlen( $appUrl ) ) ) {
+            if( !$this->loadModule( $info ) ) {
                 continue;
             }
+            /** @var $module ModuleInterface */
+            $module   = $info[ 'module' ];
+            list( $appUrl, $pathInfo ) = $this->getPathUrl( $info );
             $module->pre_load( $this, $appUrl );
-            $response = $module->with( $this->post )->on( $this->method )->load( $this->pathInfo );
+            $response = $module->with( $this->post )->on( $this->method )->load( $pathInfo );
             $module->post_load( $this );
             if( $response ) $this->response = $response;
         }
         return $this->response;
+    }
+
+    /**
+     * check if module should be loaded. 
+     * 
+     * @param $info
+     * @return bool
+     */
+    private function loadModule( $info )
+    {
+        $appUrl = $info[ 'appUrl' ];
+        $always = $info[ 'always' ];
+        if( $this->response && !$always ) {
+            // if response is back, then skip subsequent modules unless $always is true. 
+            return false;
+        }
+        if( is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
+            // load module if it's just a simple array module entry. 
+            return true;
+        }
+        if( strncmp( $this->pathInfo, $appUrl, strlen( $appUrl ) ) ) {
+            // ignore the module with appUrl which does not match with pathInfo. 
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * get appUrl and pathInfo for module.
+     * 
+     * @param $info
+     * @return array
+     */
+    private function getPathUrl( $info )
+    {
+        $appUrl   = $info[ 'appUrl' ];
+        $pathInfo = $this->pathInfo;
+        if( is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
+            // load module if it's just a simple array module entry. 
+            $appUrl = '';
+        }
+        else {
+            $pathInfo = substr( $this->pathInfo, strlen( $appUrl ) );
+        }
+        return array( $appUrl, $pathInfo );
     }
 }

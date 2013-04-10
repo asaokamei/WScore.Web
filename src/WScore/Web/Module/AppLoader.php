@@ -61,7 +61,6 @@ class AppLoader extends ModuleAbstract
     public function load( $pathInfo )
     {
         $this->pathInfo = $pathInfo;
-        $pathInfo = substr( $pathInfo, strlen( $this->appUrl ) );
         if( !$match = $this->router->match( $pathInfo ) ) {
             return null;
         }
