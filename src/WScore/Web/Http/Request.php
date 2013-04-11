@@ -35,6 +35,10 @@ class Request
             $this->_server = & $_SERVER;
         }
     }
+    
+    public function server( $name, $default=null ) {
+        return array_key_exists( $name, $this->_server ) ? $this->_server[ $name ] : $default;
+    }
 
     /**
      * @param array $post
@@ -47,11 +51,11 @@ class Request
      * @return bool
      */
     function isPost() {
-        return ( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) ? true: false;
+        return ( $this->server( 'REQUEST_METHOD' ) === 'POST' ) ? true: false;
     }
 
     function getRealMethod() {
-        if( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) {
+        if( $this->server( 'REQUEST_METHOD' ) === 'POST' ) {
             return 'post';
         }
         return 'get';
@@ -61,7 +65,7 @@ class Request
      */
     function getMethod() 
     {
-        if( $this->_server[ 'REQUEST_METHOD' ] === 'POST' ) {
+        if( $this->server( 'REQUEST_METHOD' ) === 'POST' ) {
             if( $method = $this->getPost( '_method', 'code' ) ) {
                 return $method;
             }
@@ -74,12 +78,8 @@ class Request
      * @return bool
      */
     function getHost() {
-        $host = null;
-        if( isset( $this->_server[ 'HTTP_HOST' ] ) ) {
-            $host = $this->_server[ 'HTTP_HOST' ];
-        }
-        elseif( isset( $this->_server[ 'SERVER_NAME' ] ) ) {
-            $host = $this->_server[ 'SERVER_NAME' ];
+        if( !$host = $this->server( 'HTTP_HOST' ) ) {
+            $host = $this->server( 'SERVER_NAME' );
         }
         return $this->h( $host );
     }
@@ -87,13 +87,13 @@ class Request
      * @return string
      */
     function getRequestUri() {
-        return $this->h( urldecode( $this->_server[ 'REQUEST_URI' ] ) );
+        return $this->h( urldecode( $this->server( 'REQUEST_URI' ) ) );
     }
     /**
      * @return string
      */
     function getScriptName() {
-        return urldecode( $this->_server[ 'SCRIPT_NAME' ] );
+        return urldecode( $this->server( 'SCRIPT_NAME' ) );
     }
     /** html special chars wrapper.
      * @param $string
@@ -297,8 +297,8 @@ class Request
      */
     function getLanguageList( $langOnly=true ) {
         $languages = array();
-        if( isset( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] ) ) {
-            $languages = $this->parseAcceptLanguage( $this->_server[ 'HTTP_ACCEPT_LANGUAGE' ] );
+        if( $this->server( 'HTTP_ACCEPT_LANGUAGE' ) ) {
+            $languages = $this->parseAcceptLanguage( $this->server( 'HTTP_ACCEPT_LANGUAGE' ) );
             foreach( $languages as &$lang ) {
                 if( $langOnly && strpos( $lang, '-' ) !== false ) {
                     $lang = substr( $lang, 0, strpos( $lang, '-' ) );
