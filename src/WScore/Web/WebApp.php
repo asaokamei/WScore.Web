@@ -16,6 +16,16 @@ class WebApp extends Module\Dispatcher
     public $baseUrl;
 
     /**
+     * @param array $post
+     * @return $this
+     */
+    public function with( $post )
+    {
+        $this->request->setPost( $post );
+        return $this;
+    }
+    
+    /**
      * @param array|string $config
      * @return \WScore\Web\WebApp
      */
