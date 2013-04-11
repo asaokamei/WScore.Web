@@ -13,23 +13,25 @@ class Html
     }
 
     /**
-     * @param \WScore\Web\FrontMC $app
+     * @param \WScore\Web\WebApp  $app
      * @param array|string        $server
      * @param array               $post
      * @return string
      */
     public static function getAppContents( $app, $server, $post=array() )
     {
+        $default = array(
+            'REQUEST_METHOD' => 'GET',
+        );
         if( !is_array( $server ) ) {
             $server = array(
-                'REQUEST_METHOD' => 'GET',
-                'SCRIPT_NAME'    => '/test/app.php',
-                'REQUEST_URI'    => '/test/' . $server,
+                'REQUEST_URI'    => $server,
             );
         }
-        $app->pathInfo( $server );
+        $server = array_merge( $default, $server );
+        //$app->pathInfo( $server );
         /** @var $response \WScore\Web\Http\Response */
-        $response = $app->using( $post )->run();
+        $response = $app->with( $post )->on( $server['REQUEST_METHOD'] )->load( $server[ 'REQUEST_URI' ] );
         return $response->content;
     }
 
