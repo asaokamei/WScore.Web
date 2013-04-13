@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web;
 
-class WebApp extends Module\Dispatcher
+class WebApp extends Module\AppChain
 {
 
     /**

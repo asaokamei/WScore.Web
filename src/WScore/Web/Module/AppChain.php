@@ -3,7 +3,7 @@ namespace WScore\Web\Module;
 
 class FrontMcNotFoundException extends \Exception {}
 
-class Dispatcher extends ModuleAbstract
+class AppChain extends ModuleAbstract
 {
     /**
      * @var ModuleInterface[]
