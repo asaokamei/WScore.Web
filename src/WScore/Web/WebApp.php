@@ -22,6 +22,7 @@ class WebApp extends Module\AppChain
     public function with( $post )
     {
         $this->request->setPost( $post );
+        parent::with( $post );
         return $this;
     }
     
