@@ -92,7 +92,7 @@ class AppLoader extends ModuleAbstract
         }
         // construct page data.
         $page = $this->container->get( $class );
-        $data = $page->$method( $match );
+        $data = $this->dispatch( $page, $method, $match );
         if( $data === PageInterface::RENDER_PAGE ) {
             $data = array( 'onMethod' => $method );
         }
@@ -100,6 +100,17 @@ class AppLoader extends ModuleAbstract
             $data[ 'onMethod' ] = $method;
         }
         return $data;
+    }
+
+    /**
+     * @param $page
+     * @param $method
+     * @param $match
+     * @return mixed
+     */
+    private function dispatch( $page, $method, $match )
+    {
+        return $page->$method( $match, $this->post );
     }
 
     /**
