@@ -201,7 +201,7 @@ class AppLoader extends ModuleAbstract
      */
     private function getViewFile( $render )
     {
-        $extensions = array( '', '.php', '.html' );
+        $extensions = array( '', '.php', '.html', '.htm', '.txt', '.text' );
         if( substr( $render, 0, 1 ) !== '/' ) $render = '/'.$render;
         foreach( $extensions as $ext ) {
             $template = $this->viewRoot . $render . $ext;
