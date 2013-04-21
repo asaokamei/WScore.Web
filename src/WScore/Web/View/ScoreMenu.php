@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\View;
 
-class Menu
+class ScoreMenu
 {
     public $pathInfo;
     
