@@ -165,6 +165,7 @@ class AppLoader extends ModuleAbstract
         if( !$template ) {
             return $template;
         }
+        $this->template->assign( $match );
         if( $data && is_array( $data ) ) $this->template->assign( $data );
         $this->template->setTemplate( $template );
         // render template. 
