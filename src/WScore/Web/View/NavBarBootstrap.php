@@ -30,15 +30,21 @@ class NavBarBootstrap
         $this->pill[ 'topUl' ] = '<ul class="nav nav-pills">';
         $this->tags = $this->tabs;
     }
+    
     /**
-     * @param array $menu
+     * @param array|ScoreMenu $menu
      * @param $max_score
-     * @return string
+     * @return $this
      */
     function setMenu( $menu, $max_score=null ) 
     {
-        $this->menu      = $menu;
-        $this->max_score = $max_score;
+        if( $menu instanceof ScoreMenu ) {
+            $this->menu      = $menu->getMenu();
+            $this->max_score = $menu->getScore();
+        } else {
+            $this->menu      = $menu;
+            $this->max_score = $max_score;
+        }
         return $this;
     }
 
@@ -106,7 +112,7 @@ class NavBarBootstrap
             $url   = ( isset( $item[ 'url' ] ) ) ? $item[ 'url' ] : '';
             $title = ( isset( $item[ 'title' ] ) ) ? $item[ 'title' ] : '';
             $score = ( isset( $item[ 'score' ] ) ) ? $item[ 'score' ] : 0;
-            $active = ( $score >= $this->max_score ) ? ' active' : '';
+            $active = ( $this->max_score && $score >= $this->max_score ) ? ' active' : '';
             if( isset( $item[ 'icon' ] ) ) $title = $this->text( 'icon', $item['icon'] ) . $title;
             if( isset( $item[ 'pages' ] ) ) {
                 $sub = $this->ul( $item['pages'], 'subUl' );
