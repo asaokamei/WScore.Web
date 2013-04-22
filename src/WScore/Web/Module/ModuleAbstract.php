@@ -10,7 +10,7 @@ abstract class ModuleAbstract implements ModuleInterface
     public $router;
 
     /** 
-     * @var \WScore\Web\FrontMC 
+     * @var \WScore\Web\WebApp 
      */
     public $front;
 
