@@ -16,7 +16,7 @@ class PaginateBootstrap
      * @Injection
      * @var \WScore\Html\Tags
      */
-    protected $tags;
+    public $tags;
 
     // +----------------------------------------------------------------------+
     /**
