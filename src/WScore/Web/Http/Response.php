@@ -26,6 +26,18 @@ class Response
     protected $helper = '\WScore\Web\Http\ResponseHelper';
 
     /**
+     * @param string $content
+     * @param int    $code
+     * @param array  $headers
+     */
+    public function __construct( $content='', $code=200, $headers=array() )
+    {
+        $this->setContent( $content );
+        $this->setStatusCode( $code );
+        $this->http_headers = $headers;
+    }
+    
+    /**
      * sends out response header and content. 
      */
     public function send()
@@ -40,6 +52,7 @@ class Response
         foreach( $this->http_headers as $name => $value ) {
             header( $name . ': ' . $value );
         }
+        header( 'Content-Length: ' . strlen( $this->content ) );
         echo $this->content;
     }
 
@@ -70,6 +83,11 @@ class Response
      */
     public function setHttpHeader( $name, $value ) {
         $this->http_headers[ $name ] = $value;
+    }
+    
+    public function __toString() {
+        $this->send();
+        return '';
     }
 }
 

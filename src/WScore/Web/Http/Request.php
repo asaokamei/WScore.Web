@@ -35,6 +35,20 @@ class Request
             $this->_server = & $_SERVER;
         }
     }
+
+    /**
+     * @return array
+     */
+    public function getInfo()
+    {
+        $info = array(
+            'requestURI' => $this->getRequestUri(),
+            'baseURL'    => $this->getBaseUrl(),
+            'pathInfo'   => $this->getPathInfo(),
+            'method'     => $this->getMethod(),
+        );
+        return $info;
+    }
     
     public function server( $name, $default=null ) {
         return array_key_exists( $name, $this->_server ) ? $this->_server[ $name ] : $default;
