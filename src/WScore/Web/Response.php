@@ -42,10 +42,9 @@ class Response
     public $renderer;
 
     /**
-     * @Inject
-     * @var \WScore\Web\Http\Response
+     * @var string
      */
-    public $httpResponse;
+    public $httpResponse = '\WScore\Web\Http\Response';
 
     // +----------------------------------------------------------------------+
     /**
@@ -88,19 +87,14 @@ class Response
     }
 
     /**
+     * @param null|string $response
      * @return HttpResponse
      */
-    public function respond()
+    public function send( $response=null )
     {
-        $this->httpResponse->setContent( $this->content );
-        $this->httpResponse->setStatusCode( $this->statusCode );
-        if( !empty( $this->headers ) ) {
-            foreach( $this->headers as $key => $val ) {
-                $this->httpResponse->setHttpHeader( $key, $val );
-            }
-        }
-        
-        return $this->httpResponse;
+        $response = $response ?: $this->httpResponse;
+        $response = new $response( $this->content, $this->statusCode, $this->headers );
+        return $response;
     }
     // +----------------------------------------------------------------------+
 }
