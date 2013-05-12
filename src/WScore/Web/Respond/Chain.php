@@ -55,6 +55,7 @@ class Chain extends RespondAbstract implements RespondInterface
             /** @var $responder RespondInterface */
             $responder = $info[ 'module' ];
             $request   = $this->getAppRequest( $appUrl );
+            $responder->prepare( $this );
             $response  = $responder->request( $request, $this->post )->respond( $match );
             if( $response ) $this->response = $response;
         }

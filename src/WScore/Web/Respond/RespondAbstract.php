@@ -6,6 +6,11 @@ use WScore\Web\Request;
 abstract class RespondAbstract implements RespondInterface
 {
     /**
+     * @var RespondInterface
+     */
+    public $app;
+    
+    /**
      * @var Request|null
      */
     public $request = null;
@@ -15,6 +20,14 @@ abstract class RespondAbstract implements RespondInterface
      */
     public $post = array();
 
+    /**
+     * @param RespondInterface $app
+     * @return mixed|void
+     */
+    public function prepare( $app ) {
+        $this->app = $app;
+    }
+    
     /**
      * sets request info.
      *

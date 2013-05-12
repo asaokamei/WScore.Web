@@ -6,6 +6,12 @@ use WScore\Web\Request;
 interface RespondInterface
 {
     /**
+     * @param RespondInterface $app
+     * @return mixed
+     */
+    public function prepare( $app );
+    
+    /**
      * sets request info.
      * 
      * @param Request $request
