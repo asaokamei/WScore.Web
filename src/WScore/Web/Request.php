@@ -42,7 +42,8 @@ class Request
      */
     public function setPath( $path )
     {
-        $this->requestURI = $this->baseURL  = $this->appURL  = $this->pathInfo = $this->appInfo = $path;
+        $this->requestURI = $this->pathInfo = $this->appInfo = $path;
+        $this->baseURL    = $this->appURL   =  '';
         return $this;
     }
 
