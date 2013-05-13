@@ -1,79 +1,50 @@
 <?php
 namespace WScore\Web\Respond;
 
-use WScore\Web\Request;
-use WScore\Web\Respond\RespondInterface;
-use WScore\Web\Response;
+use WScore\Template\TemplateInterface;
 
-abstract class PageAbstract extends Response implements RespondInterface
+abstract class PageAbstract extends RespondAbstract
 {
-    const RELOAD_SELF       = true;
-    const JUMP_TO_APP_ROOT  = '';
-    const RENDER_PAGE       = null;
     const RENDER_NOTHING    = false;
     
     /**
-     * @var Request
+     * http status code.
+     *
+     * @var int
      */
-    public $request;
+    public $statusCode = 200;
 
     /**
+     * http headers
+     *
      * @var array
      */
-    public $post = array();
+    public $headers = array();
+
+    /**
+     * content as a string.
+     *
+     * @var string
+     */
+    public $content = '';
+
+    /**
+     * data to transfer.
+     *
+     * @var array
+     */
+    public $data = array();
+
+    /**
+     * renderer to generate content.
+     *
+     * @var TemplateInterface
+     */
+    public $renderer;
 
     // +----------------------------------------------------------------------+
     //  response object to behave like a page object. 
     // +----------------------------------------------------------------------+
-    /**
-     * @param Request $request
-     * @param array $post
-     * @return $this
-     */
-    public function request( $request, $post=array() )
-    {
-        $this->request = $request;
-        $this->post    = $post;
-        return $this;
-    }
-
-    /**
-     * loads response object (for backward compatibility).
-     *
-     * @param array $match
-     * @param array $post
-     * @return $this|null
-     */
-    public function load( $match=array(), $post=array() )
-    {
-        if( isset( $match[ 'render' ] ) ) {
-            $this->request->appInfo = $match[ 'render' ];
-        }
-        // prepare post data.
-        $this->post   = array_merge( $this->post, $post );
-        // get the response result. 
-        $result = $this->respond( $match );
-        if( $result === null ) {
-            return null;
-        }
-        if( $result === self::RENDER_NOTHING ) {
-            return null;
-        }
-        if( $result === self::JUMP_TO_APP_ROOT ) {
-            $this->loadAppRoot();
-        }
-        elseif( $result === self::RELOAD_SELF ) {
-            $this->reload();
-        }
-        elseif( is_string( $result ) ) {
-            $this->jumpTo( $result );
-        }
-        elseif( is_array( $result ) ) {
-            $this->assign( $result );
-        }
-        return $this;
-    }
-
     /**
      * responds to a request.
      * returns null if there is no response.
@@ -85,10 +56,11 @@ abstract class PageAbstract extends Response implements RespondInterface
     {
         $method = $this->request->method ?: 'get';
         $method = 'on' . ucwords( $method );
-        $result = self::RENDER_NOTHING;
-        if( method_exists( $this, $method ) ) {
-            $result = $this->$method( $match, $this->post );
+        if( !method_exists( $this, $method ) ) {
+            $this->statusCode = 405;
+            return $this;
         }
+        $result = $this->$method( $match, $this->post );
         if( $result === self::RENDER_NOTHING ) {
             return null;
         }
@@ -105,6 +77,25 @@ abstract class PageAbstract extends Response implements RespondInterface
     // +----------------------------------------------------------------------+
     //  configure response. 
     // +----------------------------------------------------------------------+
+    /**
+     * @param $data
+     */
+    public function assign( $data )
+    {
+        if( !empty( $data ) ) {
+            foreach( $data as $key => $val ) {
+                $this->data[ $key ] = $val;
+            }
+        }
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setHeader( $name, $value ) {
+        $this->headers[ $name ] = $value;
+    }
     /**
      * set when input values are invalid to process request. 
      * 
@@ -154,6 +145,27 @@ abstract class PageAbstract extends Response implements RespondInterface
     public function jumpTo( $uri ) {
         $this->statusCode = 302;
         $this->setHeader( 'Location', $uri );
+    }
+    // +----------------------------------------------------------------------+
+    //  setting rendering
+    // +----------------------------------------------------------------------+
+    /**
+     * @param TemplateInterface $render
+     * @return $this
+     */
+    public function setRenderer( $render )
+    {
+        $this->renderer = $render;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function render()
+    {
+        $this->content = $this->renderer->render();
+        return $this;
     }
     // +----------------------------------------------------------------------+
 }
