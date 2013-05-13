@@ -17,6 +17,45 @@ class Request
     
     public $what = 'html';
 
+    /**
+     * @var Http\Request
+     */
+    public $httpRequest;
+    
+    // +----------------------------------------------------------------------+
+    //  managing url and pathInfo.
+    // +----------------------------------------------------------------------+
+    /**
+     * @Inject
+     * @param \WScore\Web\Http\Request $httpRequest
+     */
+    public function __construct( $httpRequest )
+    {
+        $this->httpRequest = $httpRequest;
+        $this->set( $httpRequest );
+    }
+
+    /**
+     * @param string $appUrl
+     * @return bool
+     */
+    public function match( $appUrl ) 
+    {
+        if( strncmp( $this->appInfo, $appUrl, strlen( $appUrl ) ) ) {
+            // ignore the module with appUrl which does not match with pathInfo. 
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param string $appUrl
+     */
+    public function modAppUrl( $appUrl )
+    {
+        $this->appURL .= $appUrl;
+        $this->appInfo = substr( $this->appInfo, strlen( $appUrl ) );
+    }
     // +----------------------------------------------------------------------+
     //  setting request parameters. 
     // +----------------------------------------------------------------------+

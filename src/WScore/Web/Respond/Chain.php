@@ -81,7 +81,7 @@ class Chain extends RespondAbstract implements RespondInterface
             // load module if it's just a simple array module entry. 
             return true;
         }
-        if( strncmp( $pathInfo, $appUrl, strlen( $appUrl ) ) ) {
+        if( $this->request->match( $appUrl ) ) {
             // ignore the module with appUrl which does not match with pathInfo. 
             return false;
         }
@@ -97,8 +97,7 @@ class Chain extends RespondAbstract implements RespondInterface
         if( !$this->request ) return null;
         $request = clone( $this->request );
         if( is_numeric( $appUrl ) || is_bool( $appUrl ) ) return $request;
-        $request->appURL .= $appUrl;
-        $request->appInfo = substr( $request->appInfo, strlen( $appUrl ) );
+        $request->modAppUrl( $appUrl );
         return $request;
     }
 }
