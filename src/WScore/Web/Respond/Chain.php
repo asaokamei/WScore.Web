@@ -21,7 +21,7 @@ class Chain extends RespondAbstract implements RespondInterface
      * @param null|string      $appUrl
      * @return $this
      */
-    public function setModule( $responder, $appUrl=null )
+    public function addResponder( $responder, $appUrl=null )
     {
         $info = array(
             'module' => $responder,
@@ -77,15 +77,15 @@ class Chain extends RespondAbstract implements RespondInterface
             // if response is back, then skip subsequent modules unless $always is true. 
             return false;
         }
-        if( is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
+        if( is_null( $appUrl ) || is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
             // load module if it's just a simple array module entry. 
             return true;
         }
         if( $this->request->match( $appUrl ) ) {
             // ignore the module with appUrl which does not match with pathInfo. 
-            return false;
+            return $appUrl;
         }
-        return $appUrl;
+        return false;
     }
 
     /**
