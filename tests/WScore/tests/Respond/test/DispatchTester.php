@@ -9,7 +9,10 @@ class DispatchTester extends Dispatch
     {
         parent::__construct( __DIR__ );
         $routes = array(
+            '/matched/:id' => array(),
             '/matched' => array(),
+            '/other'   => array( 'render' => 'matched' ),
+            '*' => array(),
         );
         $this->setRoute( $routes );
     }

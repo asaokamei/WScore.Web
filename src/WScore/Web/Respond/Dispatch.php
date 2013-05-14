@@ -31,7 +31,7 @@ class Dispatch extends RespondAbstract
 
     /**
      * @Inject
-     * @var Response
+     * @var \WScore\Web\Response
      */
     public $response;
 

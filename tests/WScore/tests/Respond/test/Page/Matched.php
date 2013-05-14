@@ -9,5 +9,9 @@ class Matched extends PageAbstract
     {
         $this->set( 'method', 'get' );
         $this->set( 'I-am', 'Matched' );
+        
+        if( isset( $match[ 'id' ] ) ) {
+            $this->set( 'id', $match[ 'id' ] );
+        }
     }
 }
