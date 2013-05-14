@@ -12,7 +12,7 @@ class DispatchTester extends Dispatch
             '/matched/:id' => array(),
             '/matched' => array(),
             '/other'   => array( 'render' => 'matched' ),
-            '*' => array(),
+            'ViewOnly' => array(),
         );
         $this->setRoute( $routes );
     }

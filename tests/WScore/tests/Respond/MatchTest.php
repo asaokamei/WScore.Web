@@ -80,4 +80,16 @@ class MatchTest extends \PHPUnit_Framework_TestCase
         $response->render();
         $this->assertEquals( 'This is: ViewOnly', $response->content );
     }
+    
+    function test_matched_onGet_with_php()
+    {
+        $request = $this->request->set( '/matched.php' );
+        $this->matcher->setRoute( array( '*' => array() ) );
+        /** @var $response \WScore\tests\Respond\test\Page\Matched */
+        $response = $this->matcher->request( $request )->respond();
+        $this->assertEquals( 'WScore\tests\Respond\test\Page\Matched', get_class( $response ) );
+        $this->assertEquals( 'get',     $response->data[ 'method' ] );
+        $this->assertEquals( 'Matched', $response->data[ 'I-am' ] );
+    }
+
 }
