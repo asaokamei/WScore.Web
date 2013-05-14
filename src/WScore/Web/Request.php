@@ -76,6 +76,14 @@ class Request
     }
 
     /**
+     * @param string $method
+     * @return $this
+     */
+    public function on( $method ) {
+        $this->method = $method;
+        return $this;
+    }
+    /**
      * @param string $path
      * @return $this
      */
