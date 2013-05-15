@@ -41,19 +41,4 @@ abstract class RespondAbstract implements RespondInterface
         $this->post    = $post;
         return $this;
     }
-
-    /**
-     * responds to a request with old style.
-     * for backward compatibility.
-     *
-     * @param array $match
-     * @param array $post
-     * @return $this|null
-     */
-    public function load( $match, $post = array() )
-    {
-        $this->post = array_merge( $this->post, $post );
-        return $this->respond( $match );
-    }
-
 }

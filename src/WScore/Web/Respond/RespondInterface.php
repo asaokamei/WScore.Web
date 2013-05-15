@@ -28,14 +28,4 @@ interface RespondInterface
      * @return $this|null
      */
     public function respond( $match=array() );
-
-    /**
-     * responds to a request with old style. 
-     * for backward compatibility.
-     * 
-     * @param array $match
-     * @param array $post
-     * @return $this|null
-     */
-    public function load( $match, $post=array() );
 }

@@ -118,17 +118,4 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         $this->post    = $post;
         return $this;
     }
-
-    /**
-     * responds to a request with old style.
-     * for backward compatibility.
-     *
-     * @param array $match
-     * @param array $post
-     * @return $this|null
-     */
-    public function load( $match, $post = array() )
-    {
-        // TODO: Implement load() method.
-    }
 }
