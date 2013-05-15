@@ -13,6 +13,11 @@ use WScore\Web\Request;
 class ResponsePage extends ResponseAbstract implements RespondInterface
 {
     /**
+     * @var RespondInterface
+     */
+    public $app;
+
+    /**
      * @var Request|null
      */
     public $request = null;
@@ -22,6 +27,9 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
      */
     public $post = array();
 
+    // +----------------------------------------------------------------------+
+    //  for responding to a request. 
+    // +----------------------------------------------------------------------+
     /**
      * responds to a request.
      * returns null if there is no response.
@@ -34,7 +42,7 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         $method = $this->request->method ?: 'get';
         $method = 'on' . ucwords( $method );
         if( !method_exists( $this, $method ) ) {
-            $this->statusCode = 405;
+            $this->invalidMethod();
             return $this;
         }
         $result = $this->$method( $match, $this->post );
@@ -45,15 +53,52 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
     }
 
     /**
+     * @param RespondInterface $app
+     * @return mixed
+     */
+    public function prepare( $app )
+    {
+        $this->app = $app;
+        return $this;
+    }
+
+    /**
+     * sets request info.
+     *
+     * @param Request $request
+     * @param array   $post
+     * @return $this
+     */
+    public function request( $request, $post = array() )
+    {
+        $this->request = $request;
+        $this->post    = $post;
+        return $this;
+    }
+
+    // +----------------------------------------------------------------------+
+    //  error conditions.
+    // +----------------------------------------------------------------------+
+    /**
      * set when input values are invalid to process request.
      *
      * @param string $alert
      */
     public function invalidParameter( $alert='' ) {
-        $this->statusCode = 422;
-        if( $alert ) $this->setHeader( 'alert', $alert );
+        $this->setStatus( 422 );
+        if( $alert ) $this->set( 'alert', $alert );
     }
 
+    /**
+     * method not allowed
+     */
+    public function invalidMethod() {
+        $this->setStatus( 405 );
+    }
+
+    // +----------------------------------------------------------------------+
+    //  re-location and downloading 
+    // +----------------------------------------------------------------------+
     /**
      * downloads content as a file (or inline).
      *
@@ -91,31 +136,8 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
      * @param string $uri
      */
     public function jumpTo( $uri ) {
-        $this->statusCode = 302;
+        $this->setStatus( 302 );
         $this->setHeader( 'Location', $uri );
     }
-
-    /**
-     * @param RespondInterface $app
-     * @return mixed
-     */
-    public function prepare( $app )
-    {
-        $this->app = $app;
-        return $this;
-    }
-
-    /**
-     * sets request info.
-     *
-     * @param Request $request
-     * @param array   $post
-     * @return $this
-     */
-    public function request( $request, $post = array() )
-    {
-        $this->request = $request;
-        $this->post    = $post;
-        return $this;
-    }
+    // +----------------------------------------------------------------------+
 }

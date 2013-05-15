@@ -110,7 +110,8 @@ class Dispatch extends RespondAbstract
         if( $this->setupTemplate( $match ) ) {
             $page->renderer = $this->template;
         }
-        $response = $page->request( $this->request, $this->post )->respond( $match );
+        
+        $response = $page->prepare( $this )->request( $this->request, $this->post )->respond( $match );
         return $response;
     }
 

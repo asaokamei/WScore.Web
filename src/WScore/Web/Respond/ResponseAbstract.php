@@ -51,6 +51,12 @@ abstract class ResponseAbstract implements ResponseInterface
     //  setting data and contents
     // +----------------------------------------------------------------------+
     /**
+     * @param int $status
+     */
+    public function setStatus( $status ) {
+        $this->statusCode = $status;
+    }
+    /**
      * @param string $name
      * @param mixed $value
      */
