@@ -1,9 +1,9 @@
 <?php
 namespace WScore\tests\Respond\test\Page;
 
-use WScore\Web\Respond\PageAbstract;
+use WScore\Web\Respond\ResponsePage;
 
-class Matched extends PageAbstract
+class Matched extends ResponsePage
 {
     public function onGet( $match )
     {
