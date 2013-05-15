@@ -2,7 +2,7 @@
 namespace WScore\Web\Respond;
 
 use WScore\Web\Request;
-use WScore\Web\Response;
+use WScore\Web\Respond\Response;
 
 class Chain extends RespondAbstract implements RespondInterface
 {

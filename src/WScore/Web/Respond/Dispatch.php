@@ -3,7 +3,6 @@ namespace WScore\Web\Respond;
 
 use \WScore\Template\TemplateInterface;
 use \WScore\DiContainer\ContainerInterface;
-use WScore\Web\Response;
 
 class Dispatch extends RespondAbstract
 {
@@ -31,7 +30,7 @@ class Dispatch extends RespondAbstract
 
     /**
      * @Inject
-     * @var \WScore\Web\Response
+     * @var \WScore\Web\Respond\Response
      */
     public $response;
 
@@ -107,7 +106,7 @@ class Dispatch extends RespondAbstract
         $class = $this->getPageClass( $this->request->appInfo );
         $page  = $this->container->get( $class );
         if( !$page ) return null;
-        /** @var $page PageAbstract */
+        /** @var $page ResponsePage */
         if( $this->setupTemplate( $match ) ) {
             $page->renderer = $this->template;
         }
