@@ -41,4 +41,16 @@ abstract class RespondAbstract implements RespondInterface
         $this->post    = $post;
         return $this;
     }
+
+    /**
+     * @return RespondInterface
+     */
+    public function retrieveRoot()
+    {
+        $root = $this;
+        while( isset( $this->app ) ) {
+            $root = $this->app;
+        }
+        return $root;
+    }
 }

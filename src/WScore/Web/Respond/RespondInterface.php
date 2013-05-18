@@ -28,4 +28,11 @@ interface RespondInterface
      * @return $this|null
      */
     public function respond( $match=array() );
+
+    /**
+     * returns root of all Respond objects. 
+     * 
+     * @return RespondInterface
+     */
+    public function retrieveRoot();
 }

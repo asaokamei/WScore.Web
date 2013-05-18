@@ -139,5 +139,17 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         $this->setStatus( 302 );
         $this->setHeader( 'Location', $uri );
     }
+
+    /**
+     * @return RespondInterface
+     */
+    public function retrieveRoot()
+    {
+        $root = $this;
+        while( isset( $this->app ) ) {
+            $root = $this->app;
+        }
+        return $root;
+    }
     // +----------------------------------------------------------------------+
 }
