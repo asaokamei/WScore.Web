@@ -122,7 +122,9 @@ abstract class ResponseAbstract implements ResponseInterface
      */
     public function render()
     {
-        $this->content = $this->renderer->render();
+        if( $this->renderer ) {
+            $this->content = $this->renderer->render();
+        }
         return $this;
     }
     // +----------------------------------------------------------------------+
