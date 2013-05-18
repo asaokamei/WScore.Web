@@ -8,7 +8,7 @@ class ChainTest extends \PHPUnit_Framework_TestCase
     /** @var \WScore\DiContainer\Container  */
     public $container;
     
-    /** @var  \WScore\Web\Request */
+    /** @var  \WScore\Web\Respond\Request */
     public $request;
 
     /** @var \WScore\Web\Respond\Chain */
@@ -25,7 +25,7 @@ class ChainTest extends \PHPUnit_Framework_TestCase
         $container->set( 'TemplateInterface', '\WScore\Template\PhpTemplate' );
         $this->container = $container;
 
-        $this->request = $container->get( '\WScore\Web\Request' );
+        $this->request = $container->get( '\WScore\Web\Respond\Request' );
         $this->chain   = $container->get( '\WScore\Web\Respond\Chain' );
 
         $this->res = $this->container->get( '\WScore\tests\Respond\test\Responder' );

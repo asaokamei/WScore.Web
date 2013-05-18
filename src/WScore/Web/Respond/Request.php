@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Web;
+namespace WScore\Web\Respond;
 
 class Request
 {

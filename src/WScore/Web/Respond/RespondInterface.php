@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\Respond;
 
-use WScore\Web\Request;
+use WScore\Web\Respond\Request;
 
 interface RespondInterface
 {

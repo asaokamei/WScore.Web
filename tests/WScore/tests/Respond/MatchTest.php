@@ -5,7 +5,7 @@ require_once( __DIR__ . '/../../../autoload.php' );
 
 class MatchTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var  \WScore\Web\Request */
+    /** @var  \WScore\Web\Respond\Request */
     public $request;
     
     /** @var \WScore\tests\Respond\test\DispatchTester */
@@ -18,7 +18,7 @@ class MatchTest extends \PHPUnit_Framework_TestCase
         $container->set( 'ContainerInterface', $container );
         $container->set( 'TemplateInterface', '\WScore\Template\PhpTemplate' );
         
-        $this->request = $container->get( '\WScore\Web\Request' );
+        $this->request = $container->get( '\WScore\Web\Respond\Request' );
         $this->matcher = $container->get( '\WScore\tests\Respond\test\DispatchTester' );
     }
     // +----------------------------------------------------------------------+
