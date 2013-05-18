@@ -37,6 +37,15 @@ class Request
     }
 
     /**
+     * @param array $server
+     * @return $this
+     */
+    public function setServer( $server ) {
+        $this->_server = $server;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getInfo()

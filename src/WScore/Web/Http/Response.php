@@ -81,8 +81,12 @@ class Response
      * @param string $name
      * @param string $value
      */
-    public function setHttpHeader( $name, $value ) {
-        $this->http_headers[ $name ] = $value;
+    public function setHttpHeader( $name, $value=null ) {
+        if( is_array( $name ) ) {
+            $this->http_headers = array_merge( $this->http_headers, $name );
+        } else {
+            $this->http_headers[ $name ] = $value;
+        }
     }
     
     public function __toString() {
