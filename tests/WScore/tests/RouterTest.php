@@ -121,11 +121,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $result = $this->router->match( 'more/12/test' );
         
         return; // current Router does not support this expression. 
-        
+
+        /*
         $this->assertNotEquals( null, $result );
         $this->assertTrue( is_array( $result ) );
         $this->assertEquals( '/more/12/test', $result[0] );
         $this->assertEquals( '/more/test', $result[1] );
         $this->assertEquals( '12', $result['id'] );
+        */
     }
 }
