@@ -17,6 +17,9 @@ class HttpResponderTest extends \PHPUnit_Framework_TestCase
         'SCRIPT_NAME' => '/WScore/index.php',
     );
 
+    /** @var \WScore\DiContainer\Container  */
+    public $container;
+    
     public function setUp()
     {
         /** @var $container \WScore\DiContainer\Container */
@@ -43,5 +46,19 @@ class HttpResponderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( '/WScore/', $app->request->appURL );
         $this->assertEquals( 'test', $app->request->appInfo );
         $this->assertEquals( 'get', $app->request->method );
+    }
+    
+    function test_response()
+    {
+        $app = $this->app;
+        $module = $this->container->get( '\WScore\tests\Respond\test\DispatchTester' );
+        $app->addResponder( $module );
+        $this->server[ 'REQUEST_URI' ] = '/WScore/ViewOnly';
+        $app->setHttpRequest( $this->server );
+        $app->respond();
+        $this->assertEquals( 'WScore\Web\Respond\Response', get_class( $app->response ) );
+        
+        $response = $app->render()->getHttpResponse();
+        $this->assertEquals( 'This is: ViewOnly', $response->content );
     }
 }
