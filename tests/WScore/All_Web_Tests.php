@@ -9,6 +9,7 @@ class All_Web_Tests
     {
         $suite = new \PHPUnit_Framework_TestSuite( 'all tests for WScore\'s Web' );
 
+        $suite->addTestFile( __DIR__ . '/tests/RouterTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Respond/MatchTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Respond/ChainTest.php' );
         return $suite;
