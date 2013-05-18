@@ -27,6 +27,7 @@ class HttpResponder extends Chain
     public function setHttpRequest( $server, $data )
     {
         $this->httpRequest->setServer( $server );
+        $this->httpRequest->setPost( $data );
         $this->request->set( $this->httpRequest->getInfo() );
         $this->post = $data;
         return $this;
