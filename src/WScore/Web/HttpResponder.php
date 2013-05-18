@@ -3,6 +3,13 @@ namespace WScore\Web;
 
 use WScore\Web\Respond\Chain;
 
+/**
+ * Class HttpResponder
+ * 
+ * for web application. 
+ *
+ * @package WScore\Web
+ */
 class HttpResponder extends Chain
 {
     /**
@@ -18,13 +25,19 @@ class HttpResponder extends Chain
     public $httpResponse;
 
     /**
+     * @Inject
+     * @var \WScore\Web\Respond\Request
+     */
+    public $request;
+
+    /**
      * set request based on _SERVER and httpRequest. 
      * 
      * @param array $server
      * @param array $data
      * @return $this
      */
-    public function setHttpRequest( $server, $data )
+    public function setHttpRequest( $server, $data=array() )
     {
         $this->httpRequest->setServer( $server );
         $this->httpRequest->setPost( $data );
@@ -51,5 +64,10 @@ class HttpResponder extends Chain
         $this->httpResponse->setStatusCode( $this->response->statusCode );
         $this->httpResponse->setHttpHeader( $this->response->headers );
         return $this->httpResponse;
+    }
+    
+    public function emit()
+    {
+        $this->getHttpResponse()->send();
     }
 }
