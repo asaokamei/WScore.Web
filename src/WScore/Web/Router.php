@@ -34,7 +34,7 @@ class Router
                     $args[] = $token;
                 }
                 elseif( $token == '*' ) {
-                    $args[] = '.*';
+                    $body[] = '.*';
                 } else {
                     $body[] = $token;
                 }
