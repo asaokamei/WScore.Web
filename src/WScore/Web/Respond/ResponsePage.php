@@ -45,6 +45,7 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
             $this->invalidMethod();
             return $this;
         }
+        $this->data = array_merge( $this->data, (array) $this->request );
         $result = $this->$method( $match, $this->post );
         if( $result === self::RENDER_NOTHING ) {
             return null;
@@ -141,6 +142,9 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
     public function jumpTo( $uri ) {
         $this->setStatus( 302 );
         $this->setHeader( 'Location', $uri );
+        // when jump to a url, clear renderer (template) and content. 
+        $this->renderer = null;
+        $this->content  = null;
     }
 
     // +----------------------------------------------------------------------+
