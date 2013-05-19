@@ -49,6 +49,9 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         if( $result === self::RENDER_NOTHING ) {
             return null;
         }
+        if( is_array( $result ) ) {
+            $this->data = array_merge( $this->data, $result );
+        }
         return $this;
     }
 
