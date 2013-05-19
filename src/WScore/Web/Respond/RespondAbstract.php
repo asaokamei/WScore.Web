@@ -53,4 +53,18 @@ abstract class RespondAbstract implements RespondInterface
         }
         return $root;
     }
+
+    /**
+     * @return RespondInterface
+     */
+    public function retrieveApp() {
+        return $this->app;
+    }
+
+    /**
+     * @return null|Request
+     */
+    public function retrieveRequest() {
+        return $this->request;
+    }
 }

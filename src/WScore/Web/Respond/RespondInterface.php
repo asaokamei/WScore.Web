@@ -35,4 +35,14 @@ interface RespondInterface
      * @return RespondInterface
      */
     public function retrieveRoot();
+
+    /**
+     * @return RespondInterface
+     */
+    public function retrieveApp();
+
+    /**
+     * @return null|Request
+     */
+    public function retrieveRequest();
 }

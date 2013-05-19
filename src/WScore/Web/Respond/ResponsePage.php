@@ -140,6 +140,9 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         $this->setHeader( 'Location', $uri );
     }
 
+    // +----------------------------------------------------------------------+
+    //  methods for RespondInterface. should use traits to inherit them. 
+    // +----------------------------------------------------------------------+
     /**
      * @return RespondInterface
      */
@@ -150,6 +153,20 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
             $root = $this->app;
         }
         return $root;
+    }
+
+    /**
+     * @return RespondInterface
+     */
+    public function retrieveApp() {
+        return $this->app;
+    }
+
+    /**
+     * @return null|Request
+     */
+    public function retrieveRequest() {
+        return $this->request;
     }
     // +----------------------------------------------------------------------+
 }
