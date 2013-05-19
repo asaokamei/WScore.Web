@@ -148,6 +148,7 @@ class Dispatch extends RespondAbstract
         if( !$template ) {
             return false;
         }
+        $this->template->assign( (array) $this->request );
         $this->template->assign( $match );
         $this->template->setTemplate( $template );
         return true;
