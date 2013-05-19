@@ -61,4 +61,17 @@ class HttpResponderTest extends \PHPUnit_Framework_TestCase
         $response = $app->render()->getHttpResponse();
         $this->assertEquals( 'This is: ViewOnly', $response->content );
     }
+    
+    function test_bad_request_uri()
+    {
+        $this->server[ 'REQUEST_URI' ] = '/WScore/bad<bad>';
+        $app = $this->app;
+        $app->setHttpRequest( $this->server );
+        $this->assertEquals( '/WScore/', $app->request->baseURL );
+        $this->assertEquals( 'bad&lt;bad&gt;', $app->request->pathInfo );
+        $this->assertEquals( '/WScore/', $app->request->appURL );
+        $this->assertEquals( 'bad&lt;bad&gt;', $app->request->appInfo );
+        $this->assertEquals( 'get', $app->request->method );
+    }
+
 }
