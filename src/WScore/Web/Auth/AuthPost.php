@@ -2,6 +2,10 @@
 namespace WScore\Web\Auth;
 
 class AuthPostException extends \RuntimeException {}
+class AuthPost_UserNotFound_Exception extends AuthPostException {}
+class AuthPost_NoID_Exception extends AuthPostException {}
+class AuthPost_NoPW_Exception extends AuthPostException {}
+class AuthPost_BadPW_Exception extends AuthPostException {}
 
 /**
  * Class AuthPost
@@ -46,7 +50,7 @@ class AuthPost
     }
 
     public function isPost() {
-        return (bool) $this->get( $this->action );
+        return $this->get( $this->action ) === $this->value;
     }
 
     /**
@@ -56,20 +60,20 @@ class AuthPost
      */
     public function verify( $user )
     {
-        if( !$this->isPost() ) return false;
+        if( !$this->isPost() ) return null;
 
         if( !$id = $this->getLoginId() ) {
-            throw new AuthPostException( 'no_id', 401 );
+            throw new AuthPost_NoID_Exception( 'no_id', 401 );
         }
         $user->setLoginId( $id );
         if( !$pw_jam = $user->getLoginPw( $id ) ) {
-            throw new AuthPostException( 'no_user', 402 );
+            throw new AuthPost_UserNotFound_Exception( 'no_user', 402 );
         };
         if( !$pw_raw = $this->getLoginPw() ) {
-            throw new AuthPostException( 'no_pw', 403 );
+            throw new AuthPost_NoPW_Exception( 'no_pw', 403 );
         }
-        if( $this->matchPassword( $pw_jam, $pw_raw ) ) {
-            throw new AuthPostException( 'bad_pw', 404 );
+        if( !$this->matchPassword( $pw_jam, $pw_raw ) ) {
+            throw new AuthPost_BadPW_Exception( 'bad_pw', 404 );
         }
         return $id;
     }
