@@ -21,18 +21,6 @@ catch( \Exception $e ) {
 }
 */
 
-class AuthDba implements  UserInterface
-{
-    public function getLoginPw( $id ) {
-    }
-
-    public function getUserInfo( $id ) {
-    }
-
-    public function setLoginId( $id ) {
-    }
-}
-
 class Auth
 {
     const USER_ID      = 'user_id';
