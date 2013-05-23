@@ -143,7 +143,7 @@ class Auth
         $this->loginInfo[ self::IS_LOGIN ]    = true;
         $this->loginInfo[ self::USER_ID ]     = $id;
         $this->loginInfo[ self::LOGIN_TIME ]  = $this->now();
-        $this->loginInfo[ self::ACCESS_TIME ] = $this->now();
+        $this->lastAccess = $this->now();
         return true;
     }
 
@@ -190,33 +190,7 @@ class Auth
      */
     protected function verifyLogin()
     {
-        if( !$this->post->isPost() ) return false;
-        
-        if( !$id = $this->post->getLoginId() ) {
-            throw new \RuntimeException( 'no_id', 401 );
-        }
-        $this->user->setLoginId( $id );
-        if( !$pw_jam = $this->user->getLoginPw( $id ) ) {
-            throw new \RuntimeException( 'no_user', 402 );
-        };
-        if( !$pw_raw = $this->post->getLoginPw() ) {
-            throw new \RuntimeException( 'no_pw', 403 );
-        }
-        if( $this->matchPassword( $pw_jam, $pw_raw ) ) {
-            throw new \RuntimeException( 'bad_pw', 404 );
-        }
-        return $id;
-    }
-
-    /**
-     * @param string $pw_jam
-     * @param string $pw_raw
-     * @return bool
-     */
-    protected function matchPassword( $pw_jam, $pw_raw ) 
-    {
-        if( $pw_jam === crypt( $pw_raw, $pw_jam ) ) return true;
-        return false;
+        return $this->post->verify( $this->user );
     }
     
     /**
