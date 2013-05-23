@@ -2,17 +2,36 @@
 namespace WScore\Web\Auth;
 
 /*
-$auth = new Auth( $users );
-$auth->loadInfo( $id, $pw );
+$auth = new Auth();
+$post = new AuthPost();
 try {
     
+    if( $id = $post->getId() ) {
+        $pw = $post->getPw();
+        $auth->postInfo( $id, $pw );
+        $user_info = $user->getInfo( $id );
+    }
     $auth->getAuth();
+    $auth->userInfo( $user_info
+    $auth->setUserInfo( 
 
 }
 catch( \Exception $e ) {
     
 }
 */
+
+class AuthDba implements  UserInterface
+{
+    public function getLoginPw( $id ) {
+    }
+
+    public function getUserInfo( $id ) {
+    }
+
+    public function setLoginId( $id ) {
+    }
+}
 
 class Auth
 {
@@ -34,70 +53,65 @@ class Auth
     public $user_id = null;
 
     /**
-     * @var null
-     */
-    public $password = null;
-
-    /**
      * @var array
      */
     public $user_info = array();
     
-    /**
-     * @var bool
-     */
-    protected $isLoggedIn = false;
-
     /**
      * @var array
      */
     public $loginInfo = array();
 
     /**
-     * @var null|UserInterface
+     * @var null
      */
-    protected $user;
+    public $lastAccess = null;
 
     /**
-     * @var bool    set to true if password is not jammed, or allow as is match. 
+     * @Inject
+     * @var UserInterface
      */
-    private $allow_raw_password_match = false;
+    public $user;
+    
+    /**
+     * @Inject
+     * @var AuthPost
+     */
+    public $post;
 
-    // +-------------------------------------------------------------+
-    // +-------------------------------------------------------------+
     /**
-     * @param null|UserInterface $user
+     * @Inject
+     * @var \WScore\Web\Session
      */
-    public function __construct( $user=null )
-    {
-        $this->user = $user;
-        $this->sessionStart();
-        $this->sessionGet();
-    }
-    
+    public $session;
+
     /**
-     * @param string  $id
-     * @param string  $pw
-     * @return $this
+     * @var AuthCookie
      */
-    public function loadInfo( $id, $pw )
-    {
-        $this->user_id  = $id;
-        $this->password = $pw;
-        return $this;
-    }
+    public $cookie;
     
+    // +-------------------------------------------------------------+
+    //  public methods
+    // +-------------------------------------------------------------+
     /**
-     * @return bool
+     */
+    public function __construct()
+    {
+        $this->session->start();
+    }
+
+    /**
+     * @throws \RuntimeException
+     * @return bool|string
      */
     public function getAuth()
     {
-        if( $this->isLoggedIn = $this->verify() ) {
-            $this->isLoggedIn = true;
-            $this->user_info  = $this->user->getInfo( $this->user_id );
-            $this->sessionSet();
+        if( $id = $this->verify() ) {
+            $this->user_info  = $this->user->getUserInfo( $id );
+            $this->save();
+            if( isset( $this->cookie ) ) $this->cookie->save( $this->user_id );
         }
-        return $this->isLoggedIn;
+        return $id;
     }
 
     /**
@@ -105,12 +119,12 @@ class Auth
      */
     public function isLoggedIn()
     {
-        return $this->isLoggedIn;
+        return (bool) $this->user_id;
     }
     
     public function accessTime()
     {
-        return $this->loginInfo[ self::ACCESS_TIME ];
+        return $this->lastAccess;
     }
     
     public function loginTime()
@@ -118,6 +132,39 @@ class Auth
         return $this->loginInfo[ self::LOGIN_TIME ];
     }
 
+    /**
+     * @param string $id
+     * @return bool
+     */
+    public function login( $id )
+    {
+        if( !$id ) return false;
+        $this->user_id = $id;
+        $this->loginInfo[ self::IS_LOGIN ]    = true;
+        $this->loginInfo[ self::USER_ID ]     = $id;
+        $this->loginInfo[ self::LOGIN_TIME ]  = $this->now();
+        $this->loginInfo[ self::ACCESS_TIME ] = $this->now();
+        return true;
+    }
+
+    /**
+     * 
+     */
+    public function logout()
+    {
+        $this->user_id = null;
+        $this->loginInfo = array();
+        $this->session->set( $this->auth_id, null );
+        if( isset( $this->cookie ) ) $this->cookie->logout();
+    }
+    
+    /**
+     *
+     */
+    public function save() {
+        $this->loginInfo[ self::ACCESS_TIME ] = $this->now();
+        $this->session->set( $this->auth_id, $this->loginInfo );
+    }
     // +-------------------------------------------------------------+
     // +-------------------------------------------------------------+
     /**
@@ -125,89 +172,84 @@ class Auth
      */
     protected function verify()
     {
-        if( $this->verifyLogin() ) {
-            $this->loginInfo[ self::IS_LOGIN ]    = true;
-            $this->loginInfo[ self::USER_ID ]     = $this->user_id;
-            $this->loginInfo[ self::LOGIN_TIME ]  = $this->now();
-            $this->loginInfo[ self::ACCESS_TIME ] = $this->now();
-            return true;
+        if( $id = $this->verifyLogin() ) {
+            $this->login( $id );
         }
-        if( $this->verifySession() ) {
-            $this->loginInfo[ self::ACCESS_TIME ] = $this->now();
-            $this->user_id   = $this->loginInfo[ self::USER_ID ];
-            return true;
+        if( $id = $this->verifySession() ) {
+            $this->user_id = $id;
         }
-        return false;
+        if( $id = $this->verifyCookie() ) {
+            $this->login( $id );
+        }
+        return $this->user_id;
     }
-    
+
     /**
-     * @return bool
+     * @throws \RuntimeException
+     * @return bool|string
      */
     protected function verifyLogin()
     {
-        if( !$this->user_id ) {
-            return false;
+        if( !$this->post->isPost() ) return false;
+        
+        if( !$id = $this->post->getLoginId() ) {
+            throw new \RuntimeException( 'no_id', 401 );
         }
-        $pw = $this->user->getPassword( $this->user_id );
-        if( $login = $this->verifyPassword( $pw ) ) {
+        $this->user->setLoginId( $id );
+        if( !$pw_jam = $this->user->getLoginPw( $id ) ) {
+            throw new \RuntimeException( 'no_user', 402 );
+        };
+        if( !$pw_raw = $this->post->getLoginPw() ) {
+            throw new \RuntimeException( 'no_pw', 403 );
         }
-        return $login;
+        if( $this->matchPassword( $pw_jam, $pw_raw ) ) {
+            throw new \RuntimeException( 'bad_pw', 404 );
+        }
+        return $id;
     }
 
     /**
-     * @param string $pw
+     * @param string $pw_jam
+     * @param string $pw_raw
      * @return bool
      */
-    protected function verifyPassword( $pw ) 
+    protected function matchPassword( $pw_jam, $pw_raw ) 
     {
-        if( $pw === crypt( $this->password, $pw ) ) return true;
-        if( $this->allow_raw_password_match && $pw === $this->password ) return true;
+        if( $pw_jam === crypt( $pw_raw, $pw_jam ) ) return true;
         return false;
     }
     
     /**
-     * @return bool
+     * @return bool|string
      */
     protected function verifySession()
     {
-        if( isset( $this->loginInfo ) && 
-            isset( $this->loginInfo[ self::IS_LOGIN ] ) && 
-            $this->loginInfo[ self::IS_LOGIN ] ) 
+        $loginInfo = $this->session->get( $this->auth_id );
+        if( $loginInfo && 
+            isset( $loginInfo[ self::IS_LOGIN ] ) &&
+            $loginInfo[ self::IS_LOGIN ] ) 
         {
-            $this->user_id = $this->loginInfo[ self::USER_ID ];
-            return true;
+            $this->loginInfo  = $loginInfo;
+            $this->lastAccess = $loginInfo[ self::ACCESS_TIME ];
+            return $loginInfo[ self::USER_ID ];
         }
         return false;
     }
 
+    /**
+     * @return bool|string
+     */
+    protected function verifyCookie()
+    {
+        if( !isset( $this->cookie ) ) return false; 
+        $id = $this->cookie->getLoginId();
+        return $id;
+    }
+    
     /**
      * @return \DateTime
      */
     protected function now() {
         return new \DateTime();
-    }
-
-    /**
-     */
-    protected function sessionStart()
-    {
-        if( !isset( $_SESSION ) ) {
-            ob_start();
-            session_start();
-        }
-    }
-
-    /**
-     */
-    protected function sessionGet() {
-        if( array_key_exists( $this->auth_id, $_SESSION ) ) {
-            $this->loginInfo = $_SESSION[ $this->auth_id ];
-        }
-    }
-
-    /**
-     */
-    protected function sessionSet() {
-        $_SESSION[ $this->auth_id ] = $this->loginInfo;
     }
 }
