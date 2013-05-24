@@ -78,7 +78,13 @@ class AuthTest extends \PHPUnit_Framework_TestCase
         // check login state
         $this->assertEquals( 'test', $login );
         $this->assertEquals( true, $auth->isLoggedIn() );
+        $this->assertEquals( 'test', $auth->getUserId() );
         $this->assertEquals( 'user-info', $auth->getUserInfo( 'info' ) );
+        $user_info = $auth->getUserInfo();
+        $this->assertEquals( 'test', $user_info[ 'user_id' ] );
+        $this->assertEquals( true, is_string( $user_info[ 'password' ] ) );
+        $this->assertEquals( 'user-info', $user_info[ 'info' ] );
+        
         // check session
         $session_data = $auth->session->get( $auth->auth_id );
         $this->assertTrue( is_array( $session_data ) );
@@ -136,5 +142,24 @@ class AuthTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'test', $session_data[ 'user_id' ] );
         $this->assertEquals( 'DateTime', get_class( $session_data[ 'login_time' ] ) );
         $this->assertEquals( 'DateTime', get_class( $session_data[ 'access_time' ] ) );
+    }
+
+    function test_logout()
+    {
+        $auth = $this->auth;
+        $auth->user = $this->user;
+        $auth->post = $this->post_noLogin;
+        $auth->session = $this->session_saved;
+        $login = $auth->getAuth();
+        $this->assertEquals( 'test', $login );
+
+        $auth->logout();
+        
+        // check login state
+        $this->assertEquals( false, $auth->isLoggedIn() );
+        $this->assertEquals( null, $auth->getUserInfo( 'info' ) );
+        // check session
+        $session_data = $auth->session->get( $auth->auth_id );
+        $this->assertTrue( !isset( $session_data ) );
     }
 }

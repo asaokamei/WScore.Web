@@ -78,6 +78,9 @@ class Auth
      */
     public $cookie;
     
+    /** @var bool  */
+    public $saveCookie = false;
+    
     // +-------------------------------------------------------------+
     //  public methods
     // +-------------------------------------------------------------+
@@ -85,6 +88,15 @@ class Auth
      */
     public function __construct()
     {
+    }
+
+    /**
+     * @param AuthCookie $cookie
+     * @param bool $saveCookie
+     */
+    public function setCookie( $cookie, $saveCookie=false ) {
+        $this->cookie = $cookie;
+        $this->saveCookie = $saveCookie;
     }
 
     /**
@@ -96,7 +108,9 @@ class Auth
         if( $id = $this->verify() ) {
             $this->user_info  = $this->user->getUserInfo( $id );
             $this->save();
-            if( isset( $this->cookie ) ) $this->cookie->save( $this->user_id );
+            if( $this->saveCookie && isset( $this->cookie ) ) {
+                $this->cookie->save( $this->user_id );
+            }
         }
         return $id;
     }
@@ -162,6 +176,7 @@ class Auth
     {
         $this->user_id = null;
         $this->loginInfo = array();
+        $this->user_info = array();
         $this->session->set( $this->auth_id, null );
         if( isset( $this->cookie ) ) $this->cookie->logout();
     }
