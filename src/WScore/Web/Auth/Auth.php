@@ -108,6 +108,27 @@ class Auth
     {
         return (bool) $this->user_id;
     }
+
+    /**
+     * @return null|string
+     */
+    public function getUserId() {
+        return $this->user_id;
+    }
+
+    /**
+     * @param null|string $name
+     * @return array|null
+     */
+    public function getUserInfo( $name=null ) {
+        if( !$name ) {
+            return $this->user_info;
+        }
+        if( array_key_exists( $name, $this->user_info ) ) {
+            return $this->user_info[ $name ];
+        }
+        return null;
+    }
     
     public function accessTime()
     {
@@ -162,10 +183,10 @@ class Auth
         if( $id = $this->verifyLogin() ) {
             $this->login( $id );
         }
-        if( $id = $this->verifySession() ) {
+        elseif( $id = $this->verifySession() ) {
             $this->user_id = $id;
         }
-        if( $id = $this->verifyCookie() ) {
+        elseif( $id = $this->verifyCookie() ) {
             $this->login( $id );
         }
         return $this->user_id;
