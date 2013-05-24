@@ -85,7 +85,6 @@ class Auth
      */
     public function __construct()
     {
-        $this->session->start();
     }
 
     /**
@@ -186,13 +185,16 @@ class Auth
      */
     protected function verifySession()
     {
+        $this->session->start();
         $loginInfo = $this->session->get( $this->auth_id );
         if( $loginInfo && 
             isset( $loginInfo[ self::IS_LOGIN ] ) &&
             $loginInfo[ self::IS_LOGIN ] ) 
         {
-            $this->loginInfo  = $loginInfo;
+            // copy last access time from previous session. 
             $this->lastAccess = $loginInfo[ self::ACCESS_TIME ];
+            unset( $loginInfo[ self::ACCESS_TIME ] );
+            $this->loginInfo  = $loginInfo;
             return $loginInfo[ self::USER_ID ];
         }
         return false;
