@@ -17,18 +17,22 @@ class Session
     const  TOKEN_NAME = 'sessionTokenValue_';
 
     /** @var bool  flag to check if session started. */
-    protected $session_start = FALSE;
+    protected $session_start = false;
 
     /** @var array|bool   where session data is */
-    protected $_session = NULL;
+    protected $_session = null;
 
     /** @var null   temporary saves generated token. */
-    protected $session_token = NULL;
+    protected $session_token = null;
 
     // +-------------------------------------------------------------+
-    function __construct( $config=NULL )
+    /**
+     * @param null|string|array $config
+     * @param bool $start
+     */
+    function __construct( $config=null, $start=true )
     {
-        $this->start();
+        $this->start( $start );
         $this->config( $config );
     }
 
@@ -39,9 +43,9 @@ class Session
      * @param null|string|array $storage
      * @return Session
      */
-    public function config( $storage=NULL )
+    public function config( $storage=null )
     {
-        if( !empty( $storage ) && is_array( $storage ) ) {
+        if( is_array( $storage ) ) {
             $this->_session = $storage;
         }
         elseif( is_string( $storage ) ) {
@@ -54,18 +58,22 @@ class Session
         }
         return $this;
     }
-    
+
     /**
+     * @param bool $start
      * @return bool
      */
-    public function start()
+    public function start( $start=true )
     {
-        if( !$this->session_start ) {
+        if( !$start ) {
+            $this->session_start = true;
+        }
+        elseif( !$this->session_start ) {
             ob_start();
             session_start();
-            $this->session_start = TRUE;
+            $this->session_start = true;
         }
-        return TRUE;
+        return true;
     }
     // +-------------------------------------------------------------+
     //  set/get/del variables to Session. 
@@ -90,7 +98,7 @@ class Session
         if( array_key_exists( $name,  $this->_session ) ) {
             unset( $this->_session[ $name ] );
         }
-        return TRUE;
+        return true;
     }
 
     /**
@@ -102,7 +110,7 @@ class Session
         if( array_key_exists( $name,  $this->_session ) ) {
             return $this->_session[ $name ];
         }
-        return FALSE;
+        return false;
     }
     public function pop( $name )
     {
@@ -177,9 +185,9 @@ class Session
                 }
             }
             $this->_session[ static::TOKEN_ID ] = array_values( $this->_session[ static::TOKEN_ID ] );
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
     // +-------------------------------------------------------------+
 }
