@@ -1,26 +1,6 @@
 <?php
 namespace WScore\Web\Auth;
 
-/*
-$auth = new Auth();
-$post = new AuthPost();
-try {
-    
-    if( $id = $post->getId() ) {
-        $pw = $post->getPw();
-        $auth->postInfo( $id, $pw );
-        $user_info = $user->getInfo( $id );
-    }
-    $auth->getAuth();
-    $auth->userInfo( $user_info
-    $auth->setUserInfo( 
-
-}
-catch( \Exception $e ) {
-    
-}
-*/
-
 class Auth
 {
     const USER_ID      = 'user_id';
