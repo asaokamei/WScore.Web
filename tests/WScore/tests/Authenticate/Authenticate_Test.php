@@ -144,4 +144,45 @@ class Authenticate_Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'By-Test', $auth->get( AuthInterface::LOGIN_METHOD ) );
         $this->assertEquals( AuthInterface::LOGIN_VALID, $auth->get( AuthInterface::IS_LOGIN ) );
     }
+
+    function test_login_by_code()
+    {
+        $auth = $this->auth;
+        $auth->post->data = $this->post_noLogin;
+        $auth->user = $this->user_good;
+        $auth->login( 'test' );
+
+        $this->assertTrue( $auth->isLoggedIn() );
+        $this->assertEquals( 'test', $auth->getUserId() );
+        $this->assertEquals( 'DateTime', get_class( $auth->getLastAccess() ) );
+        $this->assertEquals( 'DateTime', get_class( $auth->get( AuthInterface::LOGIN_TIME ) ) );
+        $this->assertEquals( 'by-login', $auth->get( AuthInterface::LOGIN_METHOD ) );
+        $this->assertEquals( AuthInterface::LOGIN_VALID, $auth->get( AuthInterface::IS_LOGIN ) );
+    }
+
+    function test_logout_from_session()
+    {
+        $auth = $this->auth;
+        $auth->post->data = $this->post_noLogin;
+        $auth->session->session->set( 'Auth.ID', array(
+            AuthInterface::USER_ID => 'test',
+            AuthInterface::IS_LOGIN => AuthInterface::LOGIN_VALID,
+            AuthInterface::ACCESS_TIME => 'test-access-time',
+            AuthInterface::LOGIN_METHOD => 'By-Test',
+            AuthInterface::LOGIN_TIME => new \DateTime(),
+            'test' => 'test',
+        ) );
+        $auth->user = $this->user_good;
+        $login = $auth->getAuth();
+        $this->assertTrue( $login );
+        
+        $auth->logout();
+        $this->assertFalse( $auth->isLoggedIn() );
+        $this->assertEquals( null, $auth->getUserId() );
+        $this->assertEquals( 'test-access-time', $auth->getLastAccess() );
+        $this->assertEquals( null, $auth->get( AuthInterface::LOGIN_TIME ) );
+        $this->assertEquals( null, $auth->get( AuthInterface::LOGIN_METHOD ) );
+        $this->assertEquals( null, $auth->get( AuthInterface::IS_LOGIN ) );
+    }
+
 }
