@@ -94,6 +94,7 @@ class Authenticate implements AuthInterface
         if( !$loginInfo ) return false;
         
         $this->loginInfo = $loginInfo;
+        $this->lastAccess = $loginInfo[ self::ACCESS_TIME ];
         $this->validate();
         $this->save();
         return true;
@@ -113,6 +114,7 @@ class Authenticate implements AuthInterface
             self::ACCESS_TIME => new \DateTime(),
             self::LOGIN_TIME  => new \DateTime(),
         );
+        $this->lastAccess = $this->loginInfo[ self::ACCESS_TIME ];
         $this->validate();
         $this->save();
     }
@@ -214,7 +216,6 @@ class Authenticate implements AuthInterface
         foreach( $this->loginStores as $storage ) {
             if( $loginInfo = $storage->loadLogin() ) { break; }
         }
-        $this->lastAccess = $loginInfo[ self::ACCESS_TIME ];
         return $loginInfo;
     }
 
