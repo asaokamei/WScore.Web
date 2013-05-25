@@ -14,6 +14,9 @@ class All_Web_Tests
         $suite->addTestFile( __DIR__ . '/tests/Http/RequestTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Respond/MatchTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Respond/ChainTest.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Authenticate/StorePost_Test.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Authenticate/StoreSession_Test.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Authenticate/Authenticate_Test.php' );
         return $suite;
     }
 }
