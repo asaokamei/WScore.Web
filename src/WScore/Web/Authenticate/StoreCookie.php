@@ -64,7 +64,7 @@ class StoreCookie implements AuthInterface, AuthStorageInterface
             "token" => $token
         );
         $cookie = serialize( $cookie );
-        setcookie( $this->cookie_id, $cookie, time()+$saved );
+        setcookie( $this->cookie_id, $cookie, time()+$saved, '/', '', false, true );
     }
 
     protected function getToken( $id ) {
