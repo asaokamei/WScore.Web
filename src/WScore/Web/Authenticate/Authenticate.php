@@ -138,7 +138,7 @@ class Authenticate implements AuthInterface
      * @return bool
      */
     public function isLoggedIn() {
-        return isset( $this->loginInfo );
+        return !empty( $this->loginInfo );
     }
 
     /**
