@@ -45,4 +45,9 @@ interface RespondInterface
      * @return null|Request
      */
     public function retrieveRequest();
+
+    /**
+     * @return $this
+     */
+    public function instantiate();
 }

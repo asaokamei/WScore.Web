@@ -3,6 +3,7 @@ namespace WScore\Web\Respond;
 
 use WScore\Web\Respond\Request;
 use WScore\Web\Respond\Response;
+use WScore\DiContainer\ContainerInterface;
 
 class Chain extends RespondAbstract implements RespondInterface
 {
@@ -17,7 +18,13 @@ class Chain extends RespondAbstract implements RespondInterface
     public $response = null;
 
     /**
-     * @param RespondInterface $responder
+     * @Inject
+     * @var ContainerInterface
+     */
+    public $service = null;
+
+    /**
+     * @param RespondInterface|string $responder
      * @param null|string      $appUrl
      * @return $this
      */
@@ -52,9 +59,8 @@ class Chain extends RespondAbstract implements RespondInterface
             if( $appUrl === false ) {
                 continue;
             }
-            /** @var $responder RespondInterface */
-            $responder = $info[ 'module' ];
             $request   = $this->getAppRequest( $appUrl );
+            $responder = $this->getResponder( $info );
             $responder->prepare( $this );
             $response  = $responder->request( $request, $this->post )->respond( $match );
             if( $response ) $this->response = $response;
@@ -99,5 +105,31 @@ class Chain extends RespondAbstract implements RespondInterface
         if( is_numeric( $appUrl ) || is_bool( $appUrl ) ) return $request;
         $request->modAppUrl( $appUrl );
         return $request;
+    }
+
+    /**
+     * @param array $info
+     * @return RespondInterface
+     */
+    private function getResponder( $info )
+    {
+        if( is_string( $info[ 'module' ] ) ) {
+            return $this->service->get( $info[ 'module' ] );
+        }
+        return $info[ 'module' ];
+    }
+
+    /**
+     * @return $this|void
+     */
+    public function instantiate()
+    {
+        if( empty( $this->responders ) ) return $this;
+        foreach( $this->responders as $key => $info ) {
+            $responder = $this->getResponder( $info );
+            $responder->instantiate();
+            $this->responders[ $key ][ 'module' ] = $responder;
+        }
+        return $this;
     }
 }

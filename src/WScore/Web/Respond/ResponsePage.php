@@ -80,6 +80,13 @@ class ResponsePage extends ResponseAbstract implements RespondInterface
         return $this;
     }
 
+    /**
+     * @return $this
+     */
+    public function instantiate() {
+        return $this;
+    }
+
     // +----------------------------------------------------------------------+
     //  error conditions.
     // +----------------------------------------------------------------------+

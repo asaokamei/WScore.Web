@@ -191,4 +191,11 @@ class Dispatch extends RespondAbstract
         return false;
     }
 
+    /**
+     * @return $this
+     */
+    public function instantiate() {
+        // do nothing in Dispatch...
+        return $this;
+    }
 }
