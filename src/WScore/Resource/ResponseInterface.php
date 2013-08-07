@@ -10,6 +10,9 @@ namespace WScore\Resource;
  */
 interface ResponseInterface
 {
+    // +----------------------------------------------------------------------+
+    //  http response header and contents
+    // +----------------------------------------------------------------------+
     /**
      * @param string $name
      * @param string $value
@@ -48,6 +51,9 @@ interface ResponseInterface
      */
     public function assign( $data );
 
+    // +----------------------------------------------------------------------+
+    //  rendering content
+    // +----------------------------------------------------------------------+
     /**
      * @param object $render
      * @return mixed
@@ -58,4 +64,49 @@ interface ResponseInterface
      * @return mixed
      */
     public function render();
+
+    // +----------------------------------------------------------------------+
+    //  http response as invalid request 
+    // +----------------------------------------------------------------------+
+    /**
+     * set when input values are invalid to process request.
+     *
+     * @param string $alert
+     */
+    public function invalidParameter( $alert='' );
+
+    /**
+     * method not allowed
+     */
+    public function invalidMethod();
+
+    // +----------------------------------------------------------------------+
+    //  other useful response cases
+    // +----------------------------------------------------------------------+
+    /**
+     * downloads content as a file (or inline).
+     *
+     * @param string $name
+     * @param bool $inline
+     */
+    public function download( $name, $inline=true );
+
+    /**
+     * reload the same page.
+     */
+    public function reload();
+
+    /**
+     * load (jump to) appRoot.
+     */
+    public function loadAppRoot();
+
+    /**
+     * jump to uri. set status to 302 (found).
+     *
+     * @param string $uri
+     */
+    public function jumpTo( $uri );
+
+    // +----------------------------------------------------------------------+
 }
