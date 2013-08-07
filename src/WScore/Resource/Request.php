@@ -26,7 +26,7 @@ class Request
      */
     public $method = 'get';
 
-    public $what = 'html';
+    public $dataType = 'html';
 
     public $data = array();
 
@@ -37,6 +37,17 @@ class Request
      */
     public function __construct()
     {
+    }
+
+    /**
+     * @param null|string $path
+     * @return Request
+     */
+    public function copy( $path=null )
+    {
+        $request = clone( $this );
+        $request->modifyUri( $path );
+        return $request;
     }
 
     /**
@@ -77,7 +88,7 @@ class Request
             $this->setInfo( $request );
         }
         elseif( is_string( $request ) ) {
-            $this->setPath( $request );
+            $this->path( $request );
         }
 
         return $this;
@@ -105,8 +116,8 @@ class Request
      * @param $what
      * @return $this
      */
-    public function what( $what ) {
-        $this->what = strtolower( $what );
+    public function type( $what ) {
+        $this->dataType = strtolower( $what );
         return $this;
     }
 
@@ -114,7 +125,7 @@ class Request
      * @param string $uri
      * @return $this
      */
-    public function setUri( $uri )
+    public function uri( $uri )
     {
         $this->requestUri = $uri;
         return $this;
@@ -124,7 +135,7 @@ class Request
      * @param $path
      * @return $this
      */
-    public function setPath( $path ) {
+    public function path( $path ) {
         $this->requestRoot = $path;
         return $this;
     }
@@ -136,9 +147,9 @@ class Request
     public function setInfo( $info )
     {
         if( isset( $info[ 'method'     ] ) ) $this->on( $info[ 'method' ] );
-        if( isset( $info[ 'requestURI' ] ) ) $this->setUri( $info[ 'requestURI' ] );
-        if( isset( $info[ 'baseURL'    ] ) ) $this->setPath( $info[ 'baseURL' ] );
-        if( isset( $info[ 'what'       ] ) ) $this->what( $info[ 'what' ] );
+        if( isset( $info[ 'requestURI' ] ) ) $this->uri( $info[ 'requestURI' ] );
+        if( isset( $info[ 'baseURL'    ] ) ) $this->path( $info[ 'baseURL' ] );
+        if( isset( $info[ 'what'       ] ) ) $this->type( $info[ 'what' ] );
         return $this;
     }
     // +----------------------------------------------------------------------+
