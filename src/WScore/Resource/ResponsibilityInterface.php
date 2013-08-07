@@ -2,7 +2,7 @@
 namespace WScore\Resource;
 
 /**
- * Class ResourceInterface
+ * Class ResponsibilityInterface
  *
  * @package WScore\Resource
  */
@@ -12,11 +12,10 @@ interface ResponsibilityInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
-     * @param array|string|null $uri
-     * @param array $data
+     * @param array $match
      * @return ResponseInterface|null
      */
-    public function respond( $uri=null, $data=array() );
+    public function respond( $match=array() );
 
     /**
      * sets request info.
