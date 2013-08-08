@@ -30,6 +30,41 @@ class Page implements ResponsibilityInterface, ResponseInterface
     }
 
     /**
+     * experimental support for http's options method.
+     *
+     * @param array $match
+     */
+    public function onOptions( $match=array() )
+    {
+        $reflect = new \ReflectionClass( $this );
+        $methods = $reflect->getMethods();
+        $options = array();
+        foreach( $methods as $method ) {
+            if( substr( $method, 0, 2 ) === 'on' ) {
+                $options[] = strtoupper( substr( $method, 2 ) );
+            }
+        }
+        $allow = implode( ', ', $options );
+        $this->setHeader( 'ALLOW', $allow );
+        return ;
+    }
+
+    /**
+     * experimental support for http's head method.
+     *
+     * @param array $match
+     * @return $this
+     */
+    public function onHead( $match=array() )
+    {
+        if( !method_exists( $this, 'onGet' ) && !$this->onGet( $match ) ) {
+            return $this->invalidMethod();
+        }
+        $this->setContent( null );
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function instantiate() {

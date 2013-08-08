@@ -61,7 +61,7 @@ trait ResponseTrait
 
     /**
      * @param mixed $content
-     * @return mixed
+     * @return $this
      */
     public function setContent( $content ) {
         $this->content = $content;
@@ -70,10 +70,11 @@ trait ResponseTrait
 
     /**
      * @param int $status
-     * @return mixed
+     * @return $this
      */
     public function setStatus( $status ) {
         $this->statusCode = $status;
+        return $this;
     }
 
     /**
@@ -109,6 +110,7 @@ trait ResponseTrait
                 $this->data[ $key ] = $val;
             }
         }
+        return $this;
     }
 
     /**
@@ -147,17 +149,20 @@ trait ResponseTrait
      * set when input values are invalid to process request.
      *
      * @param string $alert
+     * @return mixed
      */
     public function invalidParameter( $alert = '' ) {
-        $this->setStatus( 422 );
         if( $alert ) $this->set( 'alert', $alert );
+        return $this->setStatus( 422 );
     }
 
     /**
      * method not allowed
+     *
+     * @return $this
      */
     public function invalidMethod() {
-        $this->setStatus( 405 );
+        return $this->setStatus( 405 );
     }
 
     /**
@@ -165,6 +170,7 @@ trait ResponseTrait
      *
      * @param string $name
      * @param bool $inline
+     * @return $this
      */
     public function download( $name, $inline = true )
     {
@@ -172,12 +178,14 @@ trait ResponseTrait
         $this->setHeader( 'Content-Disposition', "{$type}; filename=\"{$name}\"" );
         $this->setHeader( 'Content-Type', 'application/octet-stream' );
         $this->setHeader( 'Content-Transfer-Encoding', 'binary' );
+        return $this;
     }
 
     /**
      * jump to uri. set status to 302 (found).
      *
      * @param string $uri
+     * @return $this
      */
     public function jumpTo( $uri )
     {
@@ -186,5 +194,6 @@ trait ResponseTrait
         // when jump to a url, clear renderer (template) and content.
         $this->renderer = null;
         $this->content  = null;
+        return $this;
     }
 }

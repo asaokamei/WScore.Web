@@ -92,7 +92,7 @@ class Dispatch implements ResponsibilityInterface
 
     /**
      * match requested uri against routes.
-     * 
+     *
      * @return array|null
      */
     public function match()
