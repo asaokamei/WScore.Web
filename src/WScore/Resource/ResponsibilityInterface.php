@@ -32,7 +32,7 @@ interface ResponsibilityInterface
 
     /**
      * @param ResponsibilityInterface $parent
-     * @return mixed
+     * @return $this
      */
     public function setParent( $parent );
 

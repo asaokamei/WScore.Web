@@ -17,10 +17,11 @@ trait ResponsibilityTrait
 
     /**
      * @param ResponsibilityInterface $parent
-     * @return mixed|void
+     * @return $this
      */
     public function setParent( $parent ) {
         $this->parent = $parent;
+        return $this;
     }
 
     /**
