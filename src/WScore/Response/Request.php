@@ -1,10 +1,10 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
 /**
  * Class Request
  *
- * @package WScore\Resource
+ * @package WScore\Response
  */
 class Request
 {

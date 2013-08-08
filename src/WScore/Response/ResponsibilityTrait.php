@@ -1,7 +1,7 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
-use \WScore\Resource\ResponsibilityInterface;
+use \WScore\Response\ResponsibilityInterface;
 
 trait ResponsibilityTrait
 {
@@ -11,7 +11,7 @@ trait ResponsibilityTrait
     public $parent;
 
     /**
-     * @var \WScore\Resource\Request
+     * @var \WScore\Response\Request
      */
     public $request = null;
 

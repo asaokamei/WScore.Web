@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
 class Response implements ResponseInterface
 {

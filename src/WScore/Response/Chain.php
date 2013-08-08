@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
 use WScore\DiContainer\ContainerInterface;
 

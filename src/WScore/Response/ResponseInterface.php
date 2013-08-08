@@ -1,12 +1,12 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
 /**
  * Class ResponseInterface
  *
  * All Respond::respond returns ResponseInterface.
  *
- * @package WScore\Resource
+ * @package WScore\Response
  */
 interface ResponseInterface
 {

@@ -1,7 +1,7 @@
 <?php
-namespace WScore\Resource;
+namespace WScore\Response;
 
-use \WScore\Resource\Page;
+use \WScore\Response\Page;
 use \WScore\DiContainer\ContainerInterface;
 
 class Dispatch implements ResponsibilityInterface
@@ -22,7 +22,7 @@ class Dispatch implements ResponsibilityInterface
 
     /**
      * @Inject
-     * @var \WScore\Resource\ResponseInterface
+     * @var \WScore\Response\ResponseInterface
      */
     public $response;
 
@@ -118,7 +118,7 @@ class Dispatch implements ResponsibilityInterface
     private function loadPage( $pageUri, $match )
     {
         $class = $this->getPageClass( $pageUri );
-        /** @var $page \WScore\Resource\Page */
+        /** @var $page \WScore\Response\Page */
         if( !$page = $this->container->get( $class ) ) return null;
 
         $response = $page->setParent( $this )->setRequest( $this->getRequest() )->respond( $match );
