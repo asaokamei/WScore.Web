@@ -98,16 +98,6 @@ interface ResponseInterface
     public function download( $name, $inline=true );
 
     /**
-     * reload the same page.
-     */
-    public function reload();
-
-    /**
-     * load (jump to) appRoot.
-     */
-    public function loadAppRoot();
-
-    /**
      * jump to uri. set status to 302 (found).
      *
      * @param string $uri
