@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Resource;
 
-use \WScore\Resource\Resource;
+use \WScore\Resource\Page;
 use \WScore\DiContainer\ContainerInterface;
 
 class Dispatch implements ResponsibilityInterface
@@ -118,10 +118,10 @@ class Dispatch implements ResponsibilityInterface
     private function loadPage( $pageUri, $match )
     {
         $class = $this->getPageClass( $pageUri );
-        /** @var $resource \WScore\Resource\Resource */
-        if( !$resource = $this->container->get( $class ) ) return null;
+        /** @var $page \WScore\Resource\Page */
+        if( !$page = $this->container->get( $class ) ) return null;
 
-        $response = $resource->setParent( $this )->setRequest( $this->getRequest() )->respond( $match );
+        $response = $page->setParent( $this )->setRequest( $this->getRequest() )->respond( $match );
         if( $template = $this->getViewFile( $pageUri ) ) {
             $response->setTemplate( $template );
         }

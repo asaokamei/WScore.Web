@@ -42,7 +42,6 @@ class Chain implements ResponsibilityInterface
             if( $response ) $this->response = $response;
         }
         return $this->response;
-
     }
 
     /**
