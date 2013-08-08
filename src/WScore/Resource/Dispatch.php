@@ -99,6 +99,7 @@ class Dispatch implements ResponsibilityInterface
             return $response;
         }
         if( $template = $this->getViewFile( $pageUri ) ) {
+            $this->response->assign( (array) $this->request );
             $this->response->assign( $match );
             $this->response->setTemplate( $template );
             return $this->response;

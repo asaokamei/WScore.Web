@@ -11,7 +11,7 @@ trait ResponsibilityTrait
     public $parent;
 
     /**
-     * @var Request|null
+     * @var \WScore\Resource\Request
      */
     public $request = null;
 
