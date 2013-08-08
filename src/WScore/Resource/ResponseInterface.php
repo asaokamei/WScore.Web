@@ -56,9 +56,15 @@ interface ResponseInterface
     // +----------------------------------------------------------------------+
     /**
      * @param object $render
-     * @return mixed
+     * @return $this
      */
     public function setRenderer( $render );
+
+    /**
+     * @param string $template
+     * @return $this
+     */
+    public function setTemplate( $template );
 
     /**
      * @return mixed
