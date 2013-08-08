@@ -84,16 +84,41 @@ class Dispatch implements ResponsibilityInterface
      */
     public function respond( $match = array() )
     {
-        // match against routes.
-        $uri = $this->request->requestUri;
-        if( !$match = $this->router->match( $uri ) ) {
+        if( !$match = $this->match() ) {
             return null;
         }
-        // prepare $match. 'page' is the page/view file to load.
-        if( !isset( $match[ 'page' ] ) && !isset( $match[1] ) ) {
+        return $this->dispatch( $match );
+    }
+
+    /**
+     * match requested uri against routes.
+     * 
+     * @return array|null
+     */
+    public function match()
+    {
+        if( !$match = $this->router->match( $this->request->requestUri ) ) {
             return null;
         }
-        $pageUri = $match[ 'page' ] ? $match[ 'page' ] : $match[1];
+        if( !isset( $match[ 'render' ] ) && !isset( $match[1] ) ) {
+            return null;
+        }
+        // make sure render column is set.
+        if( !isset( $match[ 'render' ] ) ) {
+            $match[ 'render' ] = $match[1];
+        }
+        return $match;
+    }
+
+    /**
+     * dispatch page object or view template.
+     *
+     * @param array $match
+     * @return null|ResponseInterface
+     */
+    public function dispatch( $match=array() )
+    {
+        $pageUri = $match[ 'render' ];
         // get response.
         if( $response = $this->loadPage( $pageUri, $match ) ) {
             return $response;
@@ -106,7 +131,6 @@ class Dispatch implements ResponsibilityInterface
         }
         return null;
     }
-
     // +----------------------------------------------------------------------+
     //  loading Page (resource) object
     // +----------------------------------------------------------------------+
