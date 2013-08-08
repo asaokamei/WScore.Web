@@ -51,11 +51,10 @@ class Chain implements ResponsibilityInterface
     private function getAppRequest( $info )
     {
         if( !$this->request ) return null;
-        $appUrl = $info[ 'appUrl' ];
-        if( is_null( $appUrl ) || is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
-            return clone( $this->request );
+        if( is_string( $info[ 'appUrl' ] ) ) {
+            return $this->request->copy( $info[ 'appUrl' ] );
         }
-        return $this->request->copy( $appUrl );
+        return clone( $this->request );
     }
 
     // +----------------------------------------------------------------------+
@@ -92,23 +91,18 @@ class Chain implements ResponsibilityInterface
             // if response is set, then skip subsequent responsibilities unless $always is true.
             return false;
         }
-        if( is_null( $appUrl ) || is_numeric( $appUrl ) || is_bool( $appUrl ) ) {
-            // load module if it's just a simple array module entry.
-            return true;
-        }
-        if( $this->request->match( $appUrl ) ) {
+        if( is_string( $appUrl ) && !$this->request->match( $appUrl ) ) {
             // ignore the module with appUrl which does not match with pathInfo.
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
      * @param array $info
      * @return ResponsibilityInterface
      */
-    private function getResponder( $info )
-    {
+    private function getResponder( $info ) {
         if( is_string( $info[ 'module' ] ) ) {
             return $this->service->get( $info[ 'module' ] );
         }

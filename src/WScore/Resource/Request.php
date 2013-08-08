@@ -79,22 +79,6 @@ class Request
     //  setting request parameters.
     // +----------------------------------------------------------------------+
     /**
-     * @param array|string $request
-     * @return $this
-     */
-    public function set( $request )
-    {
-        if( is_array( $request ) ) {
-            $this->setInfo( $request );
-        }
-        elseif( is_string( $request ) ) {
-            $this->path( $request );
-        }
-
-        return $this;
-    }
-
-    /**
      * @param string $method
      * @return $this
      */
@@ -137,19 +121,6 @@ class Request
      */
     public function path( $path ) {
         $this->requestRoot = $path;
-        return $this;
-    }
-
-    /**
-     * @param array $info
-     * @return $this
-     */
-    public function setInfo( $info )
-    {
-        if( isset( $info[ 'method'     ] ) ) $this->on( $info[ 'method' ] );
-        if( isset( $info[ 'requestURI' ] ) ) $this->uri( $info[ 'requestURI' ] );
-        if( isset( $info[ 'baseURL'    ] ) ) $this->path( $info[ 'baseURL' ] );
-        if( isset( $info[ 'what'       ] ) ) $this->type( $info[ 'what' ] );
         return $this;
     }
     // +----------------------------------------------------------------------+
