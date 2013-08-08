@@ -46,10 +46,9 @@ class Dispatch implements ResponsibilityInterface
     {
         $class = get_called_class();
         $pos   = strrpos( $class, '\\' );
+        $namespace = '';
         if( $pos !== false ) {
             $namespace = substr( $class, 0, $pos );
-        } else {
-            $namespace = '';
         }
         $this->pageRoot = $namespace . '\Page'; // root for class name
         $this->viewRoot = $viewDir   . '/View'; // root for template file
@@ -61,8 +60,7 @@ class Dispatch implements ResponsibilityInterface
      * @param array $route
      * @return $this
      */
-    public function setRoute( $route )
-    {
+    public function setRoute( $route ) {
         $this->router->set( $route );
         return $this;
     }
@@ -92,17 +90,20 @@ class Dispatch implements ResponsibilityInterface
             return null;
         }
         // prepare $match. 'page' is the page/view file to load.
-        if( !isset( $match[ 'page' ] ) ) {
+        if( !isset( $match[ 'page' ] ) && !isset( $match[1] ) ) {
             return null;
         }
-        $pageUri = $match[ 'page' ];
+        $pageUri = $match[ 'page' ] ? $match[ 'page' ] : $match[1];
         // get response.
-        $response = $this->loadPage( $pageUri, $match );
-        if( !$response ) {
-            $this->response->assign( $match );
-            $response = $this->loadView( $pageUri, $this->response );
+        if( $response = $this->loadPage( $pageUri, $match ) ) {
+            return $response;
         }
-        return $response;
+        if( $template = $this->getViewFile( $pageUri ) ) {
+            $this->response->assign( $match );
+            $this->response->setTemplate( $template );
+            return $this->response;
+        }
+        return null;
     }
 
     // +----------------------------------------------------------------------+
@@ -117,12 +118,11 @@ class Dispatch implements ResponsibilityInterface
     {
         $class = $this->getPageClass( $pageUri );
         /** @var $resource \WScore\Resource\Resource */
-        $resource  = $this->container->get( $class );
-        if( !$resource ) return null;
+        if( !$resource = $this->container->get( $class ) ) return null;
 
-        $response = $resource->setParent( $this )->setRequest( $this->request )->respond( $match );
-        if( $response ) {
-            $this->loadView( $pageUri, $response );
+        $response = $resource->setParent( $this )->setRequest( $this->getRequest() )->respond( $match );
+        if( $template = $this->getViewFile( $pageUri ) ) {
+            $response->setTemplate( $template );
         }
         return $response;
     }
@@ -130,15 +130,15 @@ class Dispatch implements ResponsibilityInterface
     /**
      * find class name for Page objects to load.
      *
-     * @param string $appInfo
+     * @param string $pageUri
      * @return string
      */
-    private function getPageClass( $appInfo )
+    private function getPageClass( $pageUri )
     {
-        if( strpos( $appInfo, '.' ) !== false ) {
-            $appInfo = substr( $appInfo, 0, strpos( $appInfo, '.' ) );
+        if( strpos( $pageUri, '.' ) !== false ) {
+            $pageUri = substr( $pageUri, 0, strpos( $pageUri, '.' ) );
         }
-        $list  = explode( '/', $appInfo );
+        $list  = explode( '/', $pageUri );
         $class = $this->pageRoot;
         foreach( $list as $name ) {
             if( !$name ) continue;
@@ -151,31 +151,18 @@ class Dispatch implements ResponsibilityInterface
     //  loading View (template) file
     // +----------------------------------------------------------------------+
     /**
-     * @param string $viewUri
-     * @param ResponseInterface $response
-     * @return null|ResponseInterface
-     */
-    private function loadView( $viewUri, $response )
-    {
-        if( !$template = $this->getViewFile( $viewUri ) ) {
-            return null;
-        }
-        $response->setTemplate( $template );
-        return $response;
-    }
-
-    /**
      * find view (template) file to render.
      *
-     * @param string $appUrl
+     * @param string $viewUri
      * @return string
      */
-    private function getViewFile( $appUrl )
+    private function getViewFile( $viewUri )
     {
+        if( substr( $viewUri, 0, 1 ) === '.' ) return null;
         $extensions = array( '', '.php', '.html', '.htm', '.txt', '.txt.php', '.text', '.md', '.md.php', 'markdown' );
-        if( substr( $appUrl, 0, 1 ) !== '/' ) $appUrl = '/'.$appUrl;
+        if( substr( $viewUri, 0, 1 ) !== '/' ) $viewUri = '/'.$viewUri;
         foreach( $extensions as $ext ) {
-            $template = $this->viewRoot . $appUrl . $ext;
+            $template = $this->viewRoot . $viewUri . $ext;
             if( file_exists( $template ) ) return $template;
         }
         return false;
