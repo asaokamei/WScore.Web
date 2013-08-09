@@ -65,6 +65,16 @@ class Page implements ResponsibilityInterface, ResponseInterface
     }
 
     /**
+     * overwrite this method. 
+     *
+     * @param array $match
+     * @return $this
+     */
+    public function onGet( $match=array() ) {
+        return false;
+    }
+
+    /**
      * @return $this
      */
     public function instantiate() {
