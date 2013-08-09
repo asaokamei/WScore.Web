@@ -22,7 +22,7 @@ class Dispatch implements ResponsibilityInterface
 
     /**
      * @Inject
-     * @var \WScore\Response\ResponseInterface
+     * @var \WScore\Response\Response
      */
     public $response;
 

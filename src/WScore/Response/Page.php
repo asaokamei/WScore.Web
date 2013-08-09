@@ -31,10 +31,8 @@ class Page implements ResponsibilityInterface, ResponseInterface
 
     /**
      * experimental support for http's options method.
-     *
-     * @param array $match
      */
-    public function onOptions( $match=array() )
+    public function onOptions()
     {
         $reflect = new \ReflectionClass( $this );
         $methods = $reflect->getMethods();
@@ -65,13 +63,12 @@ class Page implements ResponsibilityInterface, ResponseInterface
     }
 
     /**
-     * overwrite this method. 
+     * overwrite this method. or returns invalid method error.
      *
-     * @param array $match
      * @return $this
      */
-    public function onGet( $match=array() ) {
-        return false;
+    public function onGet() {
+        return $this->invalidMethod();
     }
 
     /**
