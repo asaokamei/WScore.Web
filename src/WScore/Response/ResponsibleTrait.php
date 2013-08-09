@@ -1,12 +1,12 @@
 <?php
 namespace WScore\Response;
 
-use \WScore\Response\ResponsibilityInterface;
+use \WScore\Response\ResponsibleInterface;
 
-trait ResponsibilityTrait
+trait ResponsibleTrait
 {
     /**
-     * @var ResponsibilityInterface
+     * @var ResponsibleInterface
      */
     public $parent;
 
@@ -16,7 +16,7 @@ trait ResponsibilityTrait
     public $request = null;
 
     /**
-     * @param ResponsibilityInterface $parent
+     * @param ResponsibleInterface $parent
      * @return $this
      */
     public function setParent( $parent ) {
@@ -41,7 +41,7 @@ trait ResponsibilityTrait
     }
 
     /**
-     * @return ResponsibilityInterface
+     * @return ResponsibleInterface
      */
     public function getRoot()
     {
@@ -53,7 +53,7 @@ trait ResponsibilityTrait
     }
 
     /**
-     * @return ResponsibilityInterface
+     * @return ResponsibleInterface
      */
     public function getParent() {
         return $this->parent;
