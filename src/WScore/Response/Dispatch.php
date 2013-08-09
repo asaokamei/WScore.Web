@@ -4,9 +4,9 @@ namespace WScore\Response;
 use \WScore\Response\Page;
 use \WScore\DiContainer\ContainerInterface;
 
-class Dispatch implements ResponsibilityInterface
+class Dispatch implements ResponsibleInterface
 {
-    use ResponsibilityTrait;
+    use ResponsibleTrait;
 
     /**
      * @Inject
