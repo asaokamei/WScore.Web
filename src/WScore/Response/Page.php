@@ -10,19 +10,15 @@ class Page implements ResponsibilityInterface, ResponseInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
-     * @param array $match
      * @return ResponseInterface|null|bool
      */
-    public function respond( $match = array() )
+    public function respond()
     {
-        $method = $this->request->method ?: 'get';
-        $method = 'on' . ucwords( $method );
+        $method = 'on' . ucwords( $this->request->method );
         if( !method_exists( $this, $method ) ) {
-            $this->invalidMethod();
-            return $this;
+            return $this->invalidMethod();
         }
-        $this->data = array_merge( $this->data, (array) $this->request );
-        $result = $this->$method( $match, $this->request->data );
+        $result = $this->$method( $this->request->data );
         if( $result === false ) {
             return null;
         }
@@ -50,12 +46,12 @@ class Page implements ResponsibilityInterface, ResponseInterface
     /**
      * experimental support for http's head method.
      *
-     * @param array $match
+     * @param array $data
      * @return $this
      */
-    public function onHead( $match=array() )
+    public function onHead( $data=array() )
     {
-        if( !method_exists( $this, 'onGet' ) && !$this->onGet( $match ) ) {
+        if( !method_exists( $this, 'onGet' ) && !$this->onGet( $data ) ) {
             return $this->invalidMethod();
         }
         $this->setContent( null );

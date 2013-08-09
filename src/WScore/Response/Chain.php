@@ -26,7 +26,7 @@ class Chain implements ResponsibilityInterface
     // +----------------------------------------------------------------------+
     //  main respond method
     // +----------------------------------------------------------------------+
-    public function respond( $match=array() )
+    public function respond()
     {
         if( empty( $this->responders ) ) {
             throw new \RuntimeException( 'no loaders.' );
@@ -38,7 +38,7 @@ class Chain implements ResponsibilityInterface
             }
             $request   = $this->getAppRequest( $info );
             $responder = $this->getResponder( $info );
-            $response  = $responder->setParent( $this )->setRequest( $request )->respond( $match );
+            $response  = $responder->setParent( $this )->setRequest( $request )->respond();
             if( $response ) $this->response = $response;
         }
         return $this->response;

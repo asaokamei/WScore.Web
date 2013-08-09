@@ -79,21 +79,21 @@ class Dispatch implements ResponsibilityInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
-     * @param array $match
      * @return ResponseInterface|null|bool
      */
-    public function respond( $match = array() )
+    public function respond()
     {
-        if( !$match = $this->match() ) {
+        if( !$pageUri = $this->match() ) {
             return null;
         }
-        return $this->dispatch( $match );
+        return $this->dispatch( $pageUri );
     }
 
     /**
      * match requested uri against routes.
+     * returns uri string to dispatch.
      *
-     * @return array|null
+     * @return string|null
      */
     public function match()
     {
@@ -103,29 +103,23 @@ class Dispatch implements ResponsibilityInterface
         if( !isset( $match[ 'render' ] ) && !isset( $match[1] ) ) {
             return null;
         }
-        // make sure render column is set.
-        if( !isset( $match[ 'render' ] ) ) {
-            $match[ 'render' ] = $match[1];
-        }
-        return $match;
+        $this->request->with( $match );
+        return ( isset( $match[ 'render' ] ) ) ? $match[ 'render' ] : $match[1];
     }
 
     /**
      * dispatch page object or view template.
      *
-     * @param array $match
+     * @param string $pageUri
      * @return null|ResponseInterface
      */
-    public function dispatch( $match=array() )
+    public function dispatch( $pageUri )
     {
-        $pageUri = $match[ 'render' ];
-        // get response.
-        if( $response = $this->loadPage( $pageUri, $match ) ) {
+        if( $response = $this->loadPage( $pageUri ) ) {
             return $response;
         }
-        if( $template = $this->getViewFile( $pageUri ) ) {
+        if( $this->response && $template = $this->getViewFile( $pageUri ) ) {
             $this->response->assign( (array) $this->request );
-            $this->response->assign( $match );
             $this->response->setTemplate( $template );
             return $this->response;
         }
@@ -136,19 +130,19 @@ class Dispatch implements ResponsibilityInterface
     // +----------------------------------------------------------------------+
     /**
      * @param string $pageUri
-     * @param array  $match
      * @return ResponseInterface|null
      */
-    private function loadPage( $pageUri, $match )
+    private function loadPage( $pageUri )
     {
-        $class = $this->getPageClass( $pageUri );
-        /** @var $page \WScore\Response\Page */
+        if( !$class = $this->getPageClass( $pageUri ) ) return null;
         if( !$page = $this->container->get( $class ) ) return null;
+        /** @var $page \WScore\Response\Page */
 
-        $response = $page->setParent( $this )->setRequest( $this->getRequest() )->respond( $match );
+        $page->assign( (array) $this->request );
         if( $template = $this->getViewFile( $pageUri ) ) {
-            $response->setTemplate( $template );
+            $page->setTemplate( $template );
         }
+        $response = $page->setParent( $this )->setRequest( $this->request )->respond();
         return $response;
     }
 

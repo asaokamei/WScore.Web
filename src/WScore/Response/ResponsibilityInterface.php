@@ -12,10 +12,9 @@ interface ResponsibilityInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
-     * @param array $match
      * @return ResponseInterface|null
      */
-    public function respond( $match=array() );
+    public function respond();
 
     /**
      * sets request info.

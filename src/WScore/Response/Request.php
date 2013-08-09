@@ -89,10 +89,16 @@ class Request
 
     /**
      * @param array $data
+     * @param bool $overwrite
      * @return $this
      */
-    public function with( $data ) {
-        $this->data = $data;
+    public function with( $data, $overwrite=false )
+    {
+        if( $overwrite ) {
+            $this->data = $data;
+        } else {
+            $this->data = array_merge( $this->data, $data );
+        }
         return $this;
     }
 
@@ -109,8 +115,7 @@ class Request
      * @param string $uri
      * @return $this
      */
-    public function uri( $uri )
-    {
+    public function uri( $uri ) {
         $this->requestUri = $uri;
         return $this;
     }
