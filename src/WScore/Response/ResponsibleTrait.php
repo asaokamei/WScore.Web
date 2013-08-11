@@ -59,4 +59,11 @@ trait ResponsibleTrait
         return $this->parent;
     }
 
+    /**
+     * @return $this
+     */
+    public function instantiate() {
+        return $this;
+    }
+
 }

@@ -65,13 +65,6 @@ class Dispatch implements ResponsibleInterface
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function instantiate() {
-        return $this;
-    }
-
     // +----------------------------------------------------------------------+
     //  main respond method
     // +----------------------------------------------------------------------+

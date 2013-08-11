@@ -68,13 +68,6 @@ class Page implements ResponsibleInterface, ResponseInterface
     }
 
     /**
-     * @return $this
-     */
-    public function instantiate() {
-        return $this;
-    }
-
-    /**
      * reload the same page.
      */
     public function reload()
