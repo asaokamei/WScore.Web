@@ -13,5 +13,6 @@ else {
 require_once( VENDOR_DIRECTORY . 'autoload.php' );
 $loader = new \Composer\Autoload\ClassLoader();
 $loader->add( 'WScore\Web', dirname( __DIR__ ).'/src' );
+$loader->add( 'WScore\Response', dirname( __DIR__ ).'/src' );
 $loader->add( 'WScore\tests', __DIR__ );
 $loader->register();
