@@ -1,10 +1,10 @@
 <?php
 namespace WScore\Response;
 
-use \WScore\Response\Page;
+use \WScore\Response\PageAbstract;
 use \WScore\DiContainer\ContainerInterface;
 
-class Dispatch implements ResponsibleInterface
+abstract class DispatchAbstract implements ResponsibleInterface
 {
     use ResponsibleTrait;
 
@@ -129,7 +129,7 @@ class Dispatch implements ResponsibleInterface
     {
         if( !$class = $this->getPageClass( $pageUri ) ) return null;
         if( !$page = $this->container->get( $class ) ) return null;
-        /** @var $page \WScore\Response\Page */
+        /** @var $page \WScore\Response\PageAbstract */
 
         $page->assign( (array) $this->request );
         if( $template = $this->getViewFile( $pageUri ) ) {

@@ -3,7 +3,7 @@ namespace WScore\Response;
 
 use WScore\DiContainer\ContainerInterface;
 
-class Chain implements ResponsibleInterface
+abstract class ChainAbstract implements ResponsibleInterface
 {
     use ResponsibleTrait;
 

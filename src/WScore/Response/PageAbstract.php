@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Response;
 
-class Page implements ResponsibleInterface, ResponseInterface
+abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
 {
     use ResponsibleTrait;
     use ResponseTrait;
