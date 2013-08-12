@@ -10,7 +10,7 @@ abstract class ChainAbstract implements ResponsibleInterface
     /**
      * @var array
      */
-    public $responders = array();
+    public $responsibles = array();
 
     /**
      * @var null|ResponseInterface
@@ -26,19 +26,23 @@ abstract class ChainAbstract implements ResponsibleInterface
     // +----------------------------------------------------------------------+
     //  main respond method
     // +----------------------------------------------------------------------+
+    /**
+     * @return null|ResponseInterface
+     * @throws \RuntimeException
+     */
     public function respond()
     {
-        if( empty( $this->responders ) ) {
+        if( empty( $this->responsibles ) ) {
             throw new \RuntimeException( 'no loaders.' );
         }
-        foreach( $this->responders as $info )
+        foreach( $this->responsibles as $info )
         {
             if( $this->loadModule( $info ) === false ) {
                 continue;
             }
             $request   = $this->getAppRequest( $info );
-            $responder = $this->getResponder( $info );
-            $response  = $responder->setParent( $this )->setRequest( $request )->respond();
+            $responsible = $this->getResponder( $info );
+            $response  = $responsible->setParent( $this )->setRequest( $request )->respond();
             if( $response ) $this->response = $response;
         }
         return $this->response;
@@ -65,7 +69,7 @@ abstract class ChainAbstract implements ResponsibleInterface
      * @param null|string      $appUrl
      * @return $this
      */
-    public function addResponder( $responder, $appUrl=null )
+    public function addResponsible( $responder, $appUrl=null )
     {
         $info = array(
             'module' => $responder,
@@ -73,7 +77,7 @@ abstract class ChainAbstract implements ResponsibleInterface
             'always' => false,
         );
         if( $appUrl === true ) $info[ 'always' ] = true;
-        $this->responders[] = $info;
+        $this->responsibles[] = $info;
         return $this;
     }
 
@@ -114,11 +118,11 @@ abstract class ChainAbstract implements ResponsibleInterface
      */
     public function instantiate()
     {
-        if( empty( $this->responders ) ) return $this;
-        foreach( $this->responders as $key => $info ) {
-            $responder = $this->getResponder( $info );
-            $responder->instantiate();
-            $this->responders[ $key ][ 'module' ] = $responder;
+        if( empty( $this->responsibles ) ) return $this;
+        foreach( $this->responsibles as $key => $info ) {
+            $responsible = $this->getResponder( $info );
+            $responsible->instantiate();
+            $this->responsibles[ $key ][ 'module' ] = $responsible;
         }
         return $this;
     }
