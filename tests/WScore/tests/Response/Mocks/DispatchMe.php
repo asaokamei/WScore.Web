@@ -10,6 +10,7 @@ class DispatchMe extends DispatchAbstract
         parent::__construct( __DIR__ );
         $this->setRoute( array(
             '/ViewOnly' => [],
+            '/PageMe'   => [],
         ));
     }
 }

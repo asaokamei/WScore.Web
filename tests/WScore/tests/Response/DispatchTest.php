@@ -38,4 +38,25 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( __DIR__ . '/Mocks/View/ViewOnly.php', $response->template );
     }
 
+    function test_dispatch_page_response()
+    {
+        $this->dispatch->setRequest( $this->request->uri( 'PageMe' ) );
+        /** @var $response \WScore\Response\Response */
+        $response = $this->dispatch->respond();
+
+        $this->assertEquals( 'WScore\tests\Response\Mocks\Page\PageMe', get_class( $response ) );
+        $this->assertEquals( 'PageMe was here.', $response->get( 'onGet' ) );
+        $this->assertEquals( null, $response->template );
+    }
+
+    function test_dispatch_page_and_set_template()
+    {
+        $this->dispatch->setRequest( $this->request->uri( 'PageMe' )->on( 'view' ) );
+        /** @var $response \WScore\Response\Response */
+        $response = $this->dispatch->respond();
+
+        $this->assertEquals( 'WScore\tests\Response\Mocks\Page\PageMe', get_class( $response ) );
+        $this->assertEquals( 'PageMe was here.', $response->get( 'onView' ) );
+        $this->assertEquals( __DIR__ . '/Mocks/View/ViewOnly.php', $response->template );
+    }
 }
