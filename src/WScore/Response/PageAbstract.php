@@ -74,7 +74,7 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
      */
     public function reload()
     {
-        $uri = $this->request->requestUri;
+        $uri = $this->request->requestRoot . $this->request->requestUri;
         $this->jumpTo( $uri );
     }
 
