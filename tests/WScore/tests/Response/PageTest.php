@@ -47,7 +47,33 @@ class PageTest extends \PHPUnit_Framework_TestCase
     {
         $this->page->setRequest( $this->request->on( 'options' ) );
         $this->page->respond();
-        $this->assertEquals( 'GET, TEST, OPTIONS, HEAD', $this->page->headers[ 'ALLOW' ] );
+        $this->assertEquals( 'GET, TEST, RELOAD, ROOTS, OPTIONS, HEAD', $this->page->headers[ 'ALLOW' ] );
     }
 
+    function test_non_existing_method_returns_invalid_method()
+    {
+        $this->page->setRequest( $this->request->on( 'badRequest' ) );
+        $this->page->respond();
+        $this->assertEquals( '405', $this->page->statusCode );
+    }
+
+    function test_reload_fills_location_header()
+    {
+        $this->page->setRequest(
+            $this->request->on( 'reload' )->uri( '/my/uri?test' )->path( '/path/to' )
+        );
+        $this->page->respond();
+        $this->assertEquals( '302', $this->page->statusCode );
+        $this->assertEquals( '/path/to/my/uri?test', $this->page->headers[ 'Location' ] );
+    }
+
+    function test_appRoot_fills_location_header()
+    {
+        $this->page->setRequest(
+            $this->request->on( 'roots' )->uri( '/my/uri?test' )->path( '/path/to' )
+        );
+        $this->page->respond();
+        $this->assertEquals( '302', $this->page->statusCode );
+        $this->assertEquals( '/path/to', $this->page->headers[ 'Location' ] );
+    }
 }

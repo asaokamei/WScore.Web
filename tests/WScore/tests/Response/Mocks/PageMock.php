@@ -17,4 +17,14 @@ class PageMock extends PageAbstract
     {
         $this->onList[] = 'onTest';
     }
+
+    function onReload( $data=array() )
+    {
+        $this->reload();
+    }
+
+    function onRoots( $data=array() )
+    {
+        $this->loadAppRoot();
+    }
 }
