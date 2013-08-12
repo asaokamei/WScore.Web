@@ -34,8 +34,9 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
         $methods = $reflect->getMethods();
         $options = array();
         foreach( $methods as $method ) {
-            if( substr( $method, 0, 2 ) === 'on' ) {
-                $options[] = strtoupper( substr( $method, 2 ) );
+            $name = $method->getName();
+            if( substr( $name, 0, 2 ) === 'on' ) {
+                $options[] = strtoupper( substr( $name, 2 ) );
             }
         }
         $allow = implode( ', ', $options );
@@ -61,9 +62,10 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
     /**
      * overwrite this method. or returns invalid method error.
      *
+     * @param array $data
      * @return $this
      */
-    public function onGet() {
+    public function onGet( $data=array() ) {
         return $this->invalidMethod();
     }
 
