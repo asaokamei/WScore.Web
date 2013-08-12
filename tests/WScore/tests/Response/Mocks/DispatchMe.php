@@ -11,6 +11,7 @@ class DispatchMe extends DispatchAbstract
         $this->setRoute( array(
             '/ViewOnly' => [],
             '/PageMe'   => [],
+            '/PageWithView' => [],
         ));
     }
 }
