@@ -4,9 +4,9 @@ namespace WScore\Response;
 use \WScore\Response\PageAbstract;
 use \WScore\DiContainer\ContainerInterface;
 
-abstract class DispatchAbstract implements ResponsibleInterface
+abstract class DispatchAbstract implements ModuleInterface
 {
-    use ResponsibleTrait;
+    use ModuleTrait;
 
     /**
      * @Inject

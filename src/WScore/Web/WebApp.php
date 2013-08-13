@@ -3,10 +3,10 @@ namespace WScore\Web;
 
 use WScore\Response\ChainAbstract;
 use WScore\Response\ResponseInterface;
-use WScore\Response\ResponsibleInterface;
+use WScore\Response\ModuleInterface;
 use WScore\Template\TemplateInterface;
 
-class WebApp extends ChainAbstract implements ResponsibleInterface
+class WebApp extends ChainAbstract implements ModuleInterface
 {
     /**
      * @Inject

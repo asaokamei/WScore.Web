@@ -1,12 +1,12 @@
 <?php
 namespace WScore\tests\Response\Mocks;
 
-use WScore\Response\ResponsibleInterface;
-use WScore\Response\ResponsibleTrait;
+use WScore\Response\ModuleInterface;
+use WScore\Response\ModuleTrait;
 
-class Responsibility implements ResponsibleInterface
+class Responsibility implements ModuleInterface
 {
-    use ResponsibleTrait;
+    use ModuleTrait;
 
     public $responded = false;
 

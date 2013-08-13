@@ -6,7 +6,7 @@ namespace WScore\Response;
  *
  * @package WScore\Response
  */
-interface ResponsibleInterface
+interface ModuleInterface
 {
     /**
      * responds to a request.
@@ -30,20 +30,20 @@ interface ResponsibleInterface
     public function getRequest();
 
     /**
-     * @param ResponsibleInterface $parent
+     * @param ModuleInterface $parent
      * @return $this
      */
     public function setParent( $parent );
 
     /**
-     * @return ResponsibleInterface
+     * @return ModuleInterface
      */
     public function getParent();
 
     /**
      * returns root of all Respond objects.
      *
-     * @return ResponsibleInterface
+     * @return ModuleInterface
      */
     public function getRoot();
 

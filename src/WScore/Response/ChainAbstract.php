@@ -3,9 +3,9 @@ namespace WScore\Response;
 
 use WScore\DiContainer\ContainerInterface;
 
-abstract class ChainAbstract implements ResponsibleInterface
+abstract class ChainAbstract implements ModuleInterface
 {
-    use ResponsibleTrait;
+    use ModuleTrait;
 
     /**
      * @var array
@@ -65,7 +65,7 @@ abstract class ChainAbstract implements ResponsibleInterface
     //  managing Responsibility objects
     // +----------------------------------------------------------------------+
     /**
-     * @param ResponsibleInterface|string $responder
+     * @param ModuleInterface|string $responder
      * @param null|string      $appUrl
      * @return $this
      */
@@ -104,7 +104,7 @@ abstract class ChainAbstract implements ResponsibleInterface
 
     /**
      * @param array $info
-     * @return ResponsibleInterface
+     * @return ModuleInterface
      */
     private function getModuleObject( $info ) {
         if( is_string( $info[ 'module' ] ) ) {
