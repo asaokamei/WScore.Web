@@ -9,27 +9,23 @@ namespace WScore\Response;
 class Request
 {
     /**
-     * root path of the request uri. such as /dir/to/
-     * @var string
+     * request data, such as $_POST, $_GET. 
+     * @var array
      */
-    public $requestRoot = '';
-
-    /**
-     * request uri for this resource. such as /resources/$id.
-     * @var string
-     */
-    public $requestUri = '';
-
-    /**
-     * method, such as get, post, put, delete.
-     * @var string
-     */
-    public $method = 'get';
-
-    public $dataType = 'html';
-
     public $data = array();
 
+    /**
+     * information about request. 
+     * @var array
+     */
+    public $info = array(
+        'requestRoot'   => null,
+        'requestUri'    => null,
+        'requestMethod' => 'get',   // method, such as get, post, put, delete.
+        'requestType'   => 'html',
+        '' => null,
+    );
+    
     // +----------------------------------------------------------------------+
     //  managing url and pathInfo.
     // +----------------------------------------------------------------------+
@@ -58,7 +54,7 @@ class Request
      */
     public function match( $path )
     {
-        if( strncmp( $this->requestUri, $path, strlen( $path ) ) ) {
+        if( strncmp( $this->getInfo( 'requestUri' ), $path, strlen( $path ) ) ) {
             // ignore the module with appUrl which does not match with pathInfo.
             return false;
         }
@@ -72,8 +68,8 @@ class Request
      */
     public function modifyUri( $path )
     {
-        $this->requestRoot .= $path;
-        $this->requestUri = substr( $this->requestUri, strlen( $path ) );
+        $this->setInfo( 'requestRoot', $this->getInfo( 'requestRoot') . $path );
+        $this->setInfo( 'requestUri',  substr( $this->info[ 'requestUri' ], strlen( $path ) ) );
     }
     // +----------------------------------------------------------------------+
     //  setting request parameters.
@@ -83,8 +79,7 @@ class Request
      * @return $this
      */
     public function on( $method ) {
-        $this->method = strtolower( $method );
-        return $this;
+        return $this->setInfo( 'requestMethod', strtolower( $method ) );
     }
 
     /**
@@ -107,8 +102,7 @@ class Request
      * @return $this
      */
     public function type( $what ) {
-        $this->dataType = strtolower( $what );
-        return $this;
+        return $this->setInfo( 'requestType', strtolower( $what ) );
     }
 
     /**
@@ -116,8 +110,7 @@ class Request
      * @return $this
      */
     public function uri( $uri ) {
-        $this->requestUri = $uri;
-        return $this;
+        return $this->setInfo( 'requestUri', $uri );
     }
 
     /**
@@ -125,8 +118,35 @@ class Request
      * @return $this
      */
     public function path( $path ) {
-        $this->requestRoot = $path;
+        return $this->setInfo( 'requestRoot', $path );
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     * @return $this
+     */
+    public function setInfo( $name, $value ) {
+        $this->info[ $name ] = $value;
         return $this;
+    }
+
+    /**
+     * @param null|string $name
+     * @return array|null|string|mixed
+     */
+    public function getInfo( $name=null ) {
+        if( isset( $name ) ) {
+            return isset( $this->info[$name] ) ? $this->info[$name] : null;
+        }
+        return $this->info;
+    }
+
+    /**
+     * @return array
+     */
+    public function requestInfo() {
+        return $this->info;
     }
     // +----------------------------------------------------------------------+
 }
