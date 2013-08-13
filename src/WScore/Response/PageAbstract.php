@@ -10,6 +10,7 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
+     * @param array $match
      * @return ResponseInterface|null|bool
      */
     public function respond( $match=array() )
@@ -79,5 +80,6 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
         $uri = $this->request->requestRoot;
         $this->jumpTo( $uri );
     }
+
 
 }
