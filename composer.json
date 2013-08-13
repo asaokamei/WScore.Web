@@ -16,6 +16,7 @@
     },
     "autoload": {
         "psr-0": {
+            "WScore\\Response": "src/",
             "WScore\\Web": "src/"
         }
     }
