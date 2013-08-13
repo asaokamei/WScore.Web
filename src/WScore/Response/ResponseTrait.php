@@ -124,6 +124,13 @@ trait ResponseTrait
     }
 
     /**
+     * @return TemplateInterface
+     */
+    public function getRenderer() {
+        return $this->renderer;
+    }
+
+    /**
      * @param string $template
      * @return $this
      */
@@ -138,8 +145,9 @@ trait ResponseTrait
      */
     public function render()
     {
-        if( $this->renderer ) {
+        if( $this->renderer && $this->template ) {
             $this->renderer->assign( $this->data );
+            $this->renderer->setTemplate( $this->template );
             $this->content = $this->renderer->render();
         }
         return $this;
@@ -194,6 +202,7 @@ trait ResponseTrait
         // when jump to a url, clear renderer (template) and content.
         $this->renderer = null;
         $this->content  = null;
+        $this->template = null;
         return $this;
     }
 }

@@ -39,9 +39,9 @@ class ChainTest extends \PHPUnit_Framework_TestCase
         $res1 = clone( $this->res );
         $res2 = clone( $this->res );
         $res3 = clone( $this->res );
-        $this->chain->addResponsible( $res1 );
-        $this->chain->addResponsible( $res2 );
-        $this->chain->addResponsible( $res3 );
+        $this->chain->addResponder( $res1 );
+        $this->chain->addResponder( $res2 );
+        $this->chain->addResponder( $res3 );
         $response = $this->chain->respond();
 
         $this->assertEquals( '', $response );
@@ -55,9 +55,9 @@ class ChainTest extends \PHPUnit_Framework_TestCase
         $res1 = clone( $this->res );
         $res2 = clone( $this->res );
         $res3 = clone( $this->res );
-        $this->chain->addResponsible( $res1, '/not' );
-        $this->chain->addResponsible( $res2, '/path' );
-        $this->chain->addResponsible( $res3 );
+        $this->chain->addResponder( $res1, '/not' );
+        $this->chain->addResponder( $res2, '/path' );
+        $this->chain->addResponder( $res3 );
         $response = $this->chain->setRequest( $this->request->uri( '/path' ) )->respond();
 
         $this->assertEquals( '', $response );
@@ -72,9 +72,9 @@ class ChainTest extends \PHPUnit_Framework_TestCase
         $res2 = clone( $this->res );
         $res2->name = 'response#2';
         $res3 = clone( $this->res );
-        $this->chain->addResponsible( $res1 );
-        $this->chain->addResponsible( $res2 );
-        $this->chain->addResponsible( $res3 );
+        $this->chain->addResponder( $res1 );
+        $this->chain->addResponder( $res2 );
+        $this->chain->addResponder( $res3 );
         $response = $this->chain->respond();
 
         $this->assertEquals( 'response#2', $response );

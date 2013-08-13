@@ -69,7 +69,7 @@ abstract class ChainAbstract implements ResponsibleInterface
      * @param null|string      $appUrl
      * @return $this
      */
-    public function addResponsible( $responder, $appUrl=null )
+    public function addResponder( $responder, $appUrl=null )
     {
         $info = array(
             'module' => $responder,

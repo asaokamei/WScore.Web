@@ -12,15 +12,18 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
      *
      * @return ResponseInterface|null|bool
      */
-    public function respond()
+    public function respond( $match=array() )
     {
         $method = 'on' . ucwords( $this->request->method );
         if( !method_exists( $this, $method ) ) {
             return $this->invalidMethod();
         }
-        $result = $this->$method( $this->request->data );
+        $result = $this->$method( $match, $this->request->data );
         if( $result === false ) {
             return null;
+        }
+        elseif( is_array( $result ) ) {
+            $this->assign( $result );
         }
         return $this;
     }
@@ -57,16 +60,6 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
         }
         $this->setContent( null );
         return $this;
-    }
-
-    /**
-     * overwrite this method. or returns invalid method error.
-     *
-     * @param array $data
-     * @return $this
-     */
-    public function onGet( $data=array() ) {
-        return $this->invalidMethod();
     }
 
     /**

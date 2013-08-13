@@ -46,7 +46,7 @@ trait ResponsibleTrait
     public function getRoot()
     {
         $root = $this;
-        while( isset( $this->parent ) ) {
+        while( $root->parent ) {
             $root = $this->parent;
         }
         return $root;

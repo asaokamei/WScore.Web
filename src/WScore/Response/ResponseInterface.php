@@ -55,6 +55,11 @@ interface ResponseInterface
     //  rendering content
     // +----------------------------------------------------------------------+
     /**
+     * @return mixed
+     */
+    public function getRenderer();
+
+    /**
      * @param object $render
      * @return $this
      */

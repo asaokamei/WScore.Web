@@ -36,6 +36,13 @@ abstract class DispatchAbstract implements ResponsibleInterface
      */
     public $viewRoot = '';
 
+    /**
+     * matched parameter by route match.
+     *
+     * @var array
+     */
+    public $match = array();
+
     // +----------------------------------------------------------------------+
     //  construction
     // +----------------------------------------------------------------------+
@@ -96,7 +103,7 @@ abstract class DispatchAbstract implements ResponsibleInterface
         if( !isset( $match[ 'render' ] ) && !isset( $match[1] ) ) {
             return null;
         }
-        $this->request->with( $match );
+        $this->match = $match;
         return ( isset( $match[ 'render' ] ) ) ? $match[ 'render' ] : $match[1];
     }
 
@@ -135,7 +142,7 @@ abstract class DispatchAbstract implements ResponsibleInterface
         if( $template = $this->getViewFile( $pageUri ) ) {
             $page->setTemplate( $template );
         }
-        $response = $page->setParent( $this )->setRequest( $this->request )->respond();
+        $response = $page->setParent( $this )->setRequest( $this->request )->respond( $this->match );
         return $response;
     }
 
