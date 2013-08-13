@@ -30,7 +30,7 @@ class WebApp extends ChainAbstract implements ModuleInterface
      * @Inject
      * @var TemplateInterface
      */
-    public $template;
+    public $renderer;
 
     /**
      * set request based on _SERVER and httpRequest.
@@ -62,8 +62,8 @@ class WebApp extends ChainAbstract implements ModuleInterface
     public function render()
     {
         if( $this->response instanceof ResponseInterface ) {
-            if( !$this->response->getRenderer() && $this->template ) {
-                $this->response->setRenderer( $this->template );
+            if( !$this->response->getRenderer() && $this->renderer ) {
+                $this->response->setRenderer( $this->renderer );
             }
             $this->response->render();
         }
@@ -75,9 +75,11 @@ class WebApp extends ChainAbstract implements ModuleInterface
      */
     public function getHttpResponse()
     {
-        $this->httpResponse->setStatusCode( $this->response->statusCode );
-        $this->httpResponse->setHttpHeader( $this->response->headers );
-        $this->httpResponse->setContent(    $this->response->content );
+        /** @var $response \WScore\Response\Response */
+        $response = $this->response;
+        $this->httpResponse->setStatusCode( $response->statusCode );
+        $this->httpResponse->setHttpHeader( $response->headers );
+        $this->httpResponse->setContent(    $response->content );
         return $this->httpResponse;
     }
 
