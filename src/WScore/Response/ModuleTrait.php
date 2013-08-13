@@ -31,13 +31,13 @@ trait ModuleTrait
      * @param ModuleInterface $parent
      * @return $this
      */
-    public function setParent( $parent ) 
+    public function prepare( $parent ) 
     {
         $this->parent = $parent;
         if( empty( $this->prepares ) ) return $this;
         foreach( $this->prepares as $prepare ) {
             /** @var $this ModuleInterface */
-            $prepare->setParent( $this )->setRequest( $this->getRequest() )->respond();
+            $prepare->prepare( $this )->setRequest( $this->getRequest() )->respond();
         }
         return $this;
     }

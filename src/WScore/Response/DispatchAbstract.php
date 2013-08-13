@@ -142,7 +142,7 @@ abstract class DispatchAbstract implements ModuleInterface
         if( $template = $this->getViewFile( $pageUri ) ) {
             $page->setTemplate( $template );
         }
-        $response = $page->setParent( $this )->setRequest( $this->request )->respond( $this->match );
+        $response = $page->prepare( $this )->setRequest( $this->request )->respond( $this->match );
         return $response;
     }
 

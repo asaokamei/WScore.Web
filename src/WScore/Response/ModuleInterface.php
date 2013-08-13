@@ -33,7 +33,7 @@ interface ModuleInterface
      * @param ModuleInterface $parent
      * @return $this
      */
-    public function setParent( $parent );
+    public function prepare( $parent );
 
     /**
      * @return ModuleInterface
