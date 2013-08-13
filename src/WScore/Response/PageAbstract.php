@@ -50,20 +50,24 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
 
     /**
      * reload the same page.
+     *
+     * @return $this
      */
     public function reload()
     {
         $uri = $this->request->requestRoot . $this->request->requestUri;
-        $this->jumpTo( $uri );
+        return $this->jumpTo( $uri );
     }
 
     /**
      * load (jump to) appRoot.
+     *
+     * @return $this
      */
     public function loadAppRoot()
     {
         $uri = $this->request->requestRoot;
-        $this->jumpTo( $uri );
+        return $this->jumpTo( $uri );
     }
 
 
