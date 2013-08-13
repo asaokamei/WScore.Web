@@ -15,7 +15,7 @@ abstract class PageAbstract implements ModuleInterface, ResponseInterface
      */
     public function respond( $match=array() )
     {
-        $method = 'on' . ucwords( $this->request->method );
+        $method = 'on' . ucwords( $this->request->getInfo( 'requestMethod' ) );
         if( !method_exists( $this, $method ) ) {
             return $this->invalidMethod();
         }
@@ -55,7 +55,7 @@ abstract class PageAbstract implements ModuleInterface, ResponseInterface
      */
     public function reload()
     {
-        $uri = $this->request->requestRoot . $this->request->requestUri;
+        $uri = $this->request->getInfo( 'requestRoot' ) . $this->request->getInfo( 'requestUri' );
         return $this->jumpTo( $uri );
     }
 
@@ -66,7 +66,7 @@ abstract class PageAbstract implements ModuleInterface, ResponseInterface
      */
     public function loadAppRoot()
     {
-        $uri = $this->request->requestRoot;
+        $uri = $this->request->getInfo( 'requestRoot' );
         return $this->jumpTo( $uri );
     }
 

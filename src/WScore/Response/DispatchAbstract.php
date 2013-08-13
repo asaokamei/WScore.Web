@@ -97,7 +97,7 @@ abstract class DispatchAbstract implements ModuleInterface
      */
     public function match()
     {
-        if( !$match = $this->router->match( $this->request->requestUri ) ) {
+        if( !$match = $this->router->match( $this->request->getInfo( 'requestUri' ) ) ) {
             return null;
         }
         if( !isset( $match[ 'render' ] ) && !isset( $match[1] ) ) {
@@ -119,7 +119,7 @@ abstract class DispatchAbstract implements ModuleInterface
             return $response;
         }
         if( $this->response && $template = $this->getViewFile( $pageUri ) ) {
-            $this->response->assign( (array) $this->request );
+            $this->response->assign( $this->request->getInfo() );
             $this->response->setTemplate( $template );
             return $this->response;
         }
@@ -138,7 +138,7 @@ abstract class DispatchAbstract implements ModuleInterface
         if( !$page = $this->container->get( $class ) ) return null;
         /** @var $page \WScore\Response\PageAbstract */
 
-        $page->assign( (array) $this->request );
+        $page->assign( $this->request->getInfo() );
         if( $template = $this->getViewFile( $pageUri ) ) {
             $page->setTemplate( $template );
         }

@@ -27,7 +27,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $uri = '/path/to/test';
         $this->request->uri( $uri );
-        $this->assertEquals( $uri, $this->request->requestUri );
+        $this->assertEquals( $uri, $this->request->getInfo( 'requestUri' ) );
     }
     
     function test_match()
@@ -48,12 +48,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $uri = '/path/to/test';
         $this->request->uri( $uri );
-        $this->assertEquals( $uri, $this->request->requestUri );
-        $this->assertEquals( '',   $this->request->requestRoot );
+        $this->assertEquals( $uri, $this->request->getInfo( 'requestUri' ) );
+        $this->assertEquals( '',   $this->request->getInfo( 'requestRoot' ) );
         
         $this->request->modifyUri( '/path/' );
-        $this->assertEquals( 'to/test', $this->request->requestUri );
-        $this->assertEquals( '/path/',  $this->request->requestRoot );
+        $this->assertEquals( 'to/test', $this->request->getInfo( 'requestUri' ) );
+        $this->assertEquals( '/path/',  $this->request->getInfo( 'requestRoot' ) );
     }
 
     function test_modifyUri_with_Root()
@@ -62,12 +62,12 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $root = '/root/is';
         $this->request->uri( $uri );
         $this->request->path( $root );
-        $this->assertEquals( $uri, $this->request->requestUri );
-        $this->assertEquals( $root,   $this->request->requestRoot );
+        $this->assertEquals( $uri, $this->request->getInfo( 'requestUri' ) );
+        $this->assertEquals( $root,   $this->request->getInfo( 'requestRoot' ) );
 
         $this->request->modifyUri( '/path/' );
-        $this->assertEquals( 'to/test', $this->request->requestUri );
-        $this->assertEquals( '/root/is/path/',  $this->request->requestRoot );
+        $this->assertEquals( 'to/test', $this->request->getInfo( 'requestUri' ) );
+        $this->assertEquals( '/root/is/path/',  $this->request->getInfo( 'requestRoot' ) );
     }
 
     function test_copy()
@@ -75,8 +75,8 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $uri = '/path/to/test';
         $this->request->uri( $uri );
         $request = $this->request->copy( '/path/' );
-        $this->assertEquals( 'to/test', $request->requestUri );
-        $this->assertEquals( '/path/',  $request->requestRoot );
+        $this->assertEquals( 'to/test', $request->getInfo( 'requestUri' ) );
+        $this->assertEquals( '/path/',  $request->getInfo( 'requestRoot' ) );
     }
 
     function test_copy_with_root()
@@ -85,11 +85,11 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
         $root = '/root/is';
         $this->request->uri( $uri );
         $this->request->path( $root );
-        $this->assertEquals( $uri, $this->request->requestUri );
-        $this->assertEquals( $root,   $this->request->requestRoot );
+        $this->assertEquals( $uri, $this->request->getInfo( 'requestUri' ) );
+        $this->assertEquals( $root,   $this->request->getInfo( 'requestRoot' ) );
         
         $request = $this->request->copy( '/path/' );
-        $this->assertEquals( 'to/test', $request->requestUri );
-        $this->assertEquals( '/root/is/path/',  $request->requestRoot );
+        $this->assertEquals( 'to/test', $request->getInfo( 'requestUri' ) );
+        $this->assertEquals( '/root/is/path/',  $request->getInfo( 'requestRoot' ) );
     }
 }

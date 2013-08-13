@@ -70,4 +70,19 @@ class DispatchTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 'PageWithView was here.', $response->get( 'onGet' ) );
         $this->assertEquals( __DIR__ . '/Mocks/View/PageWithView.php', $response->template );
     }
+    
+    function test_dispatch_saves_info_to_response()
+    {
+        $this->request->uri( 'PageWithView' );
+        $this->request->setInfo( 'testInfo', 'test info' );
+        $this->dispatch->setRequest( $this->request );
+        /** @var $response \WScore\Response\Response */
+        $response = $this->dispatch->respond();
+
+        $this->assertEquals( 'WScore\tests\Response\Mocks\Page\PageWithView', get_class( $response ) );
+        $this->assertEquals( 'PageWithView was here.', $response->get( 'onGet' ) );
+        $this->assertEquals( 'PageWithView', $response->get( 'requestUri' ) );
+        $this->assertEquals( 'test info', $response->get( 'testInfo' ) );
+        $this->assertEquals( __DIR__ . '/Mocks/View/PageWithView.php', $response->template );        
+    }
 }

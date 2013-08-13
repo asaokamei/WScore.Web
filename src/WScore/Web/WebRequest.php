@@ -9,14 +9,6 @@ class WebRequest extends Request
 
     public $pathInfo;
 
-    public $extTypes = array(
-        'htm' => 'html',
-        'php' => 'html',
-        'txt' => 'text',
-        'md'  => 'html',
-        'markdown' => 'html',
-    );
-
     /**
      * set baseURL and use it as requestRoot.
      *
@@ -25,7 +17,7 @@ class WebRequest extends Request
      */
     public function setBaseUrl( $url )
     {
-        $this->baseURL = $url;
+        $this->setInfo( 'baseURL', $url );
         $this->path( $url );
         return $this;
     }
@@ -38,7 +30,7 @@ class WebRequest extends Request
      */
     public function setPathInfo( $path )
     {
-        $this->pathInfo = $path;
+        $this->setInfo( 'pathInfo', $path );
         $this->uri( $path );
         return $this;
     }
@@ -52,12 +44,10 @@ class WebRequest extends Request
     public function setDataType( $type=null )
     {
         if( $type ) {
-            $this->dataType = $type;
+            $this->setInfo( 'requestType', $type );
         }
-        elseif( $this->pathInfo && $ext = pathinfo( $this->pathInfo, PATHINFO_EXTENSION ) ) {
-            $ext = strtolower( $ext );
-            $ext = isset( $this->extTypes[ $ext ] ) ? $this->extTypes[ $ext ] : $ext;
-            $this->dataType = $ext;
+        elseif( $this->getInfo( 'pathInfo' ) && $type = pathinfo( $this->getInfo( 'pathInfo' ), PATHINFO_EXTENSION ) ) {
+            $this->setInfo( 'requestType', $type );
         }
         return $this;
     }
