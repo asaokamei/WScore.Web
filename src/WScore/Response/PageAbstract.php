@@ -49,21 +49,6 @@ abstract class PageAbstract implements ResponsibleInterface, ResponseInterface
     }
 
     /**
-     * experimental support for http's head method.
-     *
-     * @param array $data
-     * @return $this
-     */
-    public function onHead( $data=array() )
-    {
-        if( !method_exists( $this, 'onGet' ) && !$this->onGet( $data ) ) {
-            return $this->invalidMethod();
-        }
-        $this->setContent( null );
-        return $this;
-    }
-
-    /**
      * reload the same page.
      */
     public function reload()
