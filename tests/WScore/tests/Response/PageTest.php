@@ -47,7 +47,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
     {
         $this->page->setRequest( $this->request->on( 'options' ) );
         $this->page->respond();
-        $this->assertEquals( 'GET, TEST, RELOAD, ROOTS, OPTIONS, HEAD', $this->page->headers[ 'ALLOW' ] );
+        $this->assertEquals( 'GET, TEST, RELOAD, ROOTS, OPTIONS', $this->page->headers[ 'ALLOW' ] );
     }
 
     function test_non_existing_method_returns_invalid_method()
