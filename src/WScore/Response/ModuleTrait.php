@@ -14,13 +14,31 @@ trait ModuleTrait
      * @var \WScore\Response\Request
      */
     public $request = null;
+    
+    /**
+     * @var ModuleInterface[]
+     */
+    public $prepares = array();
 
+    /**
+     * @param ModuleInterface $prepare
+     */
+    public function setPreparation( $prepare ) {
+        $this->prepares[] = $prepare;
+    }
+    
     /**
      * @param ModuleInterface $parent
      * @return $this
      */
-    public function setParent( $parent ) {
+    public function setParent( $parent ) 
+    {
         $this->parent = $parent;
+        if( empty( $this->prepares ) ) return $this;
+        foreach( $this->prepares as $prepare ) {
+            /** @var $this ModuleInterface */
+            $prepare->setParent( $this )->setRequest( $this->getRequest() )->respond();
+        }
         return $this;
     }
 
