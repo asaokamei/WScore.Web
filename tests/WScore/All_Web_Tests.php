@@ -12,8 +12,10 @@ class All_Web_Tests
         $suite->addTestFile( __DIR__ . '/tests/RouterTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/HttpResponderTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Http/RequestTest.php' );
-        $suite->addTestFile( __DIR__ . '/tests/Respond/MatchTest.php' );
-        $suite->addTestFile( __DIR__ . '/tests/Respond/ChainTest.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Response/ChainTest.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Response/DispatchTest.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Response/PageTest.php' );
+        $suite->addTestFile( __DIR__ . '/tests/Response/RequestTest.php' );
         $suite->addTestFile( __DIR__ . '/tests/Authenticate/StorePost_Test.php' );
         $suite->addTestFile( __DIR__ . '/tests/Authenticate/StoreSession_Test.php' );
         $suite->addTestFile( __DIR__ . '/tests/Authenticate/Authenticate_Test.php' );
