@@ -10,7 +10,7 @@ abstract class ChainAbstract implements ResponsibleInterface
     /**
      * @var array
      */
-    public $responsibles = array();
+    public $modules = array();
 
     /**
      * @var null|ResponseInterface
@@ -32,17 +32,17 @@ abstract class ChainAbstract implements ResponsibleInterface
      */
     public function respond()
     {
-        if( empty( $this->responsibles ) ) {
+        if( empty( $this->modules ) ) {
             throw new \RuntimeException( 'no loaders.' );
         }
-        foreach( $this->responsibles as $info )
+        foreach( $this->modules as $info )
         {
             if( $this->loadModule( $info ) === false ) {
                 continue;
             }
             $request   = $this->getAppRequest( $info );
-            $responsible = $this->getResponder( $info );
-            $response  = $responsible->setParent( $this )->setRequest( $request )->respond();
+            $module    = $this->getModuleObject( $info );
+            $response  = $module->setParent( $this )->setRequest( $request )->respond();
             if( $response ) $this->response = $response;
         }
         return $this->response;
@@ -69,7 +69,7 @@ abstract class ChainAbstract implements ResponsibleInterface
      * @param null|string      $appUrl
      * @return $this
      */
-    public function addResponder( $responder, $appUrl=null )
+    public function addModule( $responder, $appUrl=null )
     {
         $info = array(
             'module' => $responder,
@@ -77,7 +77,7 @@ abstract class ChainAbstract implements ResponsibleInterface
             'always' => false,
         );
         if( $appUrl === true ) $info[ 'always' ] = true;
-        $this->responsibles[] = $info;
+        $this->modules[] = $info;
         return $this;
     }
 
@@ -106,7 +106,7 @@ abstract class ChainAbstract implements ResponsibleInterface
      * @param array $info
      * @return ResponsibleInterface
      */
-    private function getResponder( $info ) {
+    private function getModuleObject( $info ) {
         if( is_string( $info[ 'module' ] ) ) {
             return $this->service->get( $info[ 'module' ] );
         }
@@ -118,11 +118,11 @@ abstract class ChainAbstract implements ResponsibleInterface
      */
     public function instantiate()
     {
-        if( empty( $this->responsibles ) ) return $this;
-        foreach( $this->responsibles as $key => $info ) {
-            $responsible = $this->getResponder( $info );
-            $responsible->instantiate();
-            $this->responsibles[ $key ][ 'module' ] = $responsible;
+        if( empty( $this->modules ) ) return $this;
+        foreach( $this->modules as $key => $info ) {
+            $module = $this->getModuleObject( $info );
+            $module->instantiate();
+            $this->modules[ $key ][ 'module' ] = $module;
         }
         return $this;
     }
