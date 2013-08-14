@@ -10,7 +10,7 @@ class WebApp extends ChainAbstract implements ModuleInterface
 {
     /**
      * @Inject
-     * @var \WScore\Web\Http\Request
+     * @var \WScore\Http\Request
      */
     public $httpRequest;
 
@@ -22,7 +22,7 @@ class WebApp extends ChainAbstract implements ModuleInterface
 
     /**
      * @Inject
-     * @var \WScore\Web\Http\Response
+     * @var \WScore\Http\Response
      */
     public $httpResponse;
 

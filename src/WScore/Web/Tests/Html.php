@@ -30,7 +30,7 @@ class Html
         }
         $server = array_merge( $default, $server );
         //$app->pathInfo( $server );
-        /** @var $response \WScore\Web\Http\Response */
+        /** @var $response \WScore\Http\Response */
         $response = $app->with( $post )->on( $server['REQUEST_METHOD'] )->load( $server[ 'REQUEST_URI' ] );
         return $response->content;
     }
