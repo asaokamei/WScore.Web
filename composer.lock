@@ -92,15 +92,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asaokamei/WScore.Http.git",
-                "reference": "c78daf36088bb240eb947d8f43c78684de08113c"
+                "reference": "acf10cafdd3002eae7eb7cd54b49e57ea90b9d69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asaokamei/WScore.Http/zipball/c78daf36088bb240eb947d8f43c78684de08113c",
-                "reference": "c78daf36088bb240eb947d8f43c78684de08113c",
+                "url": "https://api.github.com/repos/asaokamei/WScore.Http/zipball/acf10cafdd3002eae7eb7cd54b49e57ea90b9d69",
+                "reference": "acf10cafdd3002eae7eb7cd54b49e57ea90b9d69",
                 "shasum": ""
             },
             "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "WScore\\Http": "src/"
+                }
+            },
             "notification-url": "https://packagist.org/downloads/",
             "authors": [
                 {
@@ -109,7 +114,7 @@
                 }
             ],
             "description": "classes for http.",
-            "time": "2013-08-14 23:09:48"
+            "time": "2013-08-14 23:35:40"
         },
         {
             "name": "wscore/template",
