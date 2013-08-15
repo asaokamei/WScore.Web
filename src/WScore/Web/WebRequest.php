@@ -5,10 +5,6 @@ use WScore\Response\Request;
 
 class WebRequest extends Request
 {
-    public $baseURL;
-
-    public $pathInfo;
-
     /**
      * set baseURL and use it as requestRoot.
      *

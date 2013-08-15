@@ -23,7 +23,6 @@ class Request
         'requestUri'    => null,
         'requestMethod' => 'get',   // method, such as get, post, put, delete.
         'requestType'   => 'html',
-        '' => null,
     );
     
     // +----------------------------------------------------------------------+
