@@ -22,6 +22,7 @@ class Storage implements StorageInterface
     // +----------------------------------------------------------------------+
     /**
      * @param null $config
+     * @return \WScore\Web\Session\Storage
      */
     public function __construct( $config=null )
     {

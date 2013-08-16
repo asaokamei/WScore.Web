@@ -23,6 +23,13 @@ interface StorageInterface
     public function isStarted();
 
     /**
+     * @param string $config
+     * @throws \RuntimeException
+     * @return $this
+     */
+    public function setup( $config );
+
+    /**
      * @param string $name The attribute name
      * @return Boolean true if the attribute is defined, false otherwise
      */
