@@ -177,9 +177,13 @@ abstract class DispatchAbstract implements ModuleInterface
      */
     private function getViewFile( $viewUri )
     {
-        if( substr( $viewUri, 0, 1 ) === '.' ) return null;
+        $list = explode( DIRECTORY_SEPARATOR, $viewUri );
+        foreach( $list as $key => $name ) {
+            if( substr( $name, 0, 1 ) === '.' ) return null;
+        }
+        $viewUri = implode( DIRECTORY_SEPARATOR, $list );
         $extensions = array( '', '.php', '.html', '.htm', '.txt', '.txt.php', '.text', '.md', '.md.php', 'markdown' );
-        if( substr( $viewUri, 0, 1 ) !== '/' ) $viewUri = '/'.$viewUri;
+        if( substr( $viewUri, 0, 1 ) !== DIRECTORY_SEPARATOR ) $viewUri = DIRECTORY_SEPARATOR.$viewUri;
         foreach( $extensions as $ext ) {
             $template = $this->viewRoot . $viewUri . $ext;
             if( file_exists( $template ) ) return $template;
