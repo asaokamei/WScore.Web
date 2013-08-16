@@ -23,6 +23,12 @@ interface ManagerInterface
     public function isStarted();
 
     /**
+     * @param null $config
+     * @return array
+     */
+    public function storage( $config=null );
+
+    /**
      * Returns the session ID.
      *
      * @return string The session ID.
@@ -34,7 +40,7 @@ interface ManagerInterface
      *
      * @param string $id
      */
-    public function setId($id);
+    public function setId( $id );
 
     /**
      * Returns the session name.
@@ -51,17 +57,16 @@ interface ManagerInterface
      * @param $name
      * @param string $name
      */
-    public function setName($name);
+    public function setName( $name );
 
     /**
      * Migrates the current session to a new session id while maintaining all
      * session attributes.
      *
      * @param Boolean $destroy
-     * @param integer $lifetime
      * @return bool
      */
-    public function migrate($destroy = false, $lifetime = null);
+    public function migrate( $destroy = false );
 
 
 }
