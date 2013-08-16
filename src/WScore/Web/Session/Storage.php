@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\Session;
 
-class Session implements SessionInterface
+class Storage implements StorageInterface
 {
     /**
      * @Inject
