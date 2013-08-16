@@ -42,7 +42,7 @@ abstract class ChainAbstract implements ModuleInterface
             }
             $request   = $this->getAppRequest( $info );
             $module    = $this->getModuleObject( $info );
-            $response  = $module->prepare( $this )->setRequest( $request )->respond();
+            $response  = $module->setRequest( $request )->prepare( $this )->respond();
             if( $response ) $this->response = $response;
         }
         return $this->response;

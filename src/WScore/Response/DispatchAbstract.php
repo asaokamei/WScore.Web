@@ -138,11 +138,11 @@ abstract class DispatchAbstract implements ModuleInterface
         if( !$page = $this->container->get( $class ) ) return null;
         /** @var $page \WScore\Response\PageAbstract */
 
-        $page->assign( $this->request->getInfo() );
         if( $template = $this->getViewFile( $pageUri ) ) {
             $page->setTemplate( $template );
         }
-        $response = $page->prepare( $this )->setRequest( $this->request )->respond( $this->match );
+        $response = $page->setRequest( $this->request )->prepare( $this )->respond( $this->match );
+        $response->assign( $this->request->getInfo() );
         return $response;
     }
 
