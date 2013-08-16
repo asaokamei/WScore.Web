@@ -7,7 +7,7 @@ class Storage implements StorageInterface
      * @Inject
      * @var \WScore\Web\Session\Session
      */
-    public $manager;
+    public $session;
 
     /**
      * @var string
@@ -32,8 +32,8 @@ class Storage implements StorageInterface
     /**
      * @return SessionInterface
      */
-    public function manager() {
-        return $this->manager;
+    public function session() {
+        return $this->session;
     }
 
     /**
@@ -53,10 +53,10 @@ class Storage implements StorageInterface
         elseif( !is_string( $config ) ) {
             throw new \RuntimeException( '$config must be a string or an array. ' );
         }
-        if( !isset( $this->manager->storage[ $config ] ) ) {
-            $this->manager->storage[ $config ] = array();
+        if( !isset( $this->session->storage[ $config ] ) ) {
+            $this->session->storage[ $config ] = array();
         }
-        $this->data = & $this->manager->storage[ $config ];
+        $this->data = & $this->session->storage[ $config ];
         return $this;
     }
 
@@ -64,14 +64,14 @@ class Storage implements StorageInterface
      * @return bool
      */
     public function start() {
-        return $this->manager->start();
+        return $this->session->start();
     }
 
     /**
      * @return bool
      */
     public function isStarted() {
-        return $this->manager->isStarted();
+        return $this->session->isStarted();
     }
 
     /**
