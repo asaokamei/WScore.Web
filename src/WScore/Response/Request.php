@@ -23,6 +23,7 @@ class Request
         'requestUri'    => null,
         'requestMethod' => 'get',   // method, such as get, post, put, delete.
         'requestType'   => 'html',
+        'requestError'  => null,
     );
     
     // +----------------------------------------------------------------------+
@@ -146,6 +147,14 @@ class Request
      */
     public function requestInfo() {
         return $this->info;
+    }
+
+    /**
+     * @param $type
+     * @return $this
+     */
+    public function error( $type ) {
+        return $this->setInfo( 'requestError', $type );
     }
     // +----------------------------------------------------------------------+
 }
