@@ -1,6 +1,23 @@
 <?php
 namespace WScore\Web\View;
 
+/**
+ * Class ScoreMenu
+ *
+ * usage of $menu array:
+ * $menu = array(
+ *     array( 'title' => 'menu title',      'icon' => 'icon name',      'url' => 'url-to-jump', ),
+ *     array( 'title' => 'menu with sub',    'icon' => 'icon name',     'url' => 'url-to-jump',
+ *       'pages' => array(
+ *          [ 'title' => 'sub title',    'icon' => 'icon name',     'url' => 'url-to-jump' ],
+ *          [ 'title' => 'sub title2',   'icon' => 'icon name',     'url' => 'url-to-jump' ],
+ *       )
+ *     ....
+ *     ),
+ * );
+ *
+ * @package WScore\Web\View
+ */
 class ScoreMenu
 {
     public $pathInfo;
@@ -54,7 +71,7 @@ class ScoreMenu
             if( isset( $item[ 'pages' ] ) && is_array( $item[ 'pages' ] ) ) {
                 $score = $this->prepMenu( $item[ 'pages' ] );
                 if( $score > $max_score ) $max_score = $score;
-                if( $score > $item[ 'score' ] ) $item[ 'score' ] = $score;
+                if( !isset( $item[ 'score' ] ) || $score > $item[ 'score' ] ) $item[ 'score' ] = $score;
             }
         }
         return $max_score;
