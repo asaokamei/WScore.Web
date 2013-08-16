@@ -3,6 +3,13 @@ namespace WScore\Web\View\Bootstrap2;
 
 use WScore\Web\View\ScoreMenu;
 
+/**
+ * Class NavBar
+ *
+ * @package WScore\Web\View\Bootstrap2
+ * 
+ * @cacheable
+ */
 class NavBar
 {
     protected $menu = array();

@@ -17,6 +17,8 @@ namespace WScore\Web\View;
  * );
  *
  * @package WScore\Web\View
+ * 
+ * @cacheable
  */
 class ScoreMenu
 {
