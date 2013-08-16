@@ -11,7 +11,7 @@ class Session implements SessionInterface
 {
     protected $started = false;
 
-    protected $_session = array();
+    public $storage = array();
 
     /**
      * @param bool $falseStart
@@ -31,7 +31,7 @@ class Session implements SessionInterface
         if (!session_start() ) {
             throw new \RuntimeException( 'Failed to start the session' );
         }
-        $this->_session = & $_SESSION;
+        $this->storage = & $_SESSION;
         return true;
     }
 
@@ -42,10 +42,10 @@ class Session implements SessionInterface
     public function storage( $config=null )
     {
         if( $config ) {
-            if( !isset( $this->_session[ $config ] ) ) $this->_session[ $config ] = array();
-            return $this->_session[ $config ];
+            if( !isset( $this->storage[ $config ] ) ) $this->storage[ $config ] = array();
+            return $this->storage[ $config ];
         }
-        return $this->_session;
+        return $this->storage;
     }
 
     /**

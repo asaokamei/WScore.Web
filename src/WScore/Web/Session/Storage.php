@@ -43,18 +43,20 @@ class Storage implements StorageInterface
      */
     public function setup( $config )
     {
-        if( !$config ) {
-            $this->data = & $this->manager->storage( $this->config );
-        }
-        elseif( is_string( $config ) ) {
-            $this->data = & $this->manager->storage( $config );
-        }
-        elseif( is_array( $config ) ) {
+        if( is_array( $config ) ) {
             $this->data = & $config;
+            return $this;
         }
-        else {
+        elseif( !$config ) {
+            $config = $this->config;
+        }
+        elseif( !is_string( $config ) ) {
             throw new \RuntimeException( '$config must be a string or an array. ' );
         }
+        if( !isset( $this->manager->storage[ $config ] ) ) {
+            $this->manager->storage[ $config ] = array();
+        }
+        $this->data = & $this->manager->storage[ $config ];
         return $this;
     }
 
