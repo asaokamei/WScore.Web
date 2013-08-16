@@ -7,7 +7,7 @@ namespace WScore\Web\Session;
  *
  * @singleton
  */
-class Manager implements ManagerInterface
+class Session implements SessionInterface
 {
     protected $started = false;
 

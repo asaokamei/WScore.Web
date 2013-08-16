@@ -9,7 +9,7 @@ namespace WScore\Web\Session;
  *
  * API are taken from Symfony 2.
  */
-interface ManagerInterface
+interface SessionInterface
 {
     /**
      * @return Boolean True if session started.

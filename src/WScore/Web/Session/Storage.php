@@ -5,7 +5,7 @@ class Storage implements StorageInterface
 {
     /**
      * @Inject
-     * @var \WScore\Web\Session\Manager
+     * @var \WScore\Web\Session\Session
      */
     public $manager;
 
@@ -30,7 +30,7 @@ class Storage implements StorageInterface
     }
 
     /**
-     * @return ManagerInterface
+     * @return SessionInterface
      */
     public function manager() {
         return $this->manager;
