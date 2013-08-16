@@ -1,7 +1,9 @@
 <?php
-namespace WScore\Web\View;
+namespace WScore\Web\View\Bootstrap2;
 
-class NavBarBootstrap
+use WScore\Web\View\ScoreMenu;
+
+class NavBar
 {
     protected $menu = array();
     

@@ -1,5 +1,5 @@
 <?php
-namespace WScore\Web\View;
+namespace WScore\Web\View\Bootstrap2;
 
 /**
  * Class PaginateBootstrap
@@ -7,7 +7,7 @@ namespace WScore\Web\View;
  *
  * @cacheable
  */
-class PaginateBootstrap
+class Pagination
 {
     /** @var array */
     private $url;
