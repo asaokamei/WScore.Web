@@ -5,7 +5,7 @@ trait TokenTrait
 {
     /**
      * @Inject
-     * @param \WScore\Web\Session\Token $token
+     * @param \WScore\Web\Session\TokenModule $token
      */
     public function setCsrfToken( $token )
     {

@@ -4,10 +4,8 @@ namespace WScore\Web\Session;
 use WScore\Response\ModuleInterface;
 use WScore\Response\ModuleTrait;
 
-class Token implements ModuleInterface
+class Token
 {
-    use ModuleTrait;
-
     /**
      * @Inject
      * @var \WScore\Web\Session\Storage
@@ -24,16 +22,7 @@ class Token implements ModuleInterface
      */
     protected $tokenList  = 'tokens';
 
-    /**
-     * @var string
-     */
-    protected $tagName = '_token';
-
     protected $maxTokens = 20;
-
-    protected $token = null;
-
-    public $errorCode = 'badToken';
 
     /**
      *
@@ -47,36 +36,13 @@ class Token implements ModuleInterface
     }
 
     /**
-     * @return null
-     */
-    public function respond()
-    {
-        // always set token into session.
-        $this->pushToken();
-
-        // always verify token for methods, post, put, and delete.
-        if( !in_array( $this->request->getInfo( 'requestMethod' ), [ 'post', 'put', 'delete' ] ) ) {
-            return null;
-        }
-        if( !isset( $this->request->data[ $this->tagName ] ) ) {
-            $this->request->error( $this->errorCode );
-        }
-        elseif( !$this->verifyToken( $this->request->data[ $this->tagName ] ) ) {
-            $this->request->error( $this->errorCode );
-        }
-        return null;
-    }
-
-    // +-------------------------------------------------------------+
-    /**
      * @return string
      */
-    public function pushToken()
+    public function generateToken()
     {
-        $this->token = sha1( 'session.dumb' . time() . mt_rand(1,100*100) . __DIR__ );
-        $this->storeToken( $this->token );
-        $this->request->setInfo( $this->tagName, $this->token );
-        return $this->token;
+        $token = sha1( 'session.dumb' . time() . mt_rand(1,100*100) . __DIR__ );
+        $this->storeToken( $token );
+        return $token;
     }
 
     /**
@@ -93,15 +59,11 @@ class Token implements ModuleInterface
         $this->storage->set( $this->tokenList, $tokenList );
     }
     /**
-     * @param null|string $token
+     * @param string $token
      * @return bool
      */
-    public function verifyToken( $token=null )
+    public function verifyToken( $token )
     {
-        if( !$token ) {
-            if( !isset( $_POST[ $this->tagName ] ) ) return false;
-            $token = $_POST[ $this->tagName ];
-        }
         $tokenList = $this->storage->get( $this->tokenList );
         if( empty( $tokenList ) ) return false;
         if( !in_array( $token, $tokenList ) ) {
