@@ -4,7 +4,7 @@ namespace WScore\Web\Session;
 use WScore\Response\ModuleInterface;
 use WScore\Response\ModuleTrait;
 
-class Token implements ModuleInterface
+class TokenModule implements ModuleInterface
 {
     use ModuleTrait;
 
