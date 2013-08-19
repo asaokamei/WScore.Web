@@ -46,6 +46,7 @@ class WebApp extends ChainAbstract implements ModuleInterface
         $this->httpRequest->setPost( $data );
 
         // copy some information to Request.
+        $this->request->setInfo( 'WEB_REQUEST_URI', $this->httpRequest->getRequestUri() );
         $this->request->setPathInfo( $this->httpRequest->getPathInfo() );
         $this->request->setBaseUrl(  $this->httpRequest->getBaseUrl() );
         $this->request->setDataType();

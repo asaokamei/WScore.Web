@@ -55,7 +55,9 @@ abstract class PageAbstract implements ModuleInterface, ResponseInterface
      */
     public function reload()
     {
-        $uri = $this->request->getInfo( 'requestRoot' ) . $this->request->getInfo( 'requestUri' );
+        if( !$uri = $this->request->getInfo( 'WEB_REQUEST_URI' ) ) {
+            $uri = $this->request->getInfo( 'requestRoot' ) . $this->request->getInfo( 'requestUri' );
+        }
         return $this->jumpTo( $uri );
     }
 
