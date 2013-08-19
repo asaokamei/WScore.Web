@@ -24,6 +24,10 @@ class Request
         'requestMethod' => 'get',   // method, such as get, post, put, delete.
         'requestType'   => 'html',
         'requestError'  => null,
+        // below are set by WebRequest/WebApp to keep the original request from server.
+        'baseURL'         => null, // baseURL which identifies this app.
+        'pathInfo'        => null, // pathInfo as request for this app.
+        'WEB_REQUEST_URI' => null, // original request_uri with get option.
     );
     
     // +----------------------------------------------------------------------+
