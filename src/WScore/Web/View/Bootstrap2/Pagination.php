@@ -12,12 +12,6 @@ class Pagination
     /** @var array */
     private $url;
 
-    /**
-     * @Injection
-     * @var \WScore\Html\Tags
-     */
-    public $tags;
-
     // +----------------------------------------------------------------------+
     /**
      */
@@ -47,41 +41,51 @@ class Pagination
         }
          */
     }
-    // +----------------------------------------------------------------------+
-    //  for Bootstrap pagination.
-    // +----------------------------------------------------------------------+
+
     /**
-     * @return \WScore\Html\Tags
+     * @param $label
+     * @param $url
+     * @return string
      */
-    function bootstrap()
+    protected function getList( $label, $url )
     {
-        $pageDiv = $this->tags->div( $ul = $this->tags->ul() )->class_( 'pagination' );
-        if( $li = $this->getListBootstrap( 'top_page',  'top' ) ) $ul->_contain( $li );
-        if( $li = $this->getListBootstrap( 'prev_page', '&lt;&lt;'   ) ) $ul->_contain( $li );
-        foreach( $this->url['pages'] as $page => $url ) {
-            if( !$url ) {
-                $ul->_contain( $this->tags->li( $this->tags->a( $page )->href( '#' ) )->class_( 'disabled' ) );
-            } else {
-                $ul->_contain( $this->tags->li( $this->tags->a( $page )->href( $url ) ) );
-            }
+        if( !$url ) {
+            $url = '#';
+            $class = ' class="disabled"';
+        } else {
+            $class = '';
         }
-        if( $li = $this->getListBootstrap( 'next_page', '&gt;&gt;'    ) ) $ul->_contain( $li );
-        if( $li = $this->getListBootstrap( 'last_page', 'last' ) ) $ul->_contain( $li );
-        return $pageDiv;
+        $list = "<li{$class}><a href=\"{$url}\">{$label}</a></li>\n";
+        return $list;
     }
 
     /**
      * @param $name
-     * @param $label
-     * @return \WScore\Html\Tags
+     * @return null
      */
-    function getListBootstrap( $name, $label )
+    protected function url( $name ) {
+        return array_key_exists( $name, $this->url ) ? $this->url[$name] : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function draw()
     {
-        if( !isset( $this->url[ $name ] ) ) return '';
-        if( $this->url[ $name ] ) {
-            return $this->tags->li( $this->tags->a( $label )->href( $this->url[ $name ] ) );
+        $draw = '';
+        $draw .= $this->getList( 'top', $this->url( 'top_page' ) );
+        $draw .= $this->getList( '&lt;&lt;', $this->url( 'prev_page' ) );
+        foreach( $this->url['pages'] as $page => $url ) {
+            $draw .= $this->getList( $page, $url );
         }
-        return $this->tags->li( $this->tags->a( $label )->href( '#' ) )->class_( 'disabled' );
+        $draw .= $this->getList( '&gt;&gt;', $this->url( 'next_page' ) );
+        $draw .= $this->getList( 'last', $this->url( 'last_page' ) );
+        $draw  = "
+        <div class=\"pagination\"><ul>
+          {$draw}
+        </ul></div>
+        ";
+        return $draw;
     }
     // +----------------------------------------------------------------------+
 }
