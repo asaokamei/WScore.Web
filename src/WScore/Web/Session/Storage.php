@@ -1,7 +1,7 @@
 <?php
 namespace WScore\Web\Session;
 
-class Storage implements StorageInterface
+class Storage implements StorageInterface, \Serializable
 {
     /**
      * @Inject
@@ -10,6 +10,9 @@ class Storage implements StorageInterface
     public $session;
 
     /**
+     * config is a string in $_SESSION.
+     * or, config is set to null if an array is given.
+     *
      * @var string
      */
     protected $config = '..Session.';
@@ -39,26 +42,32 @@ class Storage implements StorageInterface
 
     /**
      * @param string $config
-     * @throws \RuntimeException
      * @return $this
      */
     public function setup( $config )
     {
         if( is_array( $config ) ) {
             $this->data = & $config;
+            $this->config = null;
             return $this;
         }
-        elseif( !$config ) {
-            $config = $this->config;
+        if( is_string( $config ) ) {
+            $this->config = $config;
         }
-        elseif( !is_string( $config ) ) {
-            throw new \RuntimeException( '$config must be a string or an array. ' );
+        return $this->connectSession();
+    }
+
+    /**
+     * @return $this
+     */
+    public function connectSession()
+    {
+        if( !isset( $this->session->storage[ $this->config ] ) ) {
+            $this->session->storage[ $this->config ] = array();
         }
-        if( !isset( $this->session->storage[ $config ] ) ) {
-            $this->session->storage[ $config ] = array();
-        }
-        $this->data = & $this->session->storage[ $config ];
+        $this->data = & $this->session->storage[ $this->config ];
         return $this;
+
     }
 
     /**
@@ -129,5 +138,30 @@ class Storage implements StorageInterface
     {
         $this->data = array();
         return $this;
+    }
+
+    /**
+     * String representation of object
+     * @link http://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     */
+    public function serialize()
+    {
+        return serialize( get_object_vars( $this ) );
+    }
+
+    /**
+     * Constructs the object
+     * @link http://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized   The string representation of the object.
+     * @return void
+     */
+    public function unserialize( $serialized )
+    {
+        $info = unserialize( $serialized );
+        foreach( $info as $key => $val ) {
+            $this->$key = $val;
+        }
+        $this->connectSession();
     }
 }
