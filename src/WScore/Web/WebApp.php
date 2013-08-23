@@ -72,7 +72,7 @@ class WebApp extends ChainAbstract implements ModuleInterface
     }
 
     /**
-     * @return Http\Response
+     * @return \WScore\Http\Response
      */
     public function getHttpResponse()
     {
