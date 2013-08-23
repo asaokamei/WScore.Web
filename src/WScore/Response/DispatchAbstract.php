@@ -79,10 +79,12 @@ abstract class DispatchAbstract implements ModuleInterface
      * responds to a request.
      * returns Response object, or null if nothing to respond.
      *
+     * @param array $match
      * @return ResponseInterface|null|bool
      */
-    public function respond()
+    public function respond( $match=array() )
     {
+        $this->match = $match;
         if( !$pageUri = $this->match() ) {
             return null;
         }
@@ -103,7 +105,7 @@ abstract class DispatchAbstract implements ModuleInterface
         if( !isset( $match[ 'render' ] ) && !isset( $match[1] ) ) {
             return null;
         }
-        $this->match = $match;
+        $this->match = array_merge( $this->match, $match );
         return ( isset( $match[ 'render' ] ) ) ? $match[ 'render' ] : $match[1];
     }
 

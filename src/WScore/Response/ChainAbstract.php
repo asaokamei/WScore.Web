@@ -27,10 +27,11 @@ abstract class ChainAbstract implements ModuleInterface
     //  main respond method
     // +----------------------------------------------------------------------+
     /**
-     * @return null|ResponseInterface
+     * @param array $match
      * @throws \RuntimeException
+     * @return null|ResponseInterface
      */
-    public function respond()
+    public function respond( $match=array() )
     {
         if( empty( $this->modules ) ) {
             throw new \RuntimeException( 'no loaders.' );
@@ -42,7 +43,7 @@ abstract class ChainAbstract implements ModuleInterface
             }
             $request   = $this->getAppRequest( $info );
             $module    = $this->getModuleObject( $info );
-            $response  = $module->setRequest( $request )->prepare( $this )->respond();
+            $response  = $module->setRequest( $request )->prepare( $this )->respond( $match );
             if( $response ) $this->response = $response;
         }
         return $this->response;
