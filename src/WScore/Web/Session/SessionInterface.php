@@ -23,12 +23,6 @@ interface SessionInterface
     public function isStarted();
 
     /**
-     * @param null $config
-     * @return array
-     */
-    public function storage( $config=null );
-
-    /**
      * Returns the session ID.
      *
      * @return string The session ID.

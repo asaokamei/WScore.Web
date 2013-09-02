@@ -36,19 +36,6 @@ class Session implements SessionInterface
     }
 
     /**
-     * @param null $config
-     * @return array
-     */
-    public function storage( $config=null )
-    {
-        if( $config ) {
-            if( !isset( $this->storage[ $config ] ) ) $this->storage[ $config ] = array();
-            return $this->storage[ $config ];
-        }
-        return $this->storage;
-    }
-
-    /**
      * @return bool
      */
     public function isStarted()

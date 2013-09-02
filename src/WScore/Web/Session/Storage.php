@@ -62,10 +62,11 @@ class Storage implements StorageInterface, \Serializable
      */
     public function connectSession()
     {
-        if( !isset( $this->session->storage[ $this->config ] ) ) {
-            $this->session->storage[ $this->config ] = array();
+        if( !$this->config ) return $this; // use the data as is.
+        if( !isset( $_SESSION ) ) {
+            $this->session->start();
         }
-        $this->data = & $this->session->storage[ $this->config ];
+        $this->data = & $_SESSION[ $this->config ];
         return $this;
 
     }
