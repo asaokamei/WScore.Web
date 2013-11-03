@@ -9,9 +9,9 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "wscore/dicontainer": "dev-master",
-        "wscore/template": "dev-master",
-        "wscore/http": "dev-master"
+        "wscore/dicontainer": "0.1",
+        "wscore/template": "0.1",
+        "wscore/http": "0.1"
 
     },
     "autoload": {
